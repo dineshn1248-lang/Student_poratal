@@ -1,0 +1,159 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.layout {
+  display: flex;
+  height: 100vh;
+  background: #f5f7fb;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 250px;
+  background: #0f2b4c;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+  transition: 0.3s;
+}
+
+.sidebar.hide {
+  width: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.logo {
+  margin-bottom: 20px;
+}
+
+.menu {
+  list-style: none;
+}
+
+.menu li {
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.menu li.active,
+.menu li:hover {
+  background: #1f4e7a;
+}
+
+.logout {
+  background: linear-gradient(to right, #2b5be3, #1ba3d6);
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+}
+
+/* MAIN */
+.main {
+  flex: 1;
+  transition: 0.3s;
+}
+
+.main.full {
+  margin-left: 0;
+}
+
+/* TOPBAR */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 20px;
+  background: white;
+}
+
+.menu-btn {
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* CONTENT */
+.content {
+  padding: 20px;
+}
+
+.content h1 {
+  font-size: 26px;
+  color: #1e1e20;
+}
+
+.sub {
+  color: #6b7280;
+  margin-bottom: 20px;
+}
+
+/* CARDS */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.card h2 {
+  color: #111827;   /* dark strong */
+  font-size: 26px;
+  font-weight: 700;
+}
+.card p {
+  color: #6b7280;   /* medium gray */
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.icon {
+  padding: 12px;
+  border-radius: 10px;
+  color: white;
+}
+
+.blue { background: #2b5be3; }
+.green { background: #22c55e; }
+.orange { background: #f97316; }
+
+/* SECTION */
+.section-box {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  margin-top: 20px;
+}
+
+.section-grid {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.section-grid p {
+  color: #282a2e;
+}
+.section-grid h2 {
+  color: #111827;
+  font-weight: 700;
+}
+.section-box h3 {
+  color: #111827;
+  font-weight: 600;
+}

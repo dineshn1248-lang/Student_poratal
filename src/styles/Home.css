@@ -1,0 +1,103 @@
+/* BACKGROUND */
+.home-wrapper {
+  min-height: 100vh;
+  background: url("../assets/bg.jpeg") no-repeat center center/cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  padding: 20px;
+}
+
+/* dark overlay for readability */
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(3px);
+}
+
+/* content layer */
+.home-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
+/* TITLE */
+.home-content h1 {
+  color: #e9ecf3;
+  font-size: 40px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+/* SUBTITLE */
+.home-content p {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 16px;
+  margin-bottom: 36px;
+}
+
+/* CARD GROUP */
+.portal-cards {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* COMMON CARD */
+.portal-card {
+  width: 230px;
+  min-height: 130px;
+  border-radius: 20px;
+  padding: 24px 18px;
+  transition: 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* FIRST CARD style */
+.portal-card:nth-child(1) {
+  background: hsla(221, 89%, 25%, 0.005);
+  color: #ffffff;
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* SECOND + THIRD CARD style */
+.portal-card:nth-child(2),
+.portal-card:nth-child(3) {
+  background: linear-gradient(45deg, #3352b0e6, #1e40af);
+  color: #fff;
+}
+
+.portal-card h2 {
+  font-size: 26px;
+  margin-bottom: 6px;
+}
+
+.portal-card span {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.portal-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .home-content h1 {
+    font-size: 30px;
+  }
+
+  .portal-card {
+    width: 100%;
+    max-width: 320px;
+  }
+}

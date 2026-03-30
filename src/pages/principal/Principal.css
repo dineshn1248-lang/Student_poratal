@@ -1,0 +1,197 @@
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* MAIN LAYOUT */
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 250px;
+  min-height: 150vh;
+  /* FULL HEIGHT */
+  background: #0f2a44;
+  /* solid blue */
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  position: relative !important;
+  /* Protect from fixed position leaks */
+  margin: 0 !important;
+  transition: all 0.3s ease;
+}
+
+.sidebar.hide {
+  width: 0 !important;
+  min-width: 0 !important;
+  overflow: hidden;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+}
+
+/* MENU */
+.menu {
+  list-style: none;
+}
+
+.menu li {
+  padding: 12px;
+  margin: 6px 0;
+  cursor: pointer;
+}
+
+/* MAIN CONTENT */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #f5f6fa;
+  margin-left: 0 !important;
+  /* Fix gray gap caused by Student.css leak */
+  min-width: 0;
+  transition: all 0.3s ease;
+}
+
+/* TOPBAR */
+.topbar {
+  height: 60px;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+/* CONTENT */
+.content {
+  padding: 20px;
+}
+
+.content h1 {
+  font-size: 26px;
+  color: #1e1e20;
+}
+
+/* MAIN HEADINGS */
+.title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1e1e20;
+  margin-bottom: 5px;
+}
+
+.subtitle {
+  color: #6b7280;
+  font-size: 16px;
+  margin-bottom: 25px;
+}
+
+/* CARDS */
+.cards {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.card {
+  flex: 1;
+  background: rgb(165, 216, 235);
+  padding: 20px;
+  border-radius: 12px;
+}
+
+/* SECTION TITLE */
+.section-title {
+  margin-top: 30px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #111827;
+}
+
+/* GRID */
+.dept {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-top: 30px;
+}
+
+/* CARD */
+.dept-card {
+  background: #ffffff;
+  padding: 22px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(244, 242, 242, 0.084);
+}
+
+/* TOP */
+.dept-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+/* TITLE */
+.dept-top h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+}
+
+/* BADGE */
+.badge {
+  background: #e6f7f4;
+  color: #14b8a6;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* TEXT */
+.dept-card p {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 6px 0;
+}
+
+/* BOLD VALUE */
+.dept-card b {
+  color: #111827;
+}
+
+/* PROGRESS BAR */
+.progress {
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 10px;
+  margin: 12px 0;
+  overflow: hidden;
+}
+
+.bar {
+  height: 100%;
+  width: 77%;
+  background: linear-gradient(to right, #14b8a6, #0d9488);
+  border-radius: 10px;
+}
+
+/* THIS PUSHES LOGOUT TO BOTTOM */
+.logout {
+  margin-bottom: auto;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(to right, #3b82f6, #0ea5e9);
+  color: white;
+}
