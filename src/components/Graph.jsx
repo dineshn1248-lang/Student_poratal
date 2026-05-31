@@ -13,10 +13,10 @@ const data = [
   { subject: "Networks", A: 78 }
 ];
 
-export default BarGraph{
+export default function BarGraph() {
   return (
     <div style={{ width: "100%", height: 300 }}>
-      <ResponsiveContainer>
+      <ResponsiveContainer width="99%" height={300}>
         <RadarChart data={data}>
           <PolarGrid />
           <PolarAngleAxis dataKey="subject" />

@@ -1,6 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { User, Lock, Mail, GraduationCap, Users, Eye, EyeOff, BookOpen, Calendar, Award, CreditCard, LogIn } from "lucide-react";
+
 import "../../styles/StudentLogin.css";
+import nrupathungaLogo from "../../assets/nrupathunga_logo.png";
 
 function StudentLogin() {
   const navigate = useNavigate();
@@ -8,170 +12,289 @@ function StudentLogin() {
   const [role, setRole] = useState("student");
   const [uan, setUan] = useState("");
   const [studentPassword, setStudentPassword] = useState("");
-
-  const [parentToken, setParentToken] = useState("");
+  const [parentId, setParentId] = useState("");
   const [parentPassword, setParentPassword] = useState("");
 
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [reveal, setReveal] = useState(false);
 
-  // STUDENT LOGIN
-  const handleStudentLogin = async () => {
+  useEffect(() => {
+    const timer = setTimeout(() => setReveal(true), 150);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const handleStudentLogin = async (e) => {
+    e?.preventDefault();
     if (!uan || !studentPassword) {
-      alert("Enter UAN and password");
+      setError("Please enter UAN Number and password");
       return;
     }
 
     setLoading(true);
+    setError("");
     try {
-      const res = await fetch("http://127.0.0.1:5000/api/auth/student/login", {
+      const res = await fetch("http://localhost:5000/api/auth/student/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          uan,
-          password: studentPassword,
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ uan, password: studentPassword }),
       });
 
       const data = await res.json();
-
       if (res.status === 200) {
         localStorage.setItem("token", data.token);
         localStorage.setItem("userRole", "student");
-        navigate("/student-dashboard");
+        localStorage.setItem("userName", data.user.name);
+        navigate("/student/dashboard");
       } else {
-        alert(data?.error || "Invalid student login");
+        setError(data?.error || "Invalid student credentials");
       }
-    } catch (error) {
-      console.error(error);
-      alert("Server error");
+    } catch (err) {
+      console.error(err);
+      setError("Server connection error. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
-  // PARENT LOGIN (token + password)
-  const handleParentLogin = async () => {
-    if (!parentToken || !parentPassword) {
-      alert("Enter parent token and password");
+  const handleParentLogin = async (e) => {
+    e?.preventDefault();
+    if (!parentId) {
+      setError("Please enter Parent ID");
       return;
     }
 
     setLoading(true);
+    setError("");
     try {
-      const res = await fetch("http://127.0.0.1:5000/api/auth/parent/login", {
+      const res = await fetch("http://localhost:5000/api/auth/parent/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          token: parentToken,
-          password: parentPassword,
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ parent_id: parentId }),
       });
 
       const data = await res.json();
-
       if (res.status === 200) {
         localStorage.setItem("token", data.token);
         localStorage.setItem("userRole", "parent");
-        navigate("/parent-dashboard");
+        localStorage.setItem("userName", data.user.name);
+        navigate("/parent/dashboard");
       } else {
-        alert(data?.error || "Invalid parent login");
+        setError(data?.error || "Invalid parent credentials");
       }
-    } catch (error) {
-      console.error(error);
-      alert("Server error");
+    } catch (err) {
+      console.error(err);
+      setError("Server connection error. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="student-wrapper">
-      <div className="student-card">
-        <h1>User Login</h1>
-        <p className="subtitle">Student / Parent portal access</p>
+    <div className="std-login-page">
+      {/* LEFT SIDE: HERO BANNER (DARK NAVY GRADIENT OVER BUILDING) */}
+      <div className="std-login-hero">
+        <div className="hero-overlay"></div>
+        <div className="hero-content">
+          <div className="university-brand">
+            <img src={nrupathungaLogo} alt="Nrupathunga University Logo" className="univ-logo-large" />
+            <div className="brand-text-block">
+              <h1 className="univ-title">NRUPATHUNGA UNIVERSITY</h1>
+            </div>
+          </div>
 
-        <div className="toggle">
-          <button
-            className={role === "student" ? "active" : ""}
-            onClick={() => setRole("student")}
-            type="button"
-          >
-            Student
-          </button>
+          <div className="welcome-banner">
+            <p className="welcome-label">Welcome to</p>
+            <h2 className="welcome-main-title">Nrupathunga University</h2>
+            <div className="welcome-divider-line"></div>
+            <p className="welcome-desc">
+              Access your academic records, attendance, examinations, results and more.
+            </p>
+          </div>
 
-          <button
-            className={role === "parent" ? "active" : ""}
-            onClick={() => setRole("parent")}
-            type="button"
-          >
-            Parent
-          </button>
+          {/* THREE HORIZONTAL badges at bottom of left panel */}
+          <div className="left-horizontal-badges">
+            <div className="badge-col">
+              <div className="badge-icon-circle"><BookOpen size={16} /></div>
+              <div className="badge-info">
+                <h4>Academic Records</h4>
+                <p>View your grades, transcripts and results</p>
+              </div>
+            </div>
+            <div className="badge-col">
+              <div className="badge-icon-circle"><Calendar size={16} /></div>
+              <div className="badge-info">
+                <h4>Attendance Management</h4>
+                <p>Track attendance and history</p>
+              </div>
+            </div>
+            <div className="badge-col">
+              <div className="badge-icon-circle"><Award size={16} /></div>
+              <div className="badge-info">
+                <h4>Examination Details</h4>
+                <p>Check schedules and results</p>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
 
-        {role === "student" ? (
-          <>
-            <label>UAN</label>
-            <div className="input-box">
-              <span>🆔</span>
-              <input
-                type="text"
-                placeholder="Enter UAN (e.g., UAN1001)"
-                value={uan}
-                onChange={(e) => setUan(e.target.value)}
-              />
+      {/* RIGHT SIDE: SUSPENDED LOGIN CARD */}
+      <div className="std-login-form-container">
+        <motion.div 
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: reveal ? 1 : 0, y: reveal ? 0 : 15 }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
+          className="login-card-wrapper"
+        >
+          <div className="login-card-header">
+            <img src={nrupathungaLogo} alt="University Logo" className="univ-form-logo" />
+            <h3>{role === "student" ? "Student Login" : "Parent Login"}</h3>
+            <p className="form-subtext">Login to access your Nrupathunga University account</p>
+          </div>
+
+          {/* Error Message Box */}
+          {error && (
+            <div className="login-error-box">
+              <p>{error}</p>
             </div>
+          )}
 
-            <label>Password</label>
-            <div className="input-box">
-              <span>🔒</span>
-              <input
-                type="password"
-                placeholder="Enter password"
-                value={studentPassword}
-                onChange={(e) => setStudentPassword(e.target.value)}
-              />
-            </div>
 
-            <button className="student-action-btn" onClick={handleStudentLogin} disabled={loading}>
-              {loading ? "Signing in..." : "Student Login"}
+
+          {/* Pill Capsule Role Tab Selection */}
+          <div className="role-tab-capsule">
+            <button 
+              type="button"
+              className={`tab-btn ${role === "student" ? "active" : ""}`}
+              onClick={() => { setRole("student"); setError(""); }}
+            >
+              <User size={16} /> Student
             </button>
-          </>
-        ) : (
-          <>
-            <label>Parent Invite Token</label>
-            <div className="input-box">
-              <span>🔑</span>
-              <input
-                type="text"
-                placeholder="Paste token from parent link"
-                value={parentToken}
-                onChange={(e) => setParentToken(e.target.value)}
-              />
-            </div>
-
-            <label>Parent Password</label>
-            <div className="input-box">
-              <span>🔒</span>
-              <input
-                type="password"
-                placeholder="Enter parent password"
-                value={parentPassword}
-                onChange={(e) => setParentPassword(e.target.value)}
-              />
-            </div>
-
-            <button className="student-action-btn" onClick={handleParentLogin} disabled={loading}>
-              {loading ? "Signing in..." : "Parent Login"}
+            <button 
+              type="button"
+              className={`tab-btn ${role === "parent" ? "active" : ""}`}
+              onClick={() => { setRole("parent"); setError(""); }}
+            >
+              <Users size={16} /> Parent
             </button>
-          </>
-        )}
+          </div>
+
+          <AnimatePresence mode="wait">
+            {role === "student" ? (
+              <motion.form 
+                key="student"
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.98 }}
+                transition={{ duration: 0.2 }}
+                onSubmit={handleStudentLogin}
+                className="login-form"
+              >
+                <div className="login-field-group">
+                  <label className="field-title-label">UAN Number</label>
+                  <div className="input-with-icon">
+                    <User className="field-icon" size={18} />
+                    <input 
+                      type="text" 
+                      placeholder="Enter your UAN number"
+                      value={uan}
+                      onChange={(e) => setUan(e.target.value)}
+                      autoComplete="username"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="login-field-group">
+                  <label className="field-title-label">Password</label>
+                  <div className="input-with-icon">
+                    <Lock className="field-icon" size={18} />
+                    <input 
+                      type={showPassword ? "text" : "password"} 
+                      placeholder="Enter your password"
+                      value={studentPassword}
+                      onChange={(e) => setStudentPassword(e.target.value)}
+                      autoComplete="new-password"
+                      required
+                    />
+                    <button 
+                      type="button" 
+                      className="password-toggle-btn"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                    </button>
+                  </div>
+                </div>
+
+                <div className="login-card-options">
+                  <a href="#" className="forgot-pass" onClick={(e) => { e.preventDefault(); navigate('/forgot-password'); }}>Forgot password?</a>
+                </div>
+
+                <button type="submit" className="login-submit-btn" disabled={loading}>
+                  {loading ? (
+                    "Verifying..."
+                  ) : (
+                    <span className="btn-inner-content">
+                      <LogIn size={18} /> Login to Portal
+                    </span>
+                  )}
+                </button>
+              </motion.form>
+            ) : (
+              <motion.form 
+                key="parent"
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.98 }}
+                transition={{ duration: 0.2 }}
+                onSubmit={handleParentLogin}
+                className="login-form"
+              >
+                <div className="login-field-group">
+                  <label className="field-title-label">Parent Registered ID</label>
+                  <div className="input-with-icon">
+                    <User className="field-icon" size={18} />
+                    <input 
+                      type="text" 
+                      placeholder="Enter parent ID (e.g. PAR2026001)"
+                      value={parentId}
+                      onChange={(e) => setParentId(e.target.value)}
+                      autoComplete="username"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <button type="submit" className="login-submit-btn" disabled={loading}>
+                  {loading ? (
+                    "Verifying..."
+                  ) : (
+                    <span className="btn-inner-content">
+                      <LogIn size={18} /> Login to Portal
+                    </span>
+                  )}
+                </button>
+              </motion.form>
+            )}
+          </AnimatePresence>
+
+          {/* Divider: or */}
+          <div className="login-divider-container">
+            <div className="divider-line"></div>
+            <span className="divider-label-text">or</span>
+            <div className="divider-line"></div>
+          </div>
+
+          <p className="login-bottom-text">
+            Don't have an account? <span className="register-now-link" onClick={() => navigate('/student-register')}>Register now</span>
+          </p>
+        </motion.div>
       </div>
     </div>
   );
 }
 
-export default StudentLogin;
+export default StudentLogin;

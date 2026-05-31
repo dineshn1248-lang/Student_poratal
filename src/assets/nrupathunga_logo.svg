@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="150" height="150" viewBox="0 0 150 150">
+  <circle cx="75" cy="75" r="70" fill="#f8fafc" stroke="#1f4e7a" stroke-width="5"/>
+  <circle cx="75" cy="75" r="55" fill="none" stroke="#eab308" stroke-width="2" stroke-dasharray="4 4"/>
+  <text x="75" y="85" font-family="Arial, sans-serif" font-size="45" font-weight="bold" fill="#1f4e7a" text-anchor="middle">NU</text>
+  <text x="75" y="115" font-family="Arial, sans-serif" font-size="10" fill="#64748b" text-anchor="middle">Logo Placeholder</text>
+</svg>

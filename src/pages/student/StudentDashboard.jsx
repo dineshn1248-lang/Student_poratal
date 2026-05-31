@@ -1,167 +1,144 @@
-import { useState } from "react";
-import "./Student.css";
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import {
-  FaBars,
-  FaBell,
-  FaUserCircle,
-  FaChartLine,
-  FaBook,
-  FaGraduationCap
+  FaCalendarCheck, FaFileInvoiceDollar, FaGraduationCap,
+  FaChartLine, FaExclamationCircle, FaDownload, FaHistory
 } from "react-icons/fa";
-import { 
-  Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, 
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer 
+import {
+  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from 'recharts';
-
-const performanceData = [
-  { subject: 'Math', score: 85, fullMark: 100 },
-  { subject: 'Physics', score: 78, fullMark: 100 },
-  { subject: 'Chemistry', score: 92, fullMark: 100 },
-  { subject: 'CS', score: 95, fullMark: 100 },
-  { subject: 'English', score: 88, fullMark: 100 },
-];
-
-const attendanceData = [
-  { name: 'Math', percent: 85 },
-  { name: 'Physics', percent: 90 },
-  { name: 'Chemistry', percent: 80 },
-  { name: 'CS', percent: 95 },
-  { name: 'English', percent: 88 },
-];
+import StudentLayout from "./StudentLayout";
+import "./Student.css";
 
 export default function StudentDashboard() {
-  const [open, setOpen] = useState(true);
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchDashboardData();
+  }, []);
+
+  const fetchDashboardData = async () => {
+    const token = localStorage.getItem("token");
+    try {
+      const resp = await fetch("http://localhost:5000/api/student/dashboard", {
+        headers: { "Authorization": `Bearer ${token}` }
+      });
+      const d = await resp.json();
+      if (resp.ok) setData(d);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) return <div>Loading...</div>;
 
   return (
-    <div className="layout">
-
-      {/* SIDEBAR */}
-      <div className={`sidebar ${open ? "" : "hide"}`}>
-        <h2 className="logo"> Portal </h2>
-
-        <ul className="menu">
-          <li className="active">Dashboard</li>
-          <li>Results</li>
-          <li>Attendance</li>
-          <li>Announcements</li>
-          <li>AI Internship Finder</li>
-          <li>AI Assistance</li>
-        </ul>
-
-        <div className="profile">
-          <p>Logged in as</p>
-          <h4>Dinesh</h4>
-        </div>
-
-        <button className="logout">Logout</button>
+    <StudentLayout>
+      <div className="std-dashboard-header" style={{ marginBottom: '24px' }}>
+         <h1 style={{ fontSize: '20px', fontWeight: '800' }}>Dashboard Overview</h1>
+         <p style={{ color: '#64748b', fontSize: '14px' }}>Quick summary of your academic performance</p>
       </div>
 
-      {/* MAIN */}
-      <div className={`main ${open ? "" : "full"}`}>
-
-        {/* TOPBAR */}
-        <div className="topbar">
-          <FaBars onClick={() => setOpen(!open)} className="menu-btn" />
-
-          <div className="right">
-            <FaBell />
-            <FaUserCircle />
+      <div className="std-stats-grid">
+        <div className="std-stat-card">
+          <div className="std-stat-header">
+            <span>Attendance</span>
+            <div className="std-stat-icon" style={{ background: '#ecfdf5', color: '#10b981' }}><FaCalendarCheck /></div>
           </div>
+          <h3>{data?.stats?.attendance}</h3>
+          <div style={{ fontSize: '12px', color: '#10b981' }}>Current status</div>
         </div>
-
-        {/* CONTENT */}
-        <div className="content">
-          <div>
-            <h1 className="welcome-text">Welcome, Dinesh</h1>
-            <p className="student-info">
-              BCA • Section A • USN: U24AN23S0331
-            </p>
+        <div className="std-stat-card">
+          <div className="std-stat-header">
+            <span>Exam Fees</span>
+            <div className="std-stat-icon" style={{ background: '#fffbeb', color: '#ea580c' }}><FaFileInvoiceDollar /></div>
           </div>
-
-          {/* CARDS */}
-          <div className="cards">
-
-            <div className="card">
-              <div>
-                <h4> Attendance</h4>
-                <h2>86%</h2>
-                <span className="green">↑ Good standing</span>
-              </div>
-              <div className="icon blue"><FaChartLine /></div>
-            </div>
-
-            <div className="card">
-              <div>
-                <h4>Average Score</h4>
-                <h2>85%</h2>
-                <span className="green">↑ 5% improvement</span>
-              </div>
-              <div className="icon orange"><FaChartLine /></div>
-            </div>
-
-            <div className="card">
-              <div>
-                <h4>Subjects</h4>
-                <h2>6</h2>
-              </div>
-              <div className="icon green"><FaBook /></div>
-            </div>
-
-            <div className="card">
-              <div>
-                <h4>Backlogs</h4>
-                <h2>2</h2>
-              </div>
-              <div className="icon purple"><FaGraduationCap /></div>
-            </div>
-
+          <h3 style={{ fontSize: '18px', color: '#ea580c', marginTop: '6px' }}>Coming Soon</h3>
+          <div style={{ fontSize: '12px', color: '#ea580c' }}>Next Semester</div>
+        </div>
+        <div className="std-stat-card">
+          <div className="std-stat-header">
+            <span>Backlogs</span>
+            <div className="std-stat-icon" style={{ background: '#fffbeb', color: '#f59e0b' }}><FaExclamationCircle /></div>
           </div>
-
-          {/* CHARTS GRID */}
-          <div className="charts-grid">
-            {/* PERFORMANCE RADAR CHART */}
-            <div className="box">
-              <h3>Subject-wise Performance</h3>
-              <div style={{ width: '100%', height: 260 }}>
-                <ResponsiveContainer width="100%" height="100%">
-                  <RadarChart cx="50%" cy="50%" outerRadius="80%" data={performanceData}>
-                    <PolarGrid stroke="#e2e8f0" />
-                    <PolarAngleAxis dataKey="subject" tick={{ fill: '#64748b', fontSize: 12 }} />
-                    <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
-                    <Radar name="Score" dataKey="score" stroke="#3b82f6" fill="#3b82f6" fillOpacity={0.6} />
-                    <Tooltip cursor={{fill: 'rgba(0,0,0,0.05)'}} contentStyle={{borderRadius: '10px', border: 'none', boxShadow: '0 4px 15px rgba(0,0,0,0.1)'}} />
-                  </RadarChart>
-                </ResponsiveContainer>
-              </div>
-            </div>
-
-            {/* PROGRESS BAR CHART */}
-            <div className="box">
-              <h3>Attendance Progress (%)</h3>
-              <div style={{ width: '100%', height: 260 }}>
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={attendanceData} margin={{ top: 20, right: 30, left: -20, bottom: 5 }}>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-                    <XAxis dataKey="name" tick={{ fill: '#64748b', fontSize: 12 }} axisLine={false} tickLine={false} />
-                    <YAxis tick={{ fill: '#64748b', fontSize: 12 }} axisLine={false} tickLine={false} domain={[0, 100]} />
-                    <Tooltip cursor={{ fill: 'rgba(0,0,0,0.05)' }} contentStyle={{ borderRadius: '10px', border: 'none', boxShadow: '0 4px 15px rgba(0,0,0,0.1)' }} />
-                    <Bar dataKey="percent" fill="#10b981" radius={[6, 6, 0, 0]} barSize={40} />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-            </div>
+          <h3>{data?.stats?.backlogs}</h3>
+          <div style={{ fontSize: '12px', color: '#f59e0b' }}>To clear</div>
+        </div>
+        <div className="std-stat-card">
+          <div className="std-stat-header">
+            <span>SGPA</span>
+            <div className="std-stat-icon" style={{ background: '#eff6ff', color: '#3b82f6' }}><FaGraduationCap /></div>
           </div>
-
-          <div className="box">
-            <h3>AI Study Assistant</h3>
-            <div className="ai-box">
-              <span style={{ fontSize: '24px' }}>💡</span> 
-              <span>Focus on <strong>Physics</strong> — Practice daily for 30 min to improve your score. Keep up the great work in Computer Science!</span>
-            </div>
-          </div>
-
+          <h3>{data?.stats?.sgpa}</h3>
+          <div style={{ fontSize: '12px', color: '#3b82f6' }}>Last Semester</div>
         </div>
       </div>
-    </div>
+
+      <div className="std-grid-row">
+        <div className="std-panel">
+          <div className="std-panel-header"><h4>Academic Progress</h4></div>
+          <div style={{ height: '280px' }}>
+            <ResponsiveContainer width="99%" height={280}>
+              <LineChart data={[
+                { sem: 'Sem 1', sgpa: 7.8 },
+                { sem: 'Sem 2', sgpa: 8.2 },
+                { sem: 'Sem 3', sgpa: 8.5 },
+                { sem: 'Sem 4', sgpa: data?.stats?.sgpa || 0 },
+              ]}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                <XAxis dataKey="sem" axisLine={false} tickLine={false} tick={{ fontSize: 14, fill: '#64748b' }} />
+                <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 14, fill: '#64748b' }} domain={[0, 10]} />
+                <Tooltip />
+                <Line type="monotone" dataKey="sgpa" stroke="#4f46e5" strokeWidth={3} dot={{ fill: '#4f46e5', r: 5 }} />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        <div className="std-panel">
+          <div className="std-panel-header"><h4>Quick Actions</h4></div>
+          <div className="std-actions-grid">
+            <Link to="/student/attendance" className="std-action-btn"><FaCalendarCheck /><span>Attendance</span></Link>
+            <Link to="/student/fees" className="std-action-btn"><FaFileInvoiceDollar /><span>Pay Fees</span></Link>
+            <Link to="/student/results" className="std-action-btn"><FaChartLine /><span>Results</span></Link>
+            <Link to="/student/exams" className="std-action-btn"><FaGraduationCap /><span>Exams</span></Link>
+            <div className="std-action-btn"><FaDownload /><span>Hall Ticket</span></div>
+            <div className="std-action-btn"><FaHistory /><span>History</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div className="std-grid-row">
+         <div className="std-panel">
+            <div className="std-panel-header"><h4>Upcoming Exams</h4></div>
+            {data?.upcoming_exams.map((ex, i) => (
+               <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '12px', background: '#f8fafc', borderRadius: '12px', marginBottom: '10px' }}>
+                  <div style={{ padding: '8px', background: 'white', borderRadius: '8px', textAlign: 'center', minWidth: '45px' }}>
+                     <div style={{ fontSize: '12px', fontWeight: '700', color: '#64748b' }}>JUN</div>
+                     <div style={{ fontSize: '14px', fontWeight: '800' }}>{ex.date.split('-')[2]}</div>
+                  </div>
+                  <div>
+                     <div style={{ fontWeight: '700', fontSize: '14px' }}>{ex.subject}</div>
+                     <div style={{ fontSize: '12px', color: '#64748b' }}>{ex.time}</div>
+                  </div>
+               </div>
+            ))}
+         </div>
+         <div className="std-panel">
+            <div className="std-panel-header"><h4>Announcements</h4></div>
+            <div className="std-alert warning">
+               <FaExclamationCircle />
+               <div>
+                  <div style={{ fontWeight: '700', fontSize: '14px' }}>Examination Fee Payment</div>
+                  <div style={{ fontSize: '12px' }}>Last date for fee payment is June 15th. Clear all dues to avoid late fees.</div>
+               </div>
+            </div>
+         </div>
+      </div>
+
+    </StudentLayout>
   );
 }
