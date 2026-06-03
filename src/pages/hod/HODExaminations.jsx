@@ -67,7 +67,8 @@ export default function HODExaminations() {
             return (
                 <div style={{ background: '#fff', border: '1px solid #e2e8f0', padding: '10px', borderRadius: '8px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)' }}>
                     <p style={{ margin: 0, fontWeight: 'bold', color: '#1e293b' }}>{payload[0].payload.name}</p>
-                    <p style={{ margin: 0, color: '#3b82f6', fontWeight: 'bold' }}>Pass %: {payload[0].value}%</p>
+                    <p style={{ margin: 0, color: '#3b82f6', fontWeight: 'bold', marginTop: '4px' }}>Pass %: {payload[0].payload.pass_percentage}%</p>
+                    <p style={{ margin: 0, color: '#64748b', fontWeight: '600', marginTop: '4px' }}>Appeared: {payload[0].payload.appeared}</p>
                 </div>
             );
         }
@@ -94,13 +95,21 @@ export default function HODExaminations() {
                 </div>
                 <div style={{ display: 'flex', gap: '16px' }}>
                     <select style={{ padding: '8px 16px', borderRadius: '8px', border: '1px solid #e2e8f0', outline: 'none', fontWeight: '600', color: '#475569' }}>
+                        <option>2025-26</option>
                         <option>2024-25</option>
                         <option>2023-24</option>
                     </select>
-                    <select style={{ padding: '8px 16px', borderRadius: '8px', border: '1px solid #e2e8f0', outline: 'none', fontWeight: '600', color: '#475569' }}>
-                        <option>All Semesters</option>
-                        <option>I Semester</option>
-                        <option>II Semester</option>
+                    <select 
+                        value={activeSemTab} 
+                        onChange={(e) => setActiveSemTab(parseInt(e.target.value))}
+                        style={{ padding: '8px 16px', borderRadius: '8px', border: '1px solid #e2e8f0', outline: 'none', fontWeight: '600', color: '#475569' }}
+                    >
+                        <option value={1}>I Semester</option>
+                        <option value={2}>II Semester</option>
+                        <option value={3}>III Semester</option>
+                        <option value={4}>IV Semester</option>
+                        <option value={5}>V Semester</option>
+                        <option value={6}>VI Semester</option>
                     </select>
                 </div>
             </div>
@@ -156,8 +165,8 @@ export default function HODExaminations() {
             <div className="charts-row" style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: '24px', marginBottom: '24px' }}>
                 <div style={{ background: 'white', padding: '24px', borderRadius: '16px', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
                     <h3 style={{ fontSize: '16px', fontWeight: '700', color: '#1e293b', marginBottom: '24px' }}>Semester-wise Pass Percentage</h3>
-                    <div style={{ height: '260px' }}>
-                        <ResponsiveContainer width="100%" height="100%">
+                    <div style={{ height: '260px', width: '100%', minWidth: 0 }}>
+                        <ResponsiveContainer width="99%" height={260}>
                             <BarChart data={overview?.overview || []} margin={{ top: 20, right: 0, left: -20, bottom: 0 }}>
                                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
                                 <XAxis dataKey="name" axisLine={false} tickLine={false} tick={<CustomizedAxisTick />} />
@@ -173,8 +182,8 @@ export default function HODExaminations() {
 
                 <div style={{ background: 'white', padding: '24px', borderRadius: '16px', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
                     <h3 style={{ fontSize: '16px', fontWeight: '700', color: '#1e293b', marginBottom: '24px' }}>Result Distribution (All Semesters)</h3>
-                    <div style={{ height: '260px', display: 'flex', alignItems: 'center' }}>
-                        <ResponsiveContainer width="60%" height="100%">
+                    <div style={{ height: '260px', width: '100%', minWidth: 0, display: 'flex', alignItems: 'center' }}>
+                        <ResponsiveContainer width="60%" height={260}>
                             <PieChart>
                                 <Pie 
                                     data={overview?.distribution || []} 
@@ -236,7 +245,7 @@ export default function HODExaminations() {
                         <h3 style={{ fontSize: '16px', fontWeight: '700', color: '#1e293b', marginBottom: '20px' }}>Subject Wise Results ({['I', 'II', 'III', 'IV', 'V', 'VI'][activeSemTab - 1]} Semester)</h3>
                         {activeSemTab === 6 ? (
                             <div style={{ padding: '40px', textAlign: 'center', color: '#64748b', fontSize: '15px', background: '#f8fafc', borderRadius: '8px', border: '1px dashed #cbd5e1' }}>
-                                <div>No results published for this semester yet.</div>
+                                <div>Exams have not been conducted and no results are published for this semester yet.</div>
                             </div>
                         ) : (
                             <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
@@ -275,41 +284,7 @@ export default function HODExaminations() {
                         )}
                     </div>
 
-                    {/* Backlog Students Table */}
-                    <div style={{ background: 'white', padding: '24px', borderRadius: '16px', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
-                        <h3 style={{ fontSize: '16px', fontWeight: '700', color: '#1e293b', marginBottom: '20px' }}>Backlog Students ({['I', 'II', 'III', 'IV', 'V', 'VI'][activeSemTab - 1]} Semester)</h3>
-                        {backlogs.length === 0 ? (
-                            <div style={{ padding: '30px', textAlign: 'center', color: '#64748b', fontSize: '14px', background: '#f8fafc', borderRadius: '8px' }}>
-                                No backlogs found for this semester.
-                            </div>
-                        ) : (
-                            <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-                                <thead>
-                                    <tr style={{ borderBottom: '2px solid #e2e8f0' }}>
-                                        <th style={{ padding: '12px 8px', fontSize: '13px', color: '#64748b', fontWeight: '600' }}>Reg No</th>
-                                        <th style={{ padding: '12px 8px', fontSize: '13px', color: '#64748b', fontWeight: '600' }}>Student Name</th>
-                                        <th style={{ padding: '12px 8px', fontSize: '13px', color: '#64748b', fontWeight: '600' }}>Subject</th>
-                                        <th style={{ padding: '12px 8px', fontSize: '13px', color: '#64748b', fontWeight: '600', textAlign: 'center' }}>Semester</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {backlogs.map((row, idx) => (
-                                        <tr key={idx} style={{ borderBottom: '1px solid #f1f5f9' }}>
-                                            <td style={{ padding: '16px 8px', fontSize: '14px', fontWeight: '600', color: '#475569' }}>{row.reg_no}</td>
-                                            <td style={{ padding: '16px 8px', fontSize: '14px', fontWeight: '600', color: '#1e293b' }}>{row.student_name}</td>
-                                            <td style={{ padding: '16px 8px', fontSize: '14px', fontWeight: '600', color: '#475569' }}>{row.subject}</td>
-                                            <td style={{ padding: '16px 8px', fontSize: '14px', fontWeight: '600', color: '#475569', textAlign: 'center' }}>{row.semester}</td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        )}
-                        <div style={{ textAlign: 'center', marginTop: '16px' }}>
-                            <button style={{ background: 'none', border: 'none', color: '#3b82f6', fontWeight: '600', fontSize: '14px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', margin: '0 auto' }}>
-                                View All Backlogs <FaChevronRight style={{ fontSize: '10px' }} />
-                            </button>
-                        </div>
-                    </div>
+
 
                 </div>
 

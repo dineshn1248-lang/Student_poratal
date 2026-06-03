@@ -32,7 +32,7 @@ export default function PrincipalStudents() {
         setLoading(true);
         try {
             const token = localStorage.getItem('token');
-            const resp = await fetch(`http://localhost:5000/api/hod/students/all_marks?department=${selectedDepartment}`, {
+            const resp = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/hod/students/all_marks?department=${selectedDepartment}`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const data = await resp.json();

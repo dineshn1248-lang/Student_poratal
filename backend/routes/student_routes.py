@@ -74,7 +74,7 @@ def get_profile(user, role):
             "gender": gender,
             "email": student.email or f"{student.register_no.lower()}@college.com",
             "phone": student.phone or "9876543210",
-            "address": "123 Main Road, Bengaluru, Karnataka, 560001",
+            "address": student.address or "123 Main Road, Bengaluru, Karnataka, 560001",
             "category": "GM",
             "photo": None
         },
@@ -88,9 +88,33 @@ def get_profile(user, role):
         "parent": {
             "name": parent.name if parent else "Narayana Swamy",
             "relation": "Father",
-            "phone": parent.phone_number if parent else "9876543211"
+            "phone": student.parent_phone or (parent.phone_number if parent else "9876543211")
         }
     })
+
+@student_bp.route('/profile/update', methods=['PUT'])
+@login_required
+def update_profile(user, role):
+    if role != "student":
+        return jsonify({"error": "Only students can update their profile."}), 403
+        
+    data = request.json
+    try:
+        user.email = data.get('email', user.email)
+        user.phone = data.get('phone', user.phone)
+        user.address = data.get('address', user.address)
+        user.parent_phone = data.get('parent_phone', user.parent_phone)
+        
+        # Also update Parent model if it exists
+        parent = Parent.query.filter_by(student_id=user.id).first()
+        if parent and data.get('parent_phone'):
+            parent.phone_number = data.get('parent_phone')
+            
+        db.session.commit()
+        return jsonify({"message": "Profile updated successfully"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": "Failed to update profile", "details": str(e)}), 500
 
 @student_bp.route('/dashboard', methods=['GET'])
 @login_required

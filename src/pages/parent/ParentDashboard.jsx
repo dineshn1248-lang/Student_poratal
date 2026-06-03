@@ -3,6 +3,7 @@ import {
   FaUserGraduate, FaClipboardList, FaCheckCircle, 
   FaExclamationTriangle, FaStar, FaQuoteLeft, FaStarHalfAlt, FaFileAlt
 } from 'react-icons/fa';
+import WelcomeBanner from '../../components/WelcomeBanner';
 import './Parent.css';
 
 // Responsive Donut Chart Component using SVG
@@ -82,7 +83,7 @@ export default function ParentDashboard() {
   const fetchDashboardData = async () => {
     try {
       const token = localStorage.getItem('token');
-      const dashResp = await fetch('http://localhost:5000/api/student/dashboard', { 
+      const dashResp = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/student/dashboard`, { 
         headers: { 'Authorization': `Bearer ${token}` } 
       });
       if (dashResp.ok) {
@@ -117,6 +118,7 @@ export default function ParentDashboard() {
 
   return (
     <>
+      <WelcomeBanner roleName="Parent" />
       
       {/* 1. TOP KPI CARDS */}
       <div className="parent-kpi-grid">

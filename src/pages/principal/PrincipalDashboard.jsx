@@ -12,6 +12,7 @@ import {
   FaWallet, FaCheckCircle, FaExclamationTriangle, FaFileAlt, FaBullhorn
 } from 'react-icons/fa';
 import StatCard from './components/StatCard';
+import WelcomeBanner from '../../components/WelcomeBanner';
 import './Principal.css';
 
 export default function PrincipalDashboard() {
@@ -30,13 +31,13 @@ export default function PrincipalDashboard() {
     // Fetch principal dashboard stats
     const fetchDashboardData = async () => {
       try {
-        const statsRes = await fetch('http://localhost:5000/api/principal/stats');
+        const statsRes = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/principal/stats`);
         if (statsRes.ok) {
           const statsData = await statsRes.json();
           setStats(statsData);
         }
 
-        const deptRes = await fetch('http://localhost:5000/api/principal/departments/overview');
+        const deptRes = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/principal/departments/overview`);
         if (deptRes.ok) {
           const deptData = await deptRes.json();
           setDepartments(deptData);
@@ -87,6 +88,8 @@ export default function PrincipalDashboard() {
           <p style={{ fontSize: '14px', color: '#64748b' }}>Welcome Dr. R. Sharma, Principal</p>
         </div>
       </div>
+
+      <WelcomeBanner roleName="Administrator" />
 
       {/* ── TOP STATS (4 CARDS) ── */}
       <div className="stats-grid" style={{ gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px', marginBottom: '30px' }}>

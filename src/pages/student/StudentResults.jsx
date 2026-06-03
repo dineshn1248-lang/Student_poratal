@@ -32,7 +32,7 @@ export default function StudentResults() {
   const fetchResults = async () => {
     const token = localStorage.getItem("token");
     try {
-      const resp = await fetch("http://localhost:5000/api/student/results", {
+      const resp = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/student/results`, {
         headers: { "Authorization": `Bearer ${token}` }
       });
       const d = await resp.json();

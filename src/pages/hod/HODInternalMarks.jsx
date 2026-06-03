@@ -23,7 +23,7 @@ export default function HODInternalMarks() {
         setLoading(true);
         try {
             const token = localStorage.getItem('token');
-            const resp = await fetch(`http://localhost:5000/api/hod/internal-marks?semester=${selectedSem}`, {
+            const resp = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/hod/internal-marks?semester=${selectedSem}`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const data = await resp.json();
@@ -60,7 +60,7 @@ export default function HODInternalMarks() {
         
         try {
             const token = localStorage.getItem('token');
-            const resp = await fetch(`http://localhost:5000/api/hod/internal-marks/${subject.id}/students`, {
+            const resp = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/hod/internal-marks/${subject.id}/students`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const data = await resp.json();
@@ -92,7 +92,7 @@ export default function HODInternalMarks() {
 
         try {
             const token = localStorage.getItem('token');
-            const resp = await fetch('http://localhost:5000/api/hod/internal-marks/update', {
+            const resp = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/hod/internal-marks/update`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,

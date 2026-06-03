@@ -1,11 +1,18 @@
 import { useState, useEffect } from "react";
-import { FaUser, FaPhone, FaEnvelope, FaMapMarkerAlt, FaIdCard, FaUniversity, FaVenusMars, FaCalendarAlt, FaTint, FaFileUpload } from "react-icons/fa";
+import { FaUser, FaPhone, FaEnvelope, FaMapMarkerAlt, FaIdCard, FaUniversity, FaVenusMars, FaCalendarAlt, FaTint, FaFileUpload, FaSave, FaTimes } from "react-icons/fa";
 import StudentLayout from "./StudentLayout";
 import "./Student.css";
 
 export default function StudentProfile() {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
+  const [formData, setFormData] = useState({
+    email: '',
+    phone: '',
+    parent_phone: '',
+    address: ''
+  });
 
   useEffect(() => {
     fetchProfile();
@@ -14,15 +21,48 @@ export default function StudentProfile() {
   const fetchProfile = async () => {
     const token = localStorage.getItem("token");
     try {
-      const resp = await fetch("http://localhost:5000/api/student/profile", {
+      const resp = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/student/profile`, {
         headers: { "Authorization": `Bearer ${token}` }
       });
       const d = await resp.json();
-      if (resp.ok) setProfile(d);
+      if (resp.ok) {
+        setProfile(d);
+        setFormData({
+          email: d.personal?.email || '',
+          phone: d.personal?.phone || '',
+          parent_phone: d.parent?.phone || '',
+          address: d.personal?.address || ''
+        });
+      }
     } catch (e) {
       console.error(e);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleSave = async () => {
+    const token = localStorage.getItem("token");
+    try {
+      const resp = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/student/profile/update`, {
+        method: "PUT",
+        headers: { 
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formData)
+      });
+      
+      if (resp.ok) {
+        await fetchProfile();
+        setIsEditing(false);
+        alert("Profile updated successfully!");
+      } else {
+        alert("Failed to update profile.");
+      }
+    } catch (e) {
+      console.error(e);
+      alert("An error occurred.");
     }
   };
 
@@ -40,7 +80,26 @@ export default function StudentProfile() {
         <div className="std-panel">
           <div className="std-panel-header">
             <h4>Personal Details</h4>
-            <button style={{ fontSize: '14px', background: '#f1f5f9', border: 'none', padding: '6px 12px', borderRadius: '6px', fontWeight: '700', cursor: 'pointer' }}>Edit Profile</button>
+            {!isEditing ? (
+              <button 
+                onClick={() => setIsEditing(true)}
+                style={{ fontSize: '14px', background: '#f1f5f9', color: '#334155', border: 'none', padding: '6px 12px', borderRadius: '6px', fontWeight: '700', cursor: 'pointer' }}>
+                Edit Profile
+              </button>
+            ) : (
+              <div style={{ display: 'flex', gap: '8px' }}>
+                <button 
+                  onClick={() => setIsEditing(false)}
+                  style={{ fontSize: '14px', background: '#fef2f2', color: '#ef4444', border: 'none', padding: '6px 12px', borderRadius: '6px', fontWeight: '700', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <FaTimes /> Cancel
+                </button>
+                <button 
+                  onClick={handleSave}
+                  style={{ fontSize: '14px', background: '#ecfdf5', color: '#10b981', border: 'none', padding: '6px 12px', borderRadius: '6px', fontWeight: '700', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <FaSave /> Save
+                </button>
+              </div>
+            )}
           </div>
           
           <div style={{ display: 'flex', gap: '32px', marginBottom: '32px' }}>
@@ -79,19 +138,48 @@ export default function StudentProfile() {
              <div className="profile-field">
                 <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#64748b', textTransform: 'uppercase', marginBottom: '8px' }}>Email Address</label>
                 <div style={{ fontSize: '14px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                   <FaEnvelope color="#94a3b8" /> {profile?.personal?.email}
+                   <FaEnvelope color="#94a3b8" /> 
+                   {isEditing ? (
+                     <input 
+                       type="email" 
+                       value={formData.email} 
+                       onChange={(e) => setFormData({...formData, email: e.target.value})}
+                       style={{ padding: '6px', borderRadius: '4px', border: '1px solid #cbd5e1', width: '100%' }}
+                     />
+                   ) : (
+                     profile?.personal?.email
+                   )}
                 </div>
              </div>
              <div className="profile-field">
                 <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#64748b', textTransform: 'uppercase', marginBottom: '8px' }}>Phone Number</label>
                 <div style={{ fontSize: '14px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                   <FaPhone color="#94a3b8" /> +91 {profile?.personal?.phone}
+                   <FaPhone color="#94a3b8" /> 
+                   {isEditing ? (
+                     <input 
+                       type="text" 
+                       value={formData.phone} 
+                       onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                       style={{ padding: '6px', borderRadius: '4px', border: '1px solid #cbd5e1', width: '100%' }}
+                     />
+                   ) : (
+                     `+91 ${profile?.personal?.phone}`
+                   )}
                 </div>
              </div>
              <div className="profile-field" style={{ gridColumn: 'span 2' }}>
                 <label style={{ display: 'block', fontSize: '12px', fontWeight: '700', color: '#64748b', textTransform: 'uppercase', marginBottom: '8px' }}>Residential Address</label>
                 <div style={{ fontSize: '14px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                   <FaMapMarkerAlt color="#94a3b8" /> {profile?.personal?.address}
+                   <FaMapMarkerAlt color="#94a3b8" /> 
+                   {isEditing ? (
+                     <textarea 
+                       value={formData.address} 
+                       onChange={(e) => setFormData({...formData, address: e.target.value})}
+                       style={{ padding: '8px', borderRadius: '4px', border: '1px solid #cbd5e1', width: '100%', minHeight: '60px', fontFamily: 'inherit' }}
+                     />
+                   ) : (
+                     profile?.personal?.address
+                   )}
                 </div>
              </div>
           </div>
@@ -134,7 +222,18 @@ export default function StudentProfile() {
                     </div>
                  </div>
                  <div style={{ fontSize: '14px', fontWeight: '600', color: '#1e293b', background: '#f1f5f9', padding: '10px', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <FaPhone size={12} /> {profile?.parent?.phone}
+                    <FaPhone size={12} /> 
+                    {isEditing ? (
+                       <input 
+                         type="text" 
+                         value={formData.parent_phone} 
+                         onChange={(e) => setFormData({...formData, parent_phone: e.target.value})}
+                         style={{ padding: '6px', borderRadius: '4px', border: '1px solid #cbd5e1', width: '100%', flex: 1 }}
+                         placeholder="Parent Phone Number"
+                       />
+                     ) : (
+                       profile?.parent?.phone
+                     )}
                  </div>
               </div>
            </div>

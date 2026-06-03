@@ -29,6 +29,7 @@ const StudentLogin    = lazy(() => import("./pages/common/StudentLogin"));
 const StudentRegister = lazy(() => import("./pages/common/StudentRegister"));
 const ForgotPassword  = lazy(() => import("./pages/common/ForgotPassword"));
 const ResetPassword   = lazy(() => import("./pages/common/ResetPassword"));
+const LoginSelection  = lazy(() => import("./pages/common/LoginSelection"));
 const ParentLogin     = lazy(() => import("./pages/parent/ParentLogin"));
 
 // ── Lazy-loaded Portal Dashboards ─────────────────────────────────────────────
@@ -87,6 +88,7 @@ function App() {
           <Route path="/admissions-info"  element={<AdmissionsInfo />} />
           <Route path="/contact-us"       element={<ContactUs />} />
 
+          <Route path="/login-portal"     element={<LoginSelection />} />
           <Route path="/staff-login"      element={<StaffLogin />} />
           <Route path="/student-login"    element={<StudentLogin />} />
           <Route path="/student-register" element={<StudentRegister />} />

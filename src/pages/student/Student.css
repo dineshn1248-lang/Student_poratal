@@ -23,7 +23,7 @@
 /* ── SIDEBAR ── */
 .std-sidebar {
   width: var(--std-sidebar-width);
-  background: #1e3a8a;
+  background: linear-gradient(180deg, #081226 0%, #0d1f44 100%);
   color: white;
   position: fixed;
   height: 100vh;

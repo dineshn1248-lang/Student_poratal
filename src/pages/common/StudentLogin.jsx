@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { User, Lock, Mail, GraduationCap, Users, Eye, EyeOff, BookOpen, Calendar, Award, CreditCard, LogIn } from "lucide-react";
+import { User, Lock, Mail, GraduationCap, Users, Eye, EyeOff, BookOpen, Calendar, Award, CreditCard, LogIn, ArrowLeft } from "lucide-react";
 
 import "../../styles/StudentLogin.css";
 import nrupathungaLogo from "../../assets/nrupathunga_logo.png";
@@ -35,7 +35,7 @@ function StudentLogin() {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch("http://localhost:5000/api/auth/student/login", {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/auth/student/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ uan, password: studentPassword }),
@@ -68,7 +68,7 @@ function StudentLogin() {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch("http://localhost:5000/api/auth/parent/login", {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/auth/parent/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ parent_id: parentId }),
@@ -148,8 +148,14 @@ function StudentLogin() {
           transition={{ duration: 0.4, ease: "easeOut" }}
           className="login-card-wrapper"
         >
-          <div className="login-card-header">
-            <img src={nrupathungaLogo} alt="University Logo" className="univ-form-logo" />
+          <div className="login-card-header" style={{ position: 'relative' }}>
+            <button 
+              onClick={() => navigate('/login-portal')} 
+              style={{ position: 'absolute', top: '20px', left: '20px', background: 'transparent', border: 'none', color: '#64748b', display: 'flex', alignItems: 'center', gap: '5px', cursor: 'pointer', fontSize: '13px', fontWeight: '600' }}
+            >
+              <ArrowLeft size={14} /> Back to Portals
+            </button>
+            <img src={nrupathungaLogo} alt="University Logo" className="univ-form-logo" style={{ marginTop: '20px' }} />
             <h3>{role === "student" ? "Student Login" : "Parent Login"}</h3>
             <p className="form-subtext">Login to access your Nrupathunga University account</p>
           </div>

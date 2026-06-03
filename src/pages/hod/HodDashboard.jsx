@@ -11,6 +11,7 @@ import {
   FaChartPie, FaExclamationCircle, FaArrowRight
 } from 'react-icons/fa';
 import StatCard from './components/StatCard';
+import WelcomeBanner from '../../components/WelcomeBanner';
 import './HOD.css';
 
 export default function HODDashboard() {
@@ -64,7 +65,7 @@ export default function HODDashboard() {
     const fetchStats = async () => {
       try {
         const token = localStorage.getItem('token');
-        const resp = await fetch('http://localhost:5000/api/hod/students/stats', {
+        const resp = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/hod/students/stats`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         if (resp.ok) {
@@ -93,6 +94,8 @@ export default function HODDashboard() {
           <p>Department academic and administrative summary</p>
         </div>
       </div>
+
+      <WelcomeBanner roleName="HOD" />
 
       {/* ── TOP STATS (3 CARDS) ── */}
       <div className="stats-grid" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>

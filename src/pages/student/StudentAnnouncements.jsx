@@ -15,7 +15,7 @@ export default function StudentAnnouncements() {
   const fetchAnnouncements = async () => {
     const token = localStorage.getItem("token");
     try {
-      const resp = await fetch("http://localhost:5000/api/student/announcements", {
+      const resp = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/student/announcements`, {
         headers: { "Authorization": `Bearer ${token}` }
       });
       const d = await resp.json();

@@ -8,6 +8,7 @@ import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from 'recharts';
 import StudentLayout from "./StudentLayout";
+import WelcomeBanner from '../../components/WelcomeBanner';
 import "./Student.css";
 
 export default function StudentDashboard() {
@@ -21,7 +22,7 @@ export default function StudentDashboard() {
   const fetchDashboardData = async () => {
     const token = localStorage.getItem("token");
     try {
-      const resp = await fetch("http://localhost:5000/api/student/dashboard", {
+      const resp = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/student/dashboard`, {
         headers: { "Authorization": `Bearer ${token}` }
       });
       const d = await resp.json();
@@ -41,6 +42,8 @@ export default function StudentDashboard() {
          <h1 style={{ fontSize: '20px', fontWeight: '800' }}>Dashboard Overview</h1>
          <p style={{ color: '#64748b', fontSize: '14px' }}>Quick summary of your academic performance</p>
       </div>
+
+      <WelcomeBanner roleName="Student" />
 
       <div className="std-stats-grid">
         <div className="std-stat-card">

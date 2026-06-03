@@ -28,7 +28,7 @@ export default function HODStudents() {
         setLoading(true);
         try {
             const token = localStorage.getItem('token');
-            const resp = await fetch('http://localhost:5000/api/hod/students/all_marks', {
+            const resp = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/hod/students/all_marks`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const data = await resp.json();

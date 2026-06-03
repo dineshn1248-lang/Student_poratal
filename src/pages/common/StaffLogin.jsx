@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Shield, Users, BarChart2, Lock, Mail, Eye, EyeOff, ChevronDown, LogIn } from "lucide-react";
+import { Shield, Users, BarChart2, Lock, Mail, Eye, EyeOff, ChevronDown, LogIn, ArrowLeft } from "lucide-react";
 import "../../styles/StaffLogin.css";
 import nrupathungaLogo from "../../assets/nrupathunga_logo.png";
 
@@ -134,6 +134,13 @@ function StaffLogin() {
             <div className="card-top-lock-glow">
               <Shield size={28} />
             </div>
+
+            <button 
+              onClick={() => navigate('/login-portal')} 
+              style={{ position: 'absolute', top: '30px', left: '30px', background: 'transparent', border: 'none', color: '#94a3b8', display: 'flex', alignItems: 'center', gap: '5px', cursor: 'pointer', fontSize: '14px', fontWeight: '600' }}
+            >
+              <ArrowLeft size={16} /> Back to Portals
+            </button>
 
             <h1 className="card-title">
               <span>Admin</span> Login

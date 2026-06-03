@@ -296,25 +296,19 @@ from models import Notification, db, Student, Parent, CommunicationLog
 from datetime import datetime
 
 def build_academic_message(student):
-    att = student.attendance_percent or 0
-    backlogs = student.backlog_count or 0
-    cgpa = student.cgpa or 'N/A'
-    
     return (
-        f"Dear Parent of {student.full_name},\n\n"
-        f"This is an academic update from UUCMS - Nrupathunga University.\n\n"
+        f"🎓 Nrupathunga University - Student Academic Update\n\n"
+        f"Dear Parent,\n\n"
         f"Student Name: {student.full_name}\n"
         f"Register Number: {student.register_no}\n"
         f"Department: {student.department}\n"
-        f"Semester: {student.semester} Semester\n\n"
-        f"Attendance: {att}%\n"
-        f"Internal Marks Average: {cgpa}\n"
-        f"Backlogs: {backlogs}\n\n"
-        f"Please log in to the Parent Portal to view detailed progress.\n\n"
-        f"Regards,\n"
-        f"HOD\n"
-        f"Department of {student.department}\n"
-        f"Nrupathunga University"
+        f"Semester: {student.semester}th Semester\n\n"
+        f"Click the link below for detailed information about your child's academic progress.\n\n"
+        f"Parent Dashboard:\n"
+        f"http://localhost:5173/parent/dashboard\n\n"
+        f"Regards,  hod\n"
+        f" department of {student.department}\n"
+        f"  Nrupathunga University"
     )
 
 def send_real_twilio_whatsapp(to_number, message_body):
@@ -361,7 +355,7 @@ def send_real_twilio_sms(to_number, message_body):
         return False, str(e)
 
 def send_real_email(to_email, subject, message_body):
-    smtp_email = os.environ.get('SMTP_EMAIL')
+    smtp_email = os.environ.get('SMTP_USER')
     smtp_password = os.environ.get('SMTP_PASSWORD')
     smtp_server = os.environ.get('SMTP_SERVER', 'smtp.gmail.com')
     smtp_port = int(os.environ.get('SMTP_PORT', 587))
@@ -397,25 +391,19 @@ from models import Notification, db, Student, Parent, CommunicationLog
 from datetime import datetime
 
 def build_academic_message(student):
-    att = student.attendance_percent or 0
-    backlogs = student.backlog_count or 0
-    cgpa = student.cgpa or 'N/A'
-    
     return (
-        f"Dear Parent of {student.full_name},\n\n"
-        f"This is an academic update from UUCMS - Nrupathunga University.\n\n"
+        f"🎓 Nrupathunga University - Student Academic Update\n\n"
+        f"Dear Parent,\n\n"
         f"Student Name: {student.full_name}\n"
         f"Register Number: {student.register_no}\n"
         f"Department: {student.department}\n"
-        f"Semester: {student.semester} Semester\n\n"
-        f"Attendance: {att}%\n"
-        f"Internal Marks Average: {cgpa}\n"
-        f"Backlogs: {backlogs}\n\n"
-        f"Please log in to the Parent Portal to view detailed progress.\n\n"
-        f"Regards,\n"
-        f"HOD\n"
-        f"Department of {student.department}\n"
-        f"Nrupathunga University"
+        f"Semester: {student.semester}th Semester\n\n"
+        f"Click the link below for detailed information about your child's academic progress.\n\n"
+        f"Parent Dashboard:\n"
+        f"http://localhost:5173/parent/dashboard\n\n"
+        f"Regards,  hod\n"
+        f" department of {student.department}\n"
+        f"  Nrupathunga University"
     )
 
 def send_real_twilio_whatsapp(to_number, message_body):
@@ -482,7 +470,7 @@ def send_real_twilio_sms(to_number, message_body):
         return False, str(e), None, None
 
 def send_real_email(to_email, subject, message_body):
-    smtp_email = os.environ.get('SMTP_EMAIL')
+    smtp_email = os.environ.get('SMTP_USER')
     smtp_password = os.environ.get('SMTP_PASSWORD')
     smtp_server = os.environ.get('SMTP_SERVER', 'smtp.gmail.com')
     smtp_port = int(os.environ.get('SMTP_PORT', 587))
@@ -528,6 +516,8 @@ def get_smart_remark(student, att, cgpa, backlogs):
     return f"Attention required regarding: {', '.join(alerts)}. Please monitor their progress closely."
 
 def send_real_meta_whatsapp(recipient, message_body, student=None, custom_remark=None):
+    from dotenv import load_dotenv
+    load_dotenv(override=True)
     meta_token = os.environ.get('META_ACCESS_TOKEN')
     phone_id = os.environ.get('META_PHONE_NUMBER_ID')
     
@@ -555,27 +545,8 @@ def send_real_meta_whatsapp(recipient, message_body, student=None, custom_remark
         payload = {
             "messaging_product": "whatsapp",
             "to": raw_number,
-            "type": "template",
-            "template": {
-                "name": "uucms_parent_academic_update",
-                "language": { "code": "en_US" },
-                "components": [
-                    {
-                        "type": "body",
-                        "parameters": [
-                            { "type": "text", "text": str(student.full_name) },
-                            { "type": "text", "text": str(student.register_no) },
-                            { "type": "text", "text": str(student.department) },
-                            { "type": "text", "text": str(student.semester) },
-                            { "type": "text", "text": str(att) },
-                            { "type": "text", "text": str(cgpa) },
-                            { "type": "text", "text": str(backlogs) },
-                            { "type": "text", "text": str(perf) },
-                            { "type": "text", "text": str(remark) }
-                        ]
-                    }
-                ]
-            }
+            "type": "text",
+            "text": { "preview_url": False, "body": message_body }
         }
     else:
         # Fallback for generic messages
@@ -605,6 +576,8 @@ def send_parent_communication():
     data = request.json
     student_id = data.get('student_id')
     custom_remark = data.get('custom_remark')
+    custom_message = data.get('custom_message')
+    print(f"DEBUG PAYLOAD: student_id={student_id}, custom_message={custom_message}")
     
     student = Student.query.get_or_404(student_id)
     parent = Parent.query.filter_by(student_id=student.id).first()
@@ -615,7 +588,7 @@ def send_parent_communication():
     if not phone_recipient and not email_recipient:
         return jsonify({"error": "No contact information found for this student.", "status": "Failed"}), 400
         
-    message_body = build_academic_message(student)
+    message_body = custom_message if custom_message else build_academic_message(student)
     
     stages = [
         {"provider": "Meta", "method": "WhatsApp", "func": lambda r, m: send_real_meta_whatsapp(r, m, student, custom_remark), "recipient": phone_recipient},
@@ -788,13 +761,76 @@ def preview_message(id):
     perf = get_performance_status(att)
     remark = get_smart_remark(student, att, cgpa, backlogs)
     
-    preview_text = f"Dear Parent of {student.full_name},\n\nThis is an academic update from UUCMS - Nrupathunga University.\n\nStudent Name: {student.full_name}\nRegister Number: {student.register_no}\nDepartment: {student.department}\nSemester: {student.semester}\n\nAttendance: {att}%\nInternal Marks Average: {cgpa}\nBacklogs: {backlogs}\n\nPerformance Status: {perf}\n\nTeacher Remark:\n{remark}\n\nPlease log in to the Parent Portal for detailed academic progress.\n\nRegards,\nHOD\nDepartment of Computer Applications\nNrupathunga University"
+    preview_text = f"🎓 Nrupathunga University - Student Academic Update\n\nDear Parent,\n\nStudent Name: {student.full_name}\nRegister Number: {student.register_no}\nDepartment: {student.department}\nSemester: {student.semester}th Semester\n\nClick the link below for detailed information about your child's academic progress.\n\nParent Dashboard:\nhttps://your-domain.com/parent-dashboard\n\nRegards,  hod\n department of {student.department}\n  Nrupathunga University"
     
     return jsonify({
         "preview": preview_text,
         "smart_remark": remark,
         "performance_status": perf
     })
+
+@hod_bp.route('/parent-communication/stats', methods=['GET'])
+def get_parent_communication_stats():
+    try:
+        from models import CommunicationLog, Parent
+        total_parents = Parent.query.count()
+        
+        # WhatsApp Stats
+        wa_delivered = CommunicationLog.query.filter_by(communication_type='WhatsApp', status='Delivered').count()
+        wa_sent = CommunicationLog.query.filter_by(communication_type='WhatsApp', status='Sent').count()
+        wa_failed = CommunicationLog.query.filter_by(communication_type='WhatsApp', status='Failed').count()
+        
+        # Email Stats
+        em_delivered = CommunicationLog.query.filter_by(communication_type='Email', status='Delivered').count()
+        em_sent = CommunicationLog.query.filter_by(communication_type='Email', status='Sent').count()
+        em_failed = CommunicationLog.query.filter_by(communication_type='Email', status='Failed').count()
+        
+        # SMS Stats
+        sms_delivered = CommunicationLog.query.filter_by(communication_type='SMS', status='Delivered').count()
+        sms_sent = CommunicationLog.query.filter_by(communication_type='SMS', status='Sent').count()
+        sms_failed = CommunicationLog.query.filter_by(communication_type='SMS', status='Failed').count()
+        
+        total_delivered = wa_delivered + wa_sent + em_delivered + em_sent + sms_delivered + sms_sent
+        total_failed = wa_failed + em_failed + sms_failed
+        total_attempts = total_delivered + total_failed
+        
+        success_rate = 0
+        if total_attempts > 0:
+            success_rate = round((total_delivered / total_attempts) * 100, 2)
+            
+        wa_success_rate = 0
+        wa_total = wa_delivered + wa_sent + wa_failed
+        if wa_total > 0: wa_success_rate = round(((wa_delivered + wa_sent) / wa_total) * 100, 2)
+        
+        em_success_rate = 0
+        em_total = em_delivered + em_sent + em_failed
+        if em_total > 0: em_success_rate = round(((em_delivered + em_sent) / em_total) * 100, 2)
+        
+        sms_success_rate = 0
+        sms_total = sms_delivered + sms_sent + sms_failed
+        if sms_total > 0: sms_success_rate = round(((sms_delivered + sms_sent) / sms_total) * 100, 2)
+
+        return jsonify({
+            "total_parents": total_parents,
+            "success_rate": success_rate,
+            "whatsapp": {
+                "delivered": wa_delivered + wa_sent,
+                "failed": wa_failed,
+                "success_rate": wa_success_rate
+            },
+            "email": {
+                "delivered": em_delivered + em_sent,
+                "failed": em_failed,
+                "success_rate": em_success_rate
+            },
+            "sms": {
+                "delivered": sms_delivered + sms_sent,
+                "failed": sms_failed,
+                "success_rate": sms_success_rate
+            }
+        })
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @hod_bp.route('/parent-communication/logs', methods=['GET'])
 def get_parent_communication_logs():
@@ -894,3 +930,172 @@ def check_sid_route(sid):
         })
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+# ── EXAMINATIONS ENDPOINTS ──
+
+@hod_bp.route('/examinations/semester_overview', methods=['GET'])
+def exam_semester_overview():
+    try:
+        # Mock overview data for bar chart
+        overview = [
+            {"name": "Sem 1", "pass_percentage": 88, "appeared": 58},
+            {"name": "Sem 2", "pass_percentage": 85, "appeared": 62},
+            {"name": "Sem 3", "pass_percentage": 90, "appeared": 55},
+            {"name": "Sem 4", "pass_percentage": 82, "appeared": 60},
+            {"name": "Sem 5", "pass_percentage": 92, "appeared": 65},
+            {"name": "Sem 6", "pass_percentage": 0, "appeared": 0} # No results yet for 6
+        ]
+        
+        # Mock distribution data for pie chart
+        distribution = [
+            {"name": "First Class with Distinction", "value": 35, "color": "#2563eb"},
+            {"name": "First Class", "value": 45, "color": "#10b981"},
+            {"name": "Second Class", "value": 15, "color": "#f59e0b"},
+            {"name": "Fail", "value": 5, "color": "#ef4444"}
+        ]
+        
+        return jsonify({"overview": overview, "distribution": distribution}), 200
+    except Exception as e:
+        print("Error fetching semester overview:", str(e))
+        return jsonify({"error": "Failed to fetch overview"}), 500
+
+@hod_bp.route('/examinations/subject_results/<int:semester>', methods=['GET'])
+def exam_subject_results(semester):
+    try:
+        from models import Subject, Mark, db
+        if semester == 6:
+            return jsonify([]), 200
+        
+        subjects = Subject.query.filter_by(semester=semester).all()
+        results = []
+        
+        for sub in subjects:
+            marks = Mark.query.filter_by(subject_id=sub.id).all()
+            if not marks:
+                continue
+                
+            appeared = len(marks)
+            passed = 0
+            for m in marks:
+                if m.grade:
+                    if m.grade not in ["Fail", "F", "F (Fail)"]:
+                        passed += 1
+                else:
+                    try:
+                        total = int(m.internal_marks or 0) + int(m.external_marks or 0)
+                        if total >= 40 and int(m.external_marks or 0) >= 21:
+                            passed += 1
+                    except:
+                        pass
+                        
+            fail = appeared - passed
+            pass_percentage = f"{round((passed/appeared)*100)}%" if appeared > 0 else "0%"
+            
+            results.append({
+                "subject": sub.subject_name,
+                "appeared": appeared,
+                "pass": passed,
+                "fail": fail,
+                "pass_percentage": pass_percentage
+            })
+            
+        return jsonify(results), 200
+    except Exception as e:
+        print("Error fetching subject results:", str(e))
+        return jsonify({"error": "Failed to fetch results"}), 500
+
+@hod_bp.route('/examinations/backlogs/<int:semester>', methods=['GET'])
+def exam_backlogs(semester):
+    try:
+        from models import Subject, Mark, Student, db
+        if semester == 6:
+            return jsonify([]), 200
+            
+        failed_marks = db.session.query(Mark, Subject, Student)\
+            .join(Subject, Mark.subject_id == Subject.id)\
+            .join(Student, Mark.student_id == Student.id)\
+            .filter(Subject.semester == semester).all()
+        
+        backlog_map = {}
+        for m, sub, s in failed_marks:
+            is_fail = False
+            if m.grade:
+                if m.grade in ["Fail", "F", "F (Fail)"]:
+                    is_fail = True
+            else:
+                try:
+                    total = int(m.internal_marks or 0) + int(m.external_marks or 0)
+                    if total < 40 or int(m.external_marks or 0) < 21:
+                        is_fail = True
+                except:
+                    is_fail = True
+                    
+            if is_fail:
+                if s.id not in backlog_map:
+                    backlog_map[s.id] = {
+                        "id": s.id,
+                        "register_no": s.register_no,
+                        "name": s.full_name,
+                        "semester": s.semester,
+                        "subjects": []
+                    }
+                backlog_map[s.id]["subjects"].append(sub.subject_name)
+                
+        backlogs = []
+        for s_id, data in backlog_map.items():
+            sem_str = f"{['I','II','III','IV','V','VI'][data['semester']-1]} Sem" if 1 <= data['semester'] <= 6 else f"{data['semester']} Sem"
+            backlogs.append({
+                "id": data["id"],
+                "reg_no": data["register_no"],
+                "student_name": data["name"],
+                "semester": sem_str,
+                "subject": ", ".join(data["subjects"])
+            })
+            
+        return jsonify(backlogs), 200
+    except Exception as e:
+        print("Error fetching backlogs:", str(e))
+        return jsonify({"error": "Failed to fetch backlogs"}), 500
+
+@hod_bp.route('/internal-marks', methods=['GET'])
+def get_internal_marks():
+    try:
+        from models import Subject, Mark, db
+        semester = request.args.get('semester', '6')
+        semester = int(semester)
+        
+        subjects = Subject.query.filter_by(semester=semester).all()
+        data = []
+        
+        for sub in subjects:
+            marks = Mark.query.filter_by(subject_id=sub.id).all()
+            total_internal = 0
+            count = 0
+            for m in marks:
+                if m.internal_marks is not None:
+                    try:
+                        total_internal += float(m.internal_marks)
+                        count += 1
+                    except:
+                        pass
+                        
+            if count > 0:
+                avg = round(total_internal / count, 1)
+                avg_str = f"{avg} / 40"
+            else:
+                avg_str = "-"
+                
+            data.append({
+                "id": sub.id,
+                "code": sub.subject_code,
+                "subject": sub.subject_name,
+                "faculty": "Assigned Faculty",
+                "sem": sub.semester,
+                "avgMarks": avg_str,
+                "status": "Approved" if count > 0 else "Pending Entry"
+            })
+            
+        return jsonify(data), 200
+    except Exception as e:
+        print("Error fetching internal marks:", str(e))
+        return jsonify({"error": "Failed to fetch internal marks"}), 500

@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { 
   PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip
 } from 'recharts';
+import WelcomeBanner from '../../components/WelcomeBanner';
 import "./Faculty.css";
 import AIChat from "../../components/AIChat";
 
@@ -74,7 +75,7 @@ export default function FacultyDashboard() {
   const loadStudents = async () => {
     setLoading(true);
     try {
-      const resp = await fetch('http://localhost:5000/api/students');
+      const resp = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/students`);
       if (resp.ok) {
         const data = await resp.json();
         // Limit/slice/normalize exactly to 20 students as requested
@@ -357,13 +358,7 @@ export default function FacultyDashboard() {
           {activeSection === "Dashboard" && (
             <>
               {/* Welcome Banner */}
-              <div style={{ background: 'linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)', borderRadius: '16px', padding: '24px 32px', color: 'white', marginBottom: '24px', boxShadow: '0 4px 20px rgba(59, 130, 246, 0.15)' }}>
-                <span style={{ textTransform: 'uppercase', letterSpacing: '1px', fontSize: '12px', fontWeight: '800', color: '#93c5fd', display: 'block', marginBottom: '6px' }}>Welcome back to UUCMS Portal</span>
-                <h2 style={{ margin: 0, fontSize: '20px', fontWeight: '950' }}>Hello, {profile.name}!</h2>
-                <p style={{ margin: '4px 0 0', fontSize: '14px', color: '#dbeafe', fontWeight: '500' }}>
-                  Assistant Professor • Department of {profile.dept} • Palace Campus, Bangalore
-                </p>
-              </div>
+              <WelcomeBanner roleName="Faculty" />
 
               {/* Stat grid (Balanced 5 columns using stat-cards in Faculty.css) */}
               <div className="stat-cards">

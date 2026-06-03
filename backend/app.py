@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-load_dotenv()
+load_dotenv(override=True)
 from flask import Flask, jsonify
 from flask_cors import CORS
 from database import db
@@ -20,9 +20,11 @@ from models import (
 
 def create_app():
     app = Flask(__name__)
-    # Update CORS to be more permissive for local development
-    CORS(app, resources={r"/api/*": {"origins": "*"}})
     
+    # Configure CORS for production via environment variable, or fallback to '*' for local dev
+    frontend_url = os.getenv("FRONTEND_URL", "*")
+    CORS(app, resources={r"/api/*": {"origins": frontend_url}})
+
     basedir = os.path.abspath(os.path.dirname(__file__))
     instance_path = os.path.join(basedir, 'instance')
     if not os.path.exists(instance_path):
