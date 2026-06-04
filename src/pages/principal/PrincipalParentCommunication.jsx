@@ -141,7 +141,7 @@ export default function PrincipalParentCommunication() {
 
     const handleGenerateLink = () => {
         if (!report) return;
-        const link = `http://localhost:5173/parent-login?register_no=${report.register_no}&otp=123456`;
+        const link = `${window.location.origin}/parent-login?register_no=${report.register_no}&otp=123456`;
         setGeneratedLink(link);
         navigator.clipboard.writeText(link).then(() => {
             setSendSuccess(`Secure Parent Login Link generated & copied to clipboard!`);

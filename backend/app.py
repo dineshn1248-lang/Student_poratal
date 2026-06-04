@@ -30,7 +30,8 @@ def create_app():
     if not os.path.exists(instance_path):
         os.makedirs(instance_path)
     
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(instance_path, 'student_portal.db')
+    default_sqlite_path = 'sqlite:///' + os.path.join(instance_path, 'student_portal.db')
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', default_sqlite_path)
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     
     db.init_app(app)
