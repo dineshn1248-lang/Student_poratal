@@ -65,7 +65,7 @@ export default function HODDashboard() {
     const fetchStats = async () => {
       try {
         const token = localStorage.getItem('token');
-        const resp = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/hod/students/stats`, {
+        const resp = await fetch(`${'https://student-poratal.onrender.com/api'}/hod/students/stats`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         if (resp.ok) {

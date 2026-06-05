@@ -83,7 +83,7 @@ export default function ParentDashboard() {
   const fetchDashboardData = async () => {
     try {
       const token = localStorage.getItem('token');
-      const dashResp = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/student/dashboard`, { 
+      const dashResp = await fetch(`${'https://student-poratal.onrender.com/api'}/student/dashboard`, { 
         headers: { 'Authorization': `Bearer ${token}` } 
       });
       if (dashResp.ok) {

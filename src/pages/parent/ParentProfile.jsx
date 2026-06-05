@@ -18,7 +18,7 @@ export default function ParentProfile() {
   const fetchProfile = async () => {
     const token = localStorage.getItem("token");
     try {
-      const resp = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/student/profile`, {
+      const resp = await fetch(`${'https://student-poratal.onrender.com/api'}/student/profile`, {
         headers: { "Authorization": `Bearer ${token}` }
       });
       const data = await resp.json();

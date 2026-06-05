@@ -32,12 +32,12 @@ export default function PrincipalExaminations() {
             const headers = { 'Authorization': `Bearer ${token}` };
             
             const [statsRes, semOverRes, curSemRes, regRes, backRes, revalRes] = await Promise.all([
-                fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/principal/exams/dashboard_stats`, { headers }),
-                fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/principal/exams/semester_overview`, { headers }),
-                fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/principal/exams/current_semester_details`, { headers }),
-                fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/principal/exams/registration_table`, { headers }),
-                fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/principal/exams/backlog_monitoring`, { headers }),
-                fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/principal/exams/revaluation_requests`, { headers })
+                fetch(`${'https://student-poratal.onrender.com/api'}/principal/exams/dashboard_stats`, { headers }),
+                fetch(`${'https://student-poratal.onrender.com/api'}/principal/exams/semester_overview`, { headers }),
+                fetch(`${'https://student-poratal.onrender.com/api'}/principal/exams/current_semester_details`, { headers }),
+                fetch(`${'https://student-poratal.onrender.com/api'}/principal/exams/registration_table`, { headers }),
+                fetch(`${'https://student-poratal.onrender.com/api'}/principal/exams/backlog_monitoring`, { headers }),
+                fetch(`${'https://student-poratal.onrender.com/api'}/principal/exams/revaluation_requests`, { headers })
             ]);
 
             setDashboardStats(await statsRes.json());

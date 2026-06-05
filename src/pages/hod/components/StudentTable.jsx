@@ -55,7 +55,7 @@ export default function StudentTable({ students, loading, refreshData }) {
         setErrorMsg('');
         try {
             const token = localStorage.getItem('token');
-            const resp = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/hod/students/${selectedStudent.id}`, {
+            const resp = await fetch(`${'https://student-poratal.onrender.com/api'}/hod/students/${selectedStudent.id}`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -95,7 +95,7 @@ export default function StudentTable({ students, loading, refreshData }) {
             let newStatus = newPending === 0 ? 'Paid' : 'Pending';
 
             const token = localStorage.getItem('token');
-            const resp = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/hod/students/${selectedStudent.id}`, {
+            const resp = await fetch(`${'https://student-poratal.onrender.com/api'}/hod/students/${selectedStudent.id}`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `Bearer ${token}`,

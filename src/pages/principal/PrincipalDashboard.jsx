@@ -31,13 +31,13 @@ export default function PrincipalDashboard() {
     // Fetch principal dashboard stats
     const fetchDashboardData = async () => {
       try {
-        const statsRes = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/principal/stats`);
+        const statsRes = await fetch(`${'https://student-poratal.onrender.com/api'}/principal/stats`);
         if (statsRes.ok) {
           const statsData = await statsRes.json();
           setStats(statsData);
         }
 
-        const deptRes = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/principal/departments/overview`);
+        const deptRes = await fetch(`${'https://student-poratal.onrender.com/api'}/principal/departments/overview`);
         if (deptRes.ok) {
           const deptData = await deptRes.json();
           setDepartments(deptData);

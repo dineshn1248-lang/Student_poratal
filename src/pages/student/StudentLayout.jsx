@@ -169,7 +169,7 @@ export default function StudentLayout({ children }) {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/student/ai-chat`, {
+      const res = await fetch(`${'https://student-poratal.onrender.com/api'}/student/ai-chat`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

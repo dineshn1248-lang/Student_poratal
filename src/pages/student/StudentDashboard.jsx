@@ -22,7 +22,7 @@ export default function StudentDashboard() {
   const fetchDashboardData = async () => {
     const token = localStorage.getItem("token");
     try {
-      const resp = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/student/dashboard`, {
+      const resp = await fetch(`${'https://student-poratal.onrender.com/api'}/student/dashboard`, {
         headers: { "Authorization": `Bearer ${token}` }
       });
       const d = await resp.json();

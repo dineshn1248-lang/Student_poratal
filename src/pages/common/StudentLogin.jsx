@@ -37,7 +37,7 @@ function StudentLogin() {
     try {
       const baseUrl = import.meta.env.PROD 
         ? 'https://student-poratal.onrender.com/api' 
-        : (import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api').replace(/\/$/, "").replace(/\/api$/, "") + '/api';
+        : ('https://student-poratal.onrender.com/api').replace(/\/$/, "").replace(/\/api$/, "") + '/api';
       const res = await fetch(`${baseUrl}/auth/student/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -73,7 +73,7 @@ function StudentLogin() {
     try {
       const baseUrl = import.meta.env.PROD 
         ? 'https://student-poratal.onrender.com/api' 
-        : (import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api').replace(/\/$/, "").replace(/\/api$/, "") + '/api';
+        : ('https://student-poratal.onrender.com/api').replace(/\/$/, "").replace(/\/api$/, "") + '/api';
       const res = await fetch(`${baseUrl}/auth/parent/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

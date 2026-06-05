@@ -49,7 +49,7 @@ export default function HODParentCommunication() {
     const fetchStudents = async () => {
         try {
             const token = localStorage.getItem('token');
-            const resp = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/hod/students`, {
+            const resp = await fetch(`${'https://student-poratal.onrender.com/api'}/hod/students`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const data = await resp.json();
@@ -62,7 +62,7 @@ export default function HODParentCommunication() {
     const fetchLogs = async () => {
         try {
             const token = localStorage.getItem('token');
-            const resp = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/hod/parent-communication/logs`, {
+            const resp = await fetch(`${'https://student-poratal.onrender.com/api'}/hod/parent-communication/logs`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const data = await resp.json();
@@ -75,7 +75,7 @@ export default function HODParentCommunication() {
     const fetchStats = async () => {
         try {
             const token = localStorage.getItem('token');
-            const resp = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/hod/parent-communication/stats`, {
+            const resp = await fetch(`${'https://student-poratal.onrender.com/api'}/hod/parent-communication/stats`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const data = await resp.json();
@@ -89,7 +89,7 @@ export default function HODParentCommunication() {
         setLoading(true);
         try {
             const token = localStorage.getItem('token');
-            const resp = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/hod/parent-communication/report/${id}`, {
+            const resp = await fetch(`${'https://student-poratal.onrender.com/api'}/hod/parent-communication/report/${id}`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const data = await resp.json();
@@ -104,7 +104,7 @@ export default function HODParentCommunication() {
     const fetchPreview = async (id) => {
         try {
             const token = localStorage.getItem('token');
-            const resp = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/hod/parent-communication/preview/${id}`, {
+            const resp = await fetch(`${'https://student-poratal.onrender.com/api'}/hod/parent-communication/preview/${id}`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const data = await resp.json();
@@ -126,9 +126,9 @@ export default function HODParentCommunication() {
         
         try {
             const token = localStorage.getItem('token');
-            const url = methodOverride === 'Email' ? `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/hod/parent-communication/test-email` :
-                        methodOverride === 'SMS' ? `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/hod/parent-communication/test-whatsapp` : 
-                        `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/hod/parent-communication/send`; // Default Meta WhatsApp
+            const url = methodOverride === 'Email' ? `${'https://student-poratal.onrender.com/api'}/hod/parent-communication/test-email` :
+                        methodOverride === 'SMS' ? `${'https://student-poratal.onrender.com/api'}/hod/parent-communication/test-whatsapp` : 
+                        `${'https://student-poratal.onrender.com/api'}/hod/parent-communication/send`; // Default Meta WhatsApp
 
             const payload = methodOverride === 'Email' ? { recipient: report?.email || 'test@example.com' } : { student_id: selectedStudentId, custom_remark: customRemark, custom_message: customMessage };
 
@@ -163,7 +163,7 @@ export default function HODParentCommunication() {
         
         try {
             const token = localStorage.getItem('token');
-            const resp = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/hod/parent-communication/send-bulk`, {
+            const resp = await fetch(`${'https://student-poratal.onrender.com/api'}/hod/parent-communication/send-bulk`, {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
                 body: JSON.stringify({ filter_type: filterType, filter_value: filterValue })

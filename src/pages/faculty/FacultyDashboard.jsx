@@ -75,7 +75,7 @@ export default function FacultyDashboard() {
   const loadStudents = async () => {
     setLoading(true);
     try {
-      const resp = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/students`);
+      const resp = await fetch(`${'https://student-poratal.onrender.com/api'}/students`);
       if (resp.ok) {
         const data = await resp.json();
         // Limit/slice/normalize exactly to 20 students as requested

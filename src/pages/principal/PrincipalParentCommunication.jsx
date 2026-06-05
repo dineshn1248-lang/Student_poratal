@@ -29,7 +29,7 @@ export default function PrincipalParentCommunication() {
     const fetchStudents = async () => {
         try {
             const token = localStorage.getItem('token');
-            const resp = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/hod/students`, {
+            const resp = await fetch(`${'https://student-poratal.onrender.com/api'}/hod/students`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const data = await resp.json();
@@ -42,7 +42,7 @@ export default function PrincipalParentCommunication() {
     const fetchLogs = async () => {
         try {
             const token = localStorage.getItem('token');
-            const resp = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/hod/parent-communication/logs`, {
+            const resp = await fetch(`${'https://student-poratal.onrender.com/api'}/hod/parent-communication/logs`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const data = await resp.json();
@@ -56,7 +56,7 @@ export default function PrincipalParentCommunication() {
         setLoading(true);
         try {
             const token = localStorage.getItem('token');
-            const resp = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/hod/parent-communication/report/${id}`, {
+            const resp = await fetch(`${'https://student-poratal.onrender.com/api'}/hod/parent-communication/report/${id}`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const data = await resp.json();
@@ -74,7 +74,7 @@ export default function PrincipalParentCommunication() {
         setSendSuccess('');
         try {
             const token = localStorage.getItem('token');
-            const resp = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/hod/parent-communication/send`, {
+            const resp = await fetch(`${'https://student-poratal.onrender.com/api'}/hod/parent-communication/send`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -108,7 +108,7 @@ export default function PrincipalParentCommunication() {
     const handleRetry = async (logId) => {
         const token = localStorage.getItem('token');
         try {
-            const resp = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/hod/parent-communication/retry/${logId}`, {
+            const resp = await fetch(`${'https://student-poratal.onrender.com/api'}/hod/parent-communication/retry/${logId}`, {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${token}` }
             });

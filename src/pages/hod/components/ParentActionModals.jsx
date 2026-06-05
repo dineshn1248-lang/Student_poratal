@@ -43,7 +43,7 @@ export default function ParentActionModals({
         setSending(true);
         setSendResult(null);
         try {
-            const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/hod/parent-communication/send`, {
+            const res = await fetch(`${'https://student-poratal.onrender.com/api'}/hod/parent-communication/send`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -71,7 +71,7 @@ export default function ParentActionModals({
         setSaving(true);
         try {
             const token = localStorage.getItem('token');
-            const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/hod/students/${editStudent.id}`, {
+            const res = await fetch(`${'https://student-poratal.onrender.com/api'}/hod/students/${editStudent.id}`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `Bearer ${token}`,
