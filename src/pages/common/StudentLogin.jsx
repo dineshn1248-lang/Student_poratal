@@ -35,12 +35,9 @@ function StudentLogin() {
     setLoading(true);
     setError("");
     try {
-      let baseUrl = import.meta.env.VITE_API_BASE_URL;
-      if (!baseUrl || !baseUrl.startsWith('http')) {
-        baseUrl = import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://localhost:5000/api';
-      }
-      baseUrl = baseUrl.replace(/\/$/, "");
-      if (!baseUrl.endsWith('/api')) baseUrl += '/api';
+      const baseUrl = import.meta.env.PROD 
+        ? 'https://student-poratal.onrender.com/api' 
+        : (import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api').replace(/\/$/, "").replace(/\/api$/, "") + '/api';
       const res = await fetch(`${baseUrl}/auth/student/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -74,12 +71,9 @@ function StudentLogin() {
     setLoading(true);
     setError("");
     try {
-      let baseUrl = import.meta.env.VITE_API_BASE_URL;
-      if (!baseUrl || !baseUrl.startsWith('http')) {
-        baseUrl = import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://localhost:5000/api';
-      }
-      baseUrl = baseUrl.replace(/\/$/, "");
-      if (!baseUrl.endsWith('/api')) baseUrl += '/api';
+      const baseUrl = import.meta.env.PROD 
+        ? 'https://student-poratal.onrender.com/api' 
+        : (import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api').replace(/\/$/, "").replace(/\/api$/, "") + '/api';
       const res = await fetch(`${baseUrl}/auth/parent/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
