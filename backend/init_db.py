@@ -59,6 +59,7 @@ def init_db(app=None):
             ("BCA003", "Ajay K", "BCA", 2, 90), ("BCA004", "Sneha P", "BCA", 2, 65),
             ("BCA005", "Kiran G", "BCA", 6, 88), ("BCA006", "Aarav V", "BCA", 6, 74),
             ("BCA007", "Megha R", "BCA", 1, 80), ("BCA008", "Rahul J", "BCA", 1, 78),
+            ("BCA009", "Lakshmi Nisimappa Chakrasali", "BCA", 4, 88),
             ("BCS001", "Vikram S", "BCS", 4, 82), ("BCS002", "Ananya K", "BCS", 2, 89),
             ("BCS003", "Bhavya G", "BCS", 6, 68), ("BCS004", "Abhishek M", "BCS", 1, 77),
             ("BCS005", "Deepa N", "BCS", 4, 91),
@@ -147,7 +148,55 @@ def init_db(app=None):
             Notification(recipient_role='HOD', department='BCA', title='Marks Pending', message='Internal marks not submitted for 2 subjects', type='Marks', priority='Medium'),
             Notification(recipient_role='HOD', department='BCA', title='Backlog Alert', message='6 students have backlog in multiple subjects', type='Backlog', priority='High'),
         ]
+        
+        # ── SUBJECTS AND MARKS ─────────────────────────────────────────────
+        from models import Subject, Mark
+        subjects_data = [
+            ("SUB01", "Software Engineering", 4, "BCA", 4),
+            ("SUB02", "Database Management Systems", 4, "BCA", 4),
+            ("SUB03", "Computer Networks", 4, "BCA", 4),
+            ("SUB04", "Python Programming", 4, "BCA", 3),
+        ]
+        
+        added_subjects = []
+        for s_code, s_name, sem, dept, cred in subjects_data:
+            sub = Subject(subject_code=s_code, subject_name=s_name, semester=sem, department=dept, credits=cred)
+            db.session.add(sub)
+            added_subjects.append(sub)
+        
+        db.session.flush()
+
+        # Add marks for all BCA students
+        bca_students = Student.query.filter_by(department="BCA").all()
+        import random
+        for stu in bca_students:
+            # Randomize backlog for some
+            has_backlog = (stu.attendance_percent < 75)
+            
+            for sub in added_subjects:
+                if has_backlog and random.choice([True, False]):
+                    # Fail mark
+                    internal = random.randint(10, 20)
+                    external = random.randint(10, 20)
+                    grade = "F"
+                else:
+                    # Pass mark
+                    internal = random.randint(35, 50)
+                    external = random.randint(35, 50)
+                    grade = "A" if (internal+external)>85 else ("B" if (internal+external)>70 else "C")
+                    
+                m = Mark(
+                    student_id=stu.id,
+                    subject_id=sub.id,
+                    internal_marks=str(internal),
+                    external_marks=str(external),
+                    total_marks=str(internal+external),
+                    grade=grade
+                )
+                db.session.add(m)
+        
         db.session.add_all(alerts)
+
 
         db.session.commit()
         print("\n[OK] Database re-seeded with EXACT demo accounts.")

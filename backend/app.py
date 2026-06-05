@@ -84,6 +84,16 @@ def create_app():
             "academic_status": s.academic_status or "Regular"
         } for s in students])
 
+    @app.route('/api/admin/reset-db', methods=['POST'])
+    def reset_db():
+        try:
+            from init_db import init_db
+            # This wipes and rebuilds
+            init_db(app)
+            return jsonify({"message": "Database reset and seeded successfully"})
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
     with app.app_context():
         db.create_all()
         # Automatically seed the database if it's empty (critical for Render Free Tier ephemeral storage)
