@@ -35,7 +35,10 @@ function StudentLogin() {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/auth/student/login`, {
+      let baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
+      baseUrl = baseUrl.replace(/\/$/, "");
+      if (!baseUrl.endsWith('/api')) baseUrl += '/api';
+      const res = await fetch(`${baseUrl}/auth/student/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ uan, password: studentPassword }),
@@ -68,7 +71,10 @@ function StudentLogin() {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/auth/parent/login`, {
+      let baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
+      baseUrl = baseUrl.replace(/\/$/, "");
+      if (!baseUrl.endsWith('/api')) baseUrl += '/api';
+      const res = await fetch(`${baseUrl}/auth/parent/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ parent_id: parentId }),

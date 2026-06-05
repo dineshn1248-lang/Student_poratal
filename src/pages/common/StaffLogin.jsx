@@ -25,7 +25,10 @@ function StaffLogin() {
 
     setLoading(true);
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/auth/staff/login`, {
+      let baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
+      baseUrl = baseUrl.replace(/\/$/, "");
+      if (!baseUrl.endsWith('/api')) baseUrl += '/api';
+      const res = await fetch(`${baseUrl}/auth/staff/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
