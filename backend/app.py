@@ -21,9 +21,8 @@ from models import (
 def create_app():
     app = Flask(__name__)
     
-    # Configure CORS for production via environment variable, or fallback to '*' for local dev
-    frontend_url = os.getenv("FRONTEND_URL", "*")
-    CORS(app, resources={r"/api/*": {"origins": frontend_url}})
+    # Allow all origins for testing to prevent CORS issues
+    CORS(app, resources={r"/api/*": {"origins": "*"}})
 
     basedir = os.path.abspath(os.path.dirname(__file__))
     
