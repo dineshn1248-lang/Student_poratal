@@ -58,7 +58,20 @@ def create_app():
     app.register_blueprint(hod_exam_bp, url_prefix='/api/hod/examinations')
     app.register_blueprint(student_bp, url_prefix='/api/student')
 
-    @app.route('/api/students', methods=['GET'])
+    # Add health check endpoints for Render and general verification
+    @app.route('/', methods=['GET'])
+    def index():
+        return jsonify({"status": "healthy", "service": "Student Portal API", "message": "Backend is running!"}), 200
+
+    @app.route('/health', methods=['GET'])
+    def health_check():
+        return jsonify({"status": "ok"}), 200
+
+    @app.route('/api', methods=['GET'])
+    def api_index():
+        return jsonify({"status": "healthy", "endpoints_available": True}), 200
+
+    @app.route('/api/students', methods=['GET'], strict_slashes=False)
     def get_all_students_global():
         from models import Student
         students = Student.query.all()

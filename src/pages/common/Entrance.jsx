@@ -20,6 +20,11 @@ function Entrance() {
 
   return (
     <div style={styles.container}>
+      {/* VERCEL VERIFICATION BANNER */}
+      <div style={{ background: '#ef4444', color: 'white', padding: '10px 20px', borderRadius: '8px', marginBottom: '20px', fontWeight: 'bold', letterSpacing: '2px' }}>
+        STUDENT PORTAL FRONTEND (LIVE VERCEL VERIFICATION)
+      </div>
+      
       <h1>Welcome to Nrupathunga University</h1>
       <p>Student Performance Intelligence Portal</p>
       <p style={{ marginTop: "30px", opacity: 0.7 }}>
