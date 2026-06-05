@@ -35,6 +35,7 @@ def create_app():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     
     db.init_app(app)
+    print("Database URI:", app.config['SQLALCHEMY_DATABASE_URI'])
     
     # Register blueprints
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
@@ -65,7 +66,13 @@ def create_app():
             
     return app
 
+# Create app globally for Gunicorn
+app = create_app()
+
 if __name__ == '__main__':
-    app = create_app()
     print("Backend server starting on http://localhost:5000")
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(
+        host='0.0.0.0',
+        port=int(os.environ.get("PORT", 5000)),
+        debug=True
+    )
