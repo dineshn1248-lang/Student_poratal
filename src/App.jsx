@@ -45,7 +45,7 @@ const ParentProfile      = lazy(() => import("./pages/parent/ParentProfile"));
 
 // ── Lazy-loaded HOD Portal Pages ──────────────────────────────────────────────
 const HODLayout              = lazy(() => import("./pages/hod/HODLayout"));
-const HODDashboard           = lazy(() => import("./pages/hod/HODDashboard"));
+const HODDashboard           = lazy(() => import("./pages/hod/HodDashboard"));
 const HODStudents            = lazy(() => import("./pages/hod/HODStudents"));
 const HODFaculty             = lazy(() => import("./pages/hod/HODFaculty"));
 const HODAttendance          = lazy(() => import("./pages/hod/HODAttendance"));
