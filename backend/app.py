@@ -26,12 +26,22 @@ def create_app():
     CORS(app, resources={r"/api/*": {"origins": frontend_url}})
 
     basedir = os.path.abspath(os.path.dirname(__file__))
-    instance_path = os.path.join(basedir, 'instance')
-    if not os.path.exists(instance_path):
-        os.makedirs(instance_path)
     
-    default_sqlite_path = 'sqlite:///' + os.path.join(instance_path, 'student_portal.db')
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', default_sqlite_path)
+    # 1. Detect Render environment automatically
+    if os.environ.get('RENDER'):
+        db_dir = '/var/data'
+    else:
+        db_dir = os.path.join(basedir, 'instance')
+        
+    # 2. Create directories automatically if they do not exist
+    if not os.path.exists(db_dir):
+        os.makedirs(db_dir, exist_ok=True)
+        
+    # 3. Define the SQLite path and use DATABASE_URL if available for future Postgres migration
+    db_path = os.path.join(db_dir, 'student_portal.db')
+    default_sqlite_uri = 'sqlite:///' + db_path
+    
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', default_sqlite_uri)
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     
     db.init_app(app)
