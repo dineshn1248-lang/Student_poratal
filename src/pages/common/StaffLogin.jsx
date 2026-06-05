@@ -25,9 +25,7 @@ function StaffLogin() {
 
     setLoading(true);
     try {
-      const baseUrl = import.meta.env.PROD 
-        ? 'https://student-poratal.onrender.com/api' 
-        : (import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api').replace(/\/$/, "").replace(/\/api$/, "") + '/api';
+      const baseUrl = 'https://student-poratal.onrender.com/api';
       const res = await fetch(`${baseUrl}/auth/staff/login`, {
         method: "POST",
         headers: {
