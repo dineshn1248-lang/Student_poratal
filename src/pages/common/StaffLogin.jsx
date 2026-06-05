@@ -62,7 +62,10 @@ function StaffLogin() {
       }
     } catch (err) {
       console.error("Fetch Error:", err);
-      setError("Network or Server error. Make sure backend is running.");
+      const targetUrl = import.meta.env.PROD 
+        ? 'https://student-poratal.onrender.com/api/auth/staff/login' 
+        : 'http://localhost:5000/api/auth/staff/login';
+      setError(`Network Error while reaching: ${targetUrl} — Details: ${err.message || err.toString()}`);
     } finally {
       setLoading(false);
     }
