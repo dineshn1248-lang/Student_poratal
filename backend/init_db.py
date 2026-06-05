@@ -188,9 +188,9 @@ def init_db(app=None):
                 m = Mark(
                     student_id=stu.id,
                     subject_id=sub.id,
-                    internal_marks=str(internal),
-                    external_marks=str(external),
-                    total_marks=str(internal+external),
+                    internal_marks=float(internal),
+                    external_marks=float(external),
+                    marks_obtained=float(internal+external), max_marks=100.0,
                     grade=grade
                 )
                 db.session.add(m)
