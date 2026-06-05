@@ -87,8 +87,15 @@ def create_app():
 
     with app.app_context():
         db.create_all()
-        # Seeding is handled by separate scripts like init_db.py
-            
+        # Automatically seed the database if it's empty (critical for Render Free Tier ephemeral storage)
+        from models import Staff
+        if Staff.query.first() is None:
+            try:
+                from init_db import init_db
+                init_db(app)
+                print("Auto-seeded database successfully.")
+            except Exception as e:
+                print("Auto-seeding skipped or failed:", e)
     return app
 
 # Create app globally for Gunicorn

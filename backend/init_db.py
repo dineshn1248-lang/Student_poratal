@@ -4,9 +4,13 @@ from app import create_app
 from database import db
 from models import Staff, Student, Parent, Subject, Mark, Announcement, Timetable, Attendance, Revaluation, Department, ExamRegistration, SpecialApproval, Fee, FeeApproval, Notification, Exam
 
-app = create_app()
+from flask import current_app
 
-def init_db():
+def init_db(app=None):
+    if app is None:
+        from app import create_app
+        app = create_app()
+        
     with app.app_context():
         basedir = os.path.abspath(os.path.dirname(__file__))
         if not os.path.exists(os.path.join(basedir, 'instance')):
