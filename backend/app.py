@@ -29,8 +29,10 @@ def create_app():
     
     # 1. Detect Render environment automatically
     if os.environ.get('RENDER'):
-        db_dir = '/var/data'
+        # Free tier persistent disks aren't supported, use ephemeral /tmp
+        db_dir = '/tmp'
     else:
+        # Local development uses instance folder
         db_dir = os.path.join(basedir, 'instance')
         
     # 2. Create directories automatically if they do not exist
