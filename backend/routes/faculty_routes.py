@@ -155,7 +155,12 @@ def get_faculty_timetable():
 
 @faculty_bp.route('/reports/stats', methods=['GET'])
 def get_faculty_reports_stats():
-    # Returns stats for the faculty dashboard summary
+    from models import Student
+    total = Student.query.filter_by(department='BCA').count()
+    passed = Student.query.filter_by(department='BCA', result_status='PASSED').count()
+    failed = Student.query.filter(Student.department == 'BCA', Student.result_status != 'PASSED').count()
     return jsonify({
-        "total_students": 20
+        "total_students": total,
+        "passed_students": passed,
+        "failed_students": failed
     })

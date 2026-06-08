@@ -17,10 +17,29 @@ def staff_login():
     password = data.get('password')
     role     = data.get('role')
 
+    print(f"Login attempt: username='{username}', role='{role}', password='{password}'")
+
     if not username or not password or not role:
         return jsonify({"error": "Missing required fields"}), 400
 
-    user = Staff.query.filter_by(username=username, role=role).first()
+    username_clean = username.strip()
+    if not username_clean.endswith('@college.com') and '@' not in username_clean:
+        email_guess = f"{username_clean}@college.com"
+    else:
+        email_guess = username_clean
+
+    user = Staff.query.filter(
+        (Staff.username == username_clean) | 
+        (Staff.email == username_clean) |
+        (Staff.username == email_guess) |
+        (Staff.email == email_guess)
+    ).filter_by(role=role).first()
+    
+    if user:
+        print(f"Found user: {user.username}. Password check: {user.check_password(password)}")
+    else:
+        print("User not found.")
+
     if user and user.check_password(password):
         return jsonify({
             "message": "Login successful",

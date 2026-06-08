@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function StatCard({ label, value, icon, color, bg, onClick }) {
+export default function StatCard({ label, value, icon, color, bg, onClick, subtext }) {
   return (
     <div 
       className="stat-card" 

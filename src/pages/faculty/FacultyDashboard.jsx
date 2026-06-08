@@ -20,6 +20,7 @@ export default function FacultyDashboard() {
   const [loading, setLoading] = useState(true);
   const [actionSuccess, setActionSuccess] = useState('');
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [stats, setStats] = useState({ total_students: 0, passed_students: 0, failed_students: 0 });
 
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 60000);
@@ -75,25 +76,30 @@ export default function FacultyDashboard() {
   const loadStudents = async () => {
     setLoading(true);
     try {
-      const resp = await fetch(`${'https://student-poratal.onrender.com/api'}/students`);
+      // Fetch stats
+      const statsResp = await fetch(`${import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://localhost:5000/api'}/faculty/reports/stats`);
+      if (statsResp.ok) {
+        const statsData = await statsResp.json();
+        setStats(statsData);
+      }
+      
+      const resp = await fetch(`${import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://localhost:5000/api'}/students`);
       if (resp.ok) {
         const data = await resp.json();
-        // Limit/slice/normalize exactly to 20 students as requested
-        const normStudents = data.slice(0, 20);
+        const normStudents = data.slice(0, 21);
         setStudents(normStudents);
         
-        // Initialize local stats trackers
         const tempMarks = {};
         const tempAtt = {};
         normStudents.forEach(s => {
-          tempMarks[s.id] = 16.5; // Default CIE out of 20
-          tempAtt[s.id] = "Present"; // Default attendance register value
+          tempMarks[s.id] = 16.5; 
+          tempAtt[s.id] = "Present"; 
         });
         setCieMarks(tempMarks);
         setAttStatuses(tempAtt);
       }
     } catch (e) {
-      console.error("Failed to load students:", e);
+      console.error("Failed to load data:", e);
     } finally {
       setLoading(false);
     }
@@ -367,8 +373,10 @@ export default function FacultyDashboard() {
                     <span className="label">TOTAL STUDENTS</span>
                     <div className="icon"><FaUsers /></div>
                   </div>
-                  <h3 className="value">20</h3>
-                  <span style={{ fontSize: '12px', color: '#64748b', fontWeight: '750' }}>Active Registry</span>
+                  <h3 className="value">{stats.total_students}</h3>
+                  <span style={{ fontSize: '12px', color: '#64748b', fontWeight: '750' }}>
+                    Passed: {stats.passed_students} | Failed: {stats.failed_students}
+                  </span>
                 </div>
                 <div className="stat-card green" style={{ cursor: 'pointer' }} onClick={() => setActiveSection("Attendance")}>
                   <div className="card-top">

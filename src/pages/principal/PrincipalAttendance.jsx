@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaFilter, FaDownload, FaCalendarAlt, FaUsers, FaUserCheck, FaUserTimes, FaPercentage, FaExclamationTriangle, FaChevronLeft, FaChevronRight, FaEye, FaTimes, FaSearch, FaUserCircle } from 'react-icons/fa';
+import { FaFilter, FaDownload, FaCalendarAlt, FaUsers, FaUserCheck, FaUserTimes, FaPercentage, FaExclamationTriangle, FaChevronLeft, FaChevronRight, FaEye, FaTimes, FaSearch, FaUserCircle, FaArrowLeft } from 'react-icons/fa';
 import { PieChart, Pie, Cell, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer } from 'recharts';
 import { fetchPrincipalStats } from '../../api/principalApi';
 import './Principal.css';
@@ -175,8 +175,13 @@ export default function PrincipalAttendance() {
     <div className="principal-page-content" style={{ padding: '24px', background: '#f8fafc', minHeight: '100vh', fontFamily: "'Inter', sans-serif" }}>
       
       {/* Header */}
-      <div style={{ marginBottom: '24px' }}>
-        <div style={{ color: '#3b82f6', fontSize: '14px', fontWeight: '600', marginBottom: '16px' }}>
+      <div style={{ marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '16px' }}>
+        <button 
+            onClick={() => window.location.href = '/principal/dashboard'} 
+            style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#3b82f6', color: 'white', border: 'none', padding: '8px 16px', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer', fontSize: '14px' }}>
+            <FaArrowLeft /> Back to Dashboard
+        </button>
+        <div style={{ color: '#3b82f6', fontSize: '14px', fontWeight: '600' }}>
           Dashboard &nbsp;&gt;&nbsp; Attendance &nbsp;&gt;&nbsp; <span style={{ color: '#64748b' }}>Student Attendance Dashboard</span>
         </div>
       </div>

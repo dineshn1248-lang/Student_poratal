@@ -1,0 +1,47 @@
+[
+  {
+    "id": 1,
+    "student_id": 1,
+    "subject": "Software Engineering",
+    "semester": 4,
+    "section": "A",
+    "present_days": 36,
+    "total_days": 40,
+    "absent_days": 0,
+    "leave_days": 0,
+    "attendance_percentage": 90.0,
+    "percentage": 90.0,
+    "status": "Eligible",
+    "last_updated": "2026-06-05T15:52:13.123393"
+  },
+  {
+    "id": 2,
+    "student_id": 1,
+    "subject": "Database Management Systems",
+    "semester": 4,
+    "section": "A",
+    "present_days": 34,
+    "total_days": 40,
+    "absent_days": 0,
+    "leave_days": 0,
+    "attendance_percentage": 85.0,
+    "percentage": 85.0,
+    "status": "Eligible",
+    "last_updated": "2026-06-05T15:52:13.123404"
+  },
+  {
+    "id": 3,
+    "student_id": 1,
+    "subject": "Computer Networks",
+    "semester": 4,
+    "section": "A",
+    "present_days": 28,
+    "total_days": 40,
+    "absent_days": 0,
+    "leave_days": 0,
+    "attendance_percentage": 70.0,
+    "percentage": 70.0,
+    "status": "Warning",
+    "last_updated": "2026-06-05T15:52:13.123412"
+  }
+]

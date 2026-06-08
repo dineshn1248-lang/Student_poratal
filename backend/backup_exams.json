@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "student_id": 1,
+    "subject": "Software Engineering",
+    "exam_date": "10 Jun 2026",
+    "hall_ticket_status": "Ready",
+    "marks": "N/A"
+  },
+  {
+    "id": 2,
+    "student_id": 1,
+    "subject": "Database Management Systems",
+    "exam_date": "12 Jun 2026",
+    "hall_ticket_status": "Ready",
+    "marks": "N/A"
+  },
+  {
+    "id": 3,
+    "student_id": 1,
+    "subject": "Computer Networks",
+    "exam_date": "15 Jun 2026",
+    "hall_ticket_status": "Ready",
+    "marks": "N/A"
+  }
+]

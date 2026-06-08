@@ -4,10 +4,13 @@ import StudentLayout from "./StudentLayout";
 import "./Student.css";
 
 const QUICK_PROMPTS = [
-  { text: "When is my first exam?", icon: <FaQuestionCircle /> },
-  { text: "What is the 75% attendance rule?", icon: <FaBookReader /> },
-  { text: "Check my remaining fees due date", icon: <FaDollarSign /> },
-  { text: "How to prepare for Software Engineering?", icon: <FaLightbulb /> }
+  { text: "My Attendance", icon: <FaQuestionCircle /> },
+  { text: "My Semester Marks", icon: <FaBookReader /> },
+  { text: "My Timetable", icon: <FaQuestionCircle /> },
+  { text: "My Fees", icon: <FaDollarSign /> },
+  { text: "Upcoming Exams", icon: <FaBookReader /> },
+  { text: "Placement Status", icon: <FaLightbulb /> },
+  { text: "Backlog Details", icon: <FaBookReader /> }
 ];
 
 const renderMessageText = (text) => {
@@ -154,7 +157,7 @@ export default function StudentAIChat() {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`${'https://student-poratal.onrender.com/api'}/student/ai-chat`, {
+      const res = await fetch(`${import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://localhost:5000/api'}/student/ai-chat`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

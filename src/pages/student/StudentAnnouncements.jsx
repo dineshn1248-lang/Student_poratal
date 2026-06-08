@@ -15,7 +15,7 @@ export default function StudentAnnouncements() {
   const fetchAnnouncements = async () => {
     const token = localStorage.getItem("token");
     try {
-      const resp = await fetch(`${'https://student-poratal.onrender.com/api'}/student/announcements`, {
+      const resp = await fetch(`${import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://localhost:5000/api'}/student/announcements`, {
         headers: { "Authorization": `Bearer ${token}` }
       });
       const d = await resp.json();

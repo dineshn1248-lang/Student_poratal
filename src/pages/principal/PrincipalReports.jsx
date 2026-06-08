@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaFilePdf, FaFileExcel, FaDownload, FaChartLine, FaCheckCircle, FaSpinner } from 'react-icons/fa';
+import { FaFilePdf, FaFileExcel, FaDownload, FaChartLine, FaCheckCircle, FaSpinner, FaArrowLeft } from 'react-icons/fa';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import './Principal.css';
@@ -96,10 +96,17 @@ export default function PrincipalReports() {
 
     return (
         <div className="principal-dashboard-container">
-            <div className="principal-dashboard-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <div>
-                    <h1>Department Reports Portal</h1>
-                    <p>Compile, view, and download formal academic audit sheets and overall student roster lists.</p>
+            <div className="principal-dashboard-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                    <button 
+                        onClick={() => window.location.href = '/principal/dashboard'} 
+                        style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#3b82f6', color: 'white', border: 'none', padding: '8px 16px', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer', fontSize: '14px' }}>
+                        <FaArrowLeft /> Back to Dashboard
+                    </button>
+                    <div>
+                        <h1 style={{ margin: 0 }}>Department Reports Portal</h1>
+                        <p style={{ margin: 0, marginTop: '4px' }}>Compile, view, and download formal academic audit sheets and overall student roster lists.</p>
+                    </div>
                 </div>
                 <button 
                     onClick={handleDownloadAll}

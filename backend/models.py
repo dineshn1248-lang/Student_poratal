@@ -50,6 +50,7 @@ class Student(db.Model):
     parent_phone = db.Column(db.String(20))
     address = db.Column(db.String(255))
     email = db.Column(db.String(100), unique=True)
+    result_status = db.Column(db.String(50), default='PASSED') # PASSED, FAILED, BACKLOG
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     def set_password(self, password):
@@ -232,6 +233,17 @@ class Exam(db.Model):
     marks = db.Column(db.String(20), default='N/A')
 
     student = db.relationship('Student', backref=db.backref('exams', lazy=True))
+
+class Placement(db.Model):
+    __tablename__ = 'placements'
+    id = db.Column(db.Integer, primary_key=True)
+    student_id = db.Column(db.Integer, db.ForeignKey('students.id'), nullable=False)
+    company_name = db.Column(db.String(200), nullable=False)
+    package = db.Column(db.String(50))
+    placement_date = db.Column(db.String(50))
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    student = db.relationship('Student', backref=db.backref('placements', lazy=True))
 
 class CommunicationLog(db.Model):
     __tablename__ = 'communication_logs'

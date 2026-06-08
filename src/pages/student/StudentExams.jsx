@@ -14,7 +14,7 @@ export default function StudentExams() {
   const fetchExams = async () => {
     const token = localStorage.getItem("token");
     try {
-      const resp = await fetch(`${'https://student-poratal.onrender.com/api'}/student/exams`, {
+      const resp = await fetch(`${import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://localhost:5000/api'}/student/exams`, {
         headers: { "Authorization": `Bearer ${token}` }
       });
       const d = await resp.json();

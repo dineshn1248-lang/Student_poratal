@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function StatCard({ label, value, icon, color, bg, onClick }) {
+export default function StatCard({ label, value, icon, color, bg, onClick, subtext }) {
   return (
     <div 
       className="stat-card" 
@@ -18,7 +18,10 @@ export default function StatCard({ label, value, icon, color, bg, onClick }) {
         </div>
         <span className="s-label">{label}</span>
       </div>
-      <div className="s-value">{value}</div>
+      <div className="s-value">
+        {value}
+        {subtext && <span style={{ fontSize: '14px', color: '#10b981', fontWeight: '600', marginLeft: '10px' }}>{subtext}</span>}
+      </div>
       <a 
         href="#" 
         className="s-link" 

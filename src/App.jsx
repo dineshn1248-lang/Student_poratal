@@ -66,6 +66,8 @@ const PrincipalExaminations        = lazy(() => import("./pages/principal/Princi
 const PrincipalReports             = lazy(() => import("./pages/principal/PrincipalReports"));
 const PrincipalBacklogs            = lazy(() => import("./pages/principal/PrincipalBacklogs"));
 const PrincipalAnnouncements       = lazy(() => import("./pages/principal/PrincipalAnnouncements"));
+const PrincipalFaculty             = lazy(() => import("./pages/principal/PrincipalFaculty"));
+const PrincipalPlacements          = lazy(() => import("./pages/principal/PrincipalPlacements"));
 
 // ── Lazy-loaded Student Portal Pages ─────────────────────────────────────────
 const StudentDashboard    = lazy(() => import("./pages/student/StudentDashboard"));
@@ -108,6 +110,8 @@ function App() {
             <Route path="reports"             element={<PrincipalReports />} />
             <Route path="backlogs"            element={<PrincipalBacklogs />} />
             <Route path="announcements"       element={<PrincipalAnnouncements />} />
+            <Route path="faculty"             element={<PrincipalFaculty />} />
+            <Route path="placements"          element={<PrincipalPlacements />} />
             <Route path="*" element={<div style={{padding:'40px',color:'#64748b',fontWeight:'600'}}>Section under development</div>} />
           </Route>
 

@@ -169,7 +169,7 @@ export default function StudentLayout({ children }) {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`${'https://student-poratal.onrender.com/api'}/student/ai-chat`, {
+      const res = await fetch(`${import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://localhost:5000/api'}/student/ai-chat`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -231,12 +231,6 @@ export default function StudentLayout({ children }) {
             </Link>
           ))}
         </ul>
-        <div style={{ padding: '20px' }}>
-          <button className="std-nav-item" onClick={handleLogout} 
-                  style={{ width: '100%', border: 'none', background: '#ef4444', color: 'white', cursor: 'pointer', fontWeight: '700', justifyContent: 'center' }}>
-            <FaSignOutAlt /> <span>Logout</span>
-          </button>
-        </div>
       </aside>
 
       <main className={`std-main-content ${!sidebarOpen ? "expanded" : ""}`}>

@@ -7,9 +7,9 @@ import nrupathungaLogo from "../../assets/nrupathunga_logo.png";
 function StaffLogin() {
   const navigate = useNavigate();
 
-  const [role, setRole] = useState("");
-  const [username, setUsername] = useState(""); 
-  const [password, setPassword] = useState("");
+  const [role, setRole] = useState("principal");
+  const [username, setUsername] = useState("principal@college.com"); 
+  const [password, setPassword] = useState("principal123");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -25,7 +25,9 @@ function StaffLogin() {
 
     setLoading(true);
     try {
-      const baseUrl = 'https://student-poratal.onrender.com/api';
+      const baseUrl = import.meta.env.PROD 
+        ? 'https://student-poratal.onrender.com/api' 
+        : 'http://localhost:5000/api';
       const res = await fetch(`${baseUrl}/auth/staff/login`, {
         method: "POST",
         headers: {

@@ -431,7 +431,7 @@ export default function HODFaculty() {
                 
                 // Save to database automatically
                 try {
-                  await fetch(`${'https://student-poratal.onrender.com/api'}/faculty/${editingRow.id}`, {
+                  await fetch(`${import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://localhost:5000/api'}/faculty/${editingRow.id}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({

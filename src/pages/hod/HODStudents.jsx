@@ -28,7 +28,7 @@ export default function HODStudents() {
         setLoading(true);
         try {
             const token = localStorage.getItem('token');
-            const resp = await fetch(`${'https://student-poratal.onrender.com/api'}/hod/students/all_marks`, {
+            const resp = await fetch(`${import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://localhost:5000/api'}/hod/students/all_marks`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const data = await resp.json();
@@ -54,7 +54,12 @@ export default function HODStudents() {
                     const total = int_m + ext_m;
                     
                     const is_pass = m.result === 'Pass';
-                    if (!is_pass && String(m.subject_semester) !== '6') {
+                    if (m.subject && !is_pass && String(m.subject_semester) !== '6') {
+                        studentMap[m.student_id].has_failed = true;
+                    }
+                    
+                    // Also consider the backend's overall result_status
+                    if (m.result_status === 'FAILED') {
                         studentMap[m.student_id].has_failed = true;
                     }
 
@@ -68,19 +73,21 @@ export default function HODStudents() {
                     else if (m.grade === 'C') gradePoints = 5;
                     else if (m.grade === 'P') gradePoints = 4;
 
-                    studentMap[m.student_id].subjects.push({
-                        code: `SUB${m.subject_id || Math.floor(Math.random()*1000)}`,
-                        name: m.subject,
-                        semester: m.subject_semester || m.semester,
-                        max_marks: 100, // or pull from DB if available
-                        ia_marks: int_m,
-                        see_marks: ext_m,
-                        total_marks: total,
-                        credits: 3,
-                        grade: m.grade || (is_pass ? 'P' : 'F'),
-                        grade_points: (gradePoints * 3),
-                        result: is_pass ? 'PASS' : 'FAIL'
-                    });
+                    if (m.subject) {
+                        studentMap[m.student_id].subjects.push({
+                            code: `SUB${m.subject_id || Math.floor(Math.random()*1000)}`,
+                            name: m.subject,
+                            semester: m.subject_semester || m.semester,
+                            max_marks: 100, // or pull from DB if available
+                            ia_marks: int_m,
+                            see_marks: ext_m,
+                            total_marks: total,
+                            credits: 3,
+                            grade: m.grade || (is_pass ? 'P' : 'F'),
+                            grade_points: (gradePoints * 3),
+                            result: is_pass ? 'PASS' : 'FAIL'
+                        });
+                    }
                 });
 
                 let totalCount = 0;

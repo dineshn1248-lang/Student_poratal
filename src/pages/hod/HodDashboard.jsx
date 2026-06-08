@@ -23,12 +23,12 @@ export default function HODDashboard() {
 
   // Mock data matching the reference image exactly
   const studentData = [
-    { name: 'I Semester', count: 42 },
-    { name: 'II Semester', count: 45 },
-    { name: 'III Semester', count: 48 },
-    { name: 'IV Semester', count: 40 },
-    { name: 'V Semester', count: 44 },
-    { name: 'VI Semester', count: 37 },
+    { name: 'I Semester', count: 10 },
+    { name: 'II Semester', count: 10 },
+    { name: 'III Semester', count: 10 },
+    { name: 'IV Semester', count: 11 },
+    { name: 'V Semester', count: 10 },
+    { name: 'VI Semester', count: 13 },
   ];
 
   const attendancePieData = [
@@ -65,7 +65,7 @@ export default function HODDashboard() {
     const fetchStats = async () => {
       try {
         const token = localStorage.getItem('token');
-        const resp = await fetch(`${'https://student-poratal.onrender.com/api'}/hod/students/stats`, {
+        const resp = await fetch(`${import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://localhost:5000/api'}/hod/students/stats`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         if (resp.ok) {
@@ -101,7 +101,8 @@ export default function HODDashboard() {
       <div className="stats-grid" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
         <StatCard 
           label="Total Students (All Sem)" 
-          value={stats.total_students.toString()} 
+          value={stats.total_students ? stats.total_students.toString() : '0'} 
+          subtext={`Passed: ${stats.passed_students || 0} | Failed: ${stats.failed_students || 0}`}
           icon={<FaUsers />} 
           color="#4f46e5" 
           bg="#eef2ff" 
@@ -109,7 +110,14 @@ export default function HODDashboard() {
           style={{ cursor: 'pointer' }}
         />
         <StatCard label="Avg Attendance" value={stats.avg_attendance} icon={<FaCalendarCheck />} color="#10b981" bg="#ecfdf5" onClick={() => navigate('/hod/attendance')} style={{ cursor: 'pointer' }} />
-        <StatCard label="Total Fee Pending" value={`₹${stats.total_fee_pending.toLocaleString('en-IN')}`} icon={<FaFileInvoice />} color="#f59e0b" bg="#fffbeb" />
+        <StatCard 
+          label="FEES COLLECTION" 
+          value={stats.total_collected_fees || '₹0'} 
+          subtext={`Collection: ${stats.fees_collection_percentage || '0%'}`}
+          icon={<FaFileInvoice />} 
+          color="#f59e0b" 
+          bg="#fffbeb" 
+        />
       </div>
 
       {/* ── CHARTS ROW ── */}

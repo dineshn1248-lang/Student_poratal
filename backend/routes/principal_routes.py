@@ -6,21 +6,41 @@ principal_bp = Blueprint('principal', __name__)
 @principal_bp.route('/stats', methods=['GET'])
 def get_stats():
     try:
-        from models import Faculty
+        from models import Faculty, Placement
         total_students = Student.query.count()
+        passed_students = Student.query.filter_by(result_status='PASSED').count()
+        failed_students = Student.query.filter(Student.result_status != 'PASSED').count() # FAILED or BACKLOG
+        
         total_faculty = Faculty.query.count()
-        avg_att = db.session.query(db.func.avg(Student.attendance_percent)).scalar() or 84
+        avg_att = db.session.query(db.func.avg(Student.attendance_percent)).scalar() or 0
         backlog_std = Student.query.filter(Student.backlog_count > 0).count()
         
-        # Calculate real pending fees
+        # Calculate real collected fees
+        students = Student.query.all()
+        total_expected = total_students * 23000
+        total_collected = sum(23000 if s.fee_status == 'Paid' else 11500 if s.fee_status == 'Partial' else 0 for s in students)
+                
+        fees_percentage = f"{round((total_collected / total_expected) * 100, 1)}%" if total_expected > 0 else "100%"
+        
+        # Placements
+        placed_students = Placement.query.count()
+        total_final_year = Student.query.filter_by(semester=6).count()
+        placement_percentage = f"{round((placed_students / total_final_year) * 100)}%" if total_final_year > 0 else "0%"
+            
         pending_total = db.session.query(db.func.sum(Student.fee_pending)).scalar() or 0.0
             
         return jsonify({
             "total_students": total_students,
+            "passed_students": passed_students,
+            "failed_students": failed_students,
             "total_faculty": total_faculty,
             "avg_attendance": f"{round(avg_att)}%",
             "backlog_students": backlog_std,
             "fee_pending": f"₹{pending_total:,.2f}",
+            "total_collected_fees": f"₹{total_collected:,.2f}",
+            "fees_collection_percentage": fees_percentage,
+            "placed_students": placed_students,
+            "placement_percentage": placement_percentage,
             "alerts": 3
         })
     except Exception as e:
@@ -94,7 +114,7 @@ def get_students():
         "attendance": f"{s.attendance_percent}%",
         "academic_status": s.academic_status or "Regular",
         "fee_status": s.fee_status or "Pending",
-        "result_status": "Fail" if s.backlog_count > 0 else "Pass"
+        "result_status": s.result_status
     } for s in students]
     
     return jsonify({
@@ -106,6 +126,90 @@ def get_students():
             "detained": sum(1 for s in student_list if s['academic_status'] == 'Detained'),
             "new_registrations": 0
         }
+    })
+
+@principal_bp.route('/faculty_management', methods=['GET'])
+def get_faculty_management():
+    from models import Faculty
+    query = Faculty.query
+    
+    dept = request.args.get('department')
+    sem = request.args.get('semester')
+    search = request.args.get('search')
+    
+    if dept and dept != 'All':
+        query = query.filter(Faculty.department == dept)
+    if sem and sem != 'All':
+        query = query.filter(Faculty.semester == sem)
+    if search:
+        query = query.filter(
+            (Faculty.full_name.ilike(f'%{search}%')) | 
+            (Faculty.staff_id.ilike(f'%{search}%'))
+        )
+        
+    faculties = query.all()
+    faculty_list = [{
+        "id": f.id,
+        "staff_id": f.staff_id,
+        "name": f.full_name,
+        "designation": f.designation,
+        "department": f.department,
+        "subjects": f.subject_assigned,
+        "semester": f.semester,
+        "attendance": f"{f.attendance_percent}%",
+        "status": f.status,
+        "email": f.email,
+        "phone": f.contact_phone
+    } for f in faculties]
+    
+    return jsonify({
+        "faculties": faculty_list,
+        "total": len(faculty_list)
+    })
+
+@principal_bp.route('/placements', methods=['GET'])
+def get_placements():
+    from models import Placement
+    query = Placement.query
+    
+    placements = query.all()
+    placement_list = []
+    
+    highest_package = 0.0
+    total_package = 0.0
+    companies = set()
+    
+    for p in placements:
+        companies.add(p.company_name)
+        
+        # Parse package (e.g. "4.5 LPA")
+        pkg_val = 0.0
+        try:
+            pkg_val = float(p.package.split(' ')[0])
+            if pkg_val > highest_package:
+                highest_package = pkg_val
+            total_package += pkg_val
+        except:
+            pass
+            
+        placement_list.append({
+            "id": p.id,
+            "student_name": p.student.full_name,
+            "register_no": p.student.register_no,
+            "department": p.student.department,
+            "company_name": p.company_name,
+            "package": p.package,
+            "placement_date": p.placement_date
+        })
+        
+    avg_package = round(total_package / len(placements), 2) if placements else 0
+    
+    return jsonify({
+        "placements": placement_list,
+        "total_placed": len(placements),
+        "companies_visited": len(companies),
+        "highest_package": f"{highest_package} LPA",
+        "average_package": f"{avg_package} LPA"
     })
 
 @principal_bp.route('/exams/dashboard_stats', methods=['GET'])

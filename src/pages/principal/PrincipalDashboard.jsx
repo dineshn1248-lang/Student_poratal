@@ -9,7 +9,8 @@ import {
   FaUsers, FaCalendarCheck, FaUserTie, FaUserGraduate, 
   FaClipboardList, FaFileInvoice, FaPenSquare, FaRegAddressCard, 
   FaChartPie, FaExclamationCircle, FaArrowRight, FaUniversity,
-  FaWallet, FaCheckCircle, FaExclamationTriangle, FaFileAlt, FaBullhorn
+  FaWallet, FaCheckCircle, FaExclamationTriangle, FaFileAlt, FaBullhorn,
+  FaRupeeSign, FaGraduationCap
 } from 'react-icons/fa';
 import StatCard from './components/StatCard';
 import WelcomeBanner from '../../components/WelcomeBanner';
@@ -31,13 +32,17 @@ export default function PrincipalDashboard() {
     // Fetch principal dashboard stats
     const fetchDashboardData = async () => {
       try {
-        const statsRes = await fetch(`${'https://student-poratal.onrender.com/api'}/principal/stats`);
+        const baseUrl = import.meta.env.PROD 
+          ? 'https://student-poratal.onrender.com/api' 
+          : 'http://localhost:5000/api';
+          
+        const statsRes = await fetch(`${baseUrl}/principal/stats`);
         if (statsRes.ok) {
           const statsData = await statsRes.json();
           setStats(statsData);
         }
 
-        const deptRes = await fetch(`${'https://student-poratal.onrender.com/api'}/principal/departments/overview`);
+        const deptRes = await fetch(`${baseUrl}/principal/departments/overview`);
         if (deptRes.ok) {
           const deptData = await deptRes.json();
           setDepartments(deptData);
@@ -57,6 +62,15 @@ export default function PrincipalDashboard() {
     { name: 'Registered', value: 892, color: '#10b981' }, // 71.47%
     { name: 'Pending', value: 248, color: '#f59e0b' },    // 19.87%
     { name: 'Not Registered', value: 108, color: '#ef4444' },// 8.66%
+  ];
+
+  const studentData = [
+    { name: 'I Semester', count: 10 },
+    { name: 'II Semester', count: 10 },
+    { name: 'III Semester', count: 10 },
+    { name: 'IV Semester', count: 11 },
+    { name: 'V Semester', count: 10 },
+    { name: 'VI Semester', count: 13 },
   ];
 
   const attendanceLineData = [
@@ -94,8 +108,9 @@ export default function PrincipalDashboard() {
       {/* ── TOP STATS (4 CARDS) ── */}
       <div className="stats-grid" style={{ gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px', marginBottom: '30px' }}>
         <StatCard 
-          label="Total Students" 
+          label="TOTAL STUDENTS" 
           value={stats.total_students} 
+          subtext={`Passed: ${stats.passed_students || 0} | Failed: ${stats.failed_students || 0}`}
           icon={<FaUsers />} 
           color="#3b82f6" 
           bg="#eff6ff" 
@@ -103,73 +118,49 @@ export default function PrincipalDashboard() {
           style={{ cursor: 'pointer' }}
         />
         <StatCard 
-          label="Average Attendance" 
-          value={stats.avg_attendance} 
-          icon={<FaCalendarCheck />} 
-          color="#10b981" 
-          bg="#ecfdf5" 
-        />
-        <StatCard 
-          label="Fee Pending" 
-          value={stats.fee_pending} 
-          icon={<FaWallet />} 
-          color="#f59e0b" 
-          bg="#fffbeb" 
-        />
-        <StatCard 
-          label="Total Faculty" 
+          label="TOTAL FACULTY" 
           value={stats.total_faculty} 
           icon={<FaUserTie />} 
-          color="#8b5cf6" 
-          bg="#f5f3ff" 
+          color="#10b981" 
+          bg="#ecfdf5" 
           onClick={() => navigate('/principal/faculty')}
-          style={{ cursor: 'pointer' }}
+        />
+        <StatCard 
+          label="FEES COLLECTION" 
+          value={stats.total_collected_fees || '₹0'} 
+          subtext={`Collection: ${stats.fees_collection_percentage || '0%'}`}
+          icon={<FaRupeeSign />} 
+          color="#f59e0b" 
+          bg="#fffbeb" 
+          onClick={() => navigate('/principal/reports')}
+        />
+        <StatCard 
+          label="PLACEMENT COUNT" 
+          value={stats.placed_students || 0} 
+          subtext={`Placement: ${stats.placement_percentage || '0%'}`}
+          icon={<FaGraduationCap />} 
+          color="#8b5cf6" 
+          bg="#f3e8ff" 
+          onClick={() => navigate('/principal/placements')}
         />
       </div>
 
-      {/* ── DEPARTMENT OVERVIEW ── */}
+      {/* ── SEMESTER WISE STUDENTS (From HOD Dashboard) ── */}
       <div className="chart-card" style={{ marginBottom: '30px', padding: '24px', background: '#fff', borderRadius: '12px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
         <div className="chart-header" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
-          <h3 style={{ fontSize: '18px', margin: 0, fontWeight: '700' }}>Department Overview</h3>
-          <a href="#" className="chart-link" style={{ fontSize: '14px', color: '#3b82f6', textDecoration: 'none' }}>View All Departments →</a>
+          <h3 style={{ fontSize: '18px', margin: 0, fontWeight: '700' }}>Semester Wise Students</h3>
+          <a href="#" className="chart-link" style={{ fontSize: '14px', color: '#3b82f6', textDecoration: 'none' }}>View Report →</a>
         </div>
-        
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px' }}>
-          {departments.map((dept, index) => {
-            const colors = ['#3b82f6', '#10b981', '#8b5cf6', '#f59e0b'];
-            const bgColors = ['#eff6ff', '#ecfdf5', '#f5f3ff', '#fffbeb'];
-            const color = colors[index % colors.length];
-            const bg = bgColors[index % bgColors.length];
-
-            return (
-              <div key={index} style={{ border: `1px solid #e2e8f0`, borderRadius: '10px', padding: '20px', position: 'relative', overflow: 'hidden' }}>
-                <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '4px', background: color }}></div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '20px' }}>
-                  <div style={{ width: '45px', height: '45px', borderRadius: '8px', background: bg, color: color, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px' }}>
-                    <FaUniversity />
-                  </div>
-                  <h4 style={{ margin: 0, fontSize: '18px', fontWeight: '800', color: '#1e293b' }}>{dept.name}</h4>
-                </div>
-                
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
-                  <span style={{ fontSize: '14px', color: '#64748b' }}>Total Students</span>
-                  <span style={{ fontSize: '14px', fontWeight: '700', color: '#1e293b' }}>{dept.total_students}</span>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
-                  <span style={{ fontSize: '14px', color: '#64748b' }}>Avg. Attendance</span>
-                  <span style={{ fontSize: '14px', fontWeight: '700', color: '#1e293b' }}>{dept.avg_attendance}</span>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
-                  <span style={{ fontSize: '14px', color: '#64748b' }}>Fee Pending</span>
-                  <span style={{ fontSize: '14px', fontWeight: '700', color: '#ef4444' }}>{dept.fee_pending}</span>
-                </div>
-                
-                <div style={{ borderTop: '1px solid #e2e8f0', paddingTop: '15px', textAlign: 'center' }}>
-                  <a href="#" onClick={(e) => { e.preventDefault(); navigate('/principal/students', { state: { department: dept.name } }); }} style={{ color: color, fontSize: '14px', fontWeight: '600', textDecoration: 'none' }}>View Department →</a>
-                </div>
-              </div>
-            );
-          })}
+        <div style={{ height: '300px' }}>
+          <ResponsiveContainer width="99%" height={300}>
+            <BarChart data={studentData}>
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+              <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748b' }} dy={10} />
+              <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748b' }} />
+              <Tooltip cursor={{ fill: '#f8fafc' }} contentStyle={{ borderRadius: '10px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} />
+              <Bar dataKey="count" fill="#3b82f6" radius={[4, 4, 0, 0]} barSize={35} />
+            </BarChart>
+          </ResponsiveContainer>
         </div>
       </div>
 
