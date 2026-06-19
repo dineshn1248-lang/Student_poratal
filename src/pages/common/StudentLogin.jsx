@@ -11,7 +11,7 @@ function StudentLogin() {
 
   const [role, setRole] = useState("student");
   const [uan, setUan] = useState("");
-  const [studentPassword, setStudentPassword] = useState("");
+  const [studentPassword, setStudentPassword] = useState("Nrup@123456!");
   const [parentId, setParentId] = useState("");
   const [parentPassword, setParentPassword] = useState("");
 
@@ -37,7 +37,7 @@ function StudentLogin() {
     try {
       const baseUrl = import.meta.env.PROD 
         ? 'https://student-poratal.onrender.com/api' 
-        : 'http://localhost:5000/api';
+        : 'http://127.0.0.1:5000/api';
       const res = await fetch(`${baseUrl}/auth/student/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -73,7 +73,7 @@ function StudentLogin() {
     try {
       const baseUrl = import.meta.env.PROD 
         ? 'https://student-poratal.onrender.com/api' 
-        : 'http://localhost:5000/api';
+        : 'http://127.0.0.1:5000/api';
       const res = await fetch(`${baseUrl}/auth/parent/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

@@ -20,7 +20,7 @@ function PageLoader() {
 }
 
 // ── Lazy-loaded Common Pages ──────────────────────────────────────────────────
-const Entrance        = lazy(() => import("./pages/common/Entrance"));
+const Entrance        = lazy(() => import("./pages/common/Entrance3D"));
 const Home            = lazy(() => import("./pages/common/Home"));
 const AdmissionsInfo  = lazy(() => import("./pages/common/AdmissionsInfo"));
 const ContactUs       = lazy(() => import("./pages/common/ContactUs"));
@@ -80,6 +80,22 @@ const StudentAnnouncements= lazy(() => import("./pages/student/StudentAnnounceme
 const StudentInternships  = lazy(() => import("./pages/student/StudentInternships"));
 const StudentAIChat       = lazy(() => import("./pages/student/StudentAIChat"));
 
+// ── Lazy-loaded About Pages ──────────────────────────────────────────────────
+const AboutOverview   = lazy(() => import("./pages/about/Overview"));
+const AboutHistory    = lazy(() => import("./pages/about/History"));
+const AboutAcademics  = lazy(() => import("./pages/about/Academics"));
+const AboutAdmissions = lazy(() => import("./pages/about/Admissions"));
+const AboutEvents     = lazy(() => import("./pages/about/Events"));
+const AboutPlacements = lazy(() => import("./pages/about/Placements"));
+
+const ChatWithStudents = lazy(() => import("./pages/common/ChatWithStudents"));
+const Library = lazy(() => import("./pages/facilities/Library"));
+const ComputerLabs = lazy(() => import("./pages/facilities/ComputerLabs"));
+const Classrooms = lazy(() => import("./pages/facilities/Classrooms"));
+const SportsActivities = lazy(() => import("./pages/facilities/SportsActivities"));
+
+const AdmissionsIndex = lazy(() => import("./pages/admissions/AdmissionsIndex"));
+
 function App() {
   return (
     <BrowserRouter>
@@ -89,6 +105,21 @@ function App() {
           <Route path="/home"             element={<Home />} />
           <Route path="/admissions-info"  element={<AdmissionsInfo />} />
           <Route path="/contact-us"       element={<ContactUs />} />
+          <Route path="/chat-with-students" element={<ChatWithStudents />} />
+
+          <Route path="/about/overview"   element={<AboutOverview />} />
+          <Route path="/about/history"    element={<AboutHistory />} />
+          <Route path="/about/academics"  element={<AboutAcademics />} />
+          <Route path="/about/admissions" element={<AboutAdmissions />} />
+          <Route path="/about/events"     element={<AboutEvents />} />
+          <Route path="/about/placements" element={<AboutPlacements />} />
+
+          <Route path="/facilities/library" element={<Library />} />
+          <Route path="/facilities/computer-labs" element={<ComputerLabs />} />
+          <Route path="/facilities/classrooms" element={<Classrooms />} />
+          <Route path="/facilities/sports-activities" element={<SportsActivities />} />
+
+          <Route path="/admissions" element={<AdmissionsIndex />} />
 
           <Route path="/login-portal"     element={<LoginSelection />} />
           <Route path="/staff-login"      element={<StaffLogin />} />

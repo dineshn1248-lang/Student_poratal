@@ -21,7 +21,7 @@ export default function StudentProfile() {
   const fetchProfile = async () => {
     const token = localStorage.getItem("token");
     try {
-      const resp = await fetch(`${import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://localhost:5000/api'}/student/profile`, {
+      const resp = await fetch(`${import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://127.0.0.1:5000/api'}/student/profile`, {
         headers: { "Authorization": `Bearer ${token}` }
       });
       const d = await resp.json();
@@ -44,7 +44,7 @@ export default function StudentProfile() {
   const handleSave = async () => {
     const token = localStorage.getItem("token");
     try {
-      const resp = await fetch(`${import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://localhost:5000/api'}/student/profile/update`, {
+      const resp = await fetch(`${import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://127.0.0.1:5000/api'}/student/profile/update`, {
         method: "PUT",
         headers: { 
           "Authorization": `Bearer ${token}`,

@@ -77,13 +77,13 @@ export default function FacultyDashboard() {
     setLoading(true);
     try {
       // Fetch stats
-      const statsResp = await fetch(`${import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://localhost:5000/api'}/faculty/reports/stats`);
+      const statsResp = await fetch(`${import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://127.0.0.1:5000/api'}/faculty/reports/stats`);
       if (statsResp.ok) {
         const statsData = await statsResp.json();
         setStats(statsData);
       }
       
-      const resp = await fetch(`${import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://localhost:5000/api'}/students`);
+      const resp = await fetch(`${import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://127.0.0.1:5000/api'}/students`);
       if (resp.ok) {
         const data = await resp.json();
         const normStudents = data.slice(0, 21);

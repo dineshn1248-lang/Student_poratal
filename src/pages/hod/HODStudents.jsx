@@ -28,7 +28,7 @@ export default function HODStudents() {
         setLoading(true);
         try {
             const token = localStorage.getItem('token');
-            const resp = await fetch(`${import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://localhost:5000/api'}/hod/students/all_marks`, {
+            const resp = await fetch(`${import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://127.0.0.1:5000/api'}/hod/students/all_marks`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const data = await resp.json();

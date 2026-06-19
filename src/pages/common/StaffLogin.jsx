@@ -9,7 +9,7 @@ function StaffLogin() {
 
   const [role, setRole] = useState("principal");
   const [username, setUsername] = useState("principal@college.com"); 
-  const [password, setPassword] = useState("principal123");
+  const [password, setPassword] = useState("Nrup@123456!");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -27,7 +27,7 @@ function StaffLogin() {
     try {
       const baseUrl = import.meta.env.PROD 
         ? 'https://student-poratal.onrender.com/api' 
-        : 'http://localhost:5000/api';
+        : 'http://127.0.0.1:5000/api';
       const res = await fetch(`${baseUrl}/auth/staff/login`, {
         method: "POST",
         headers: {
@@ -64,7 +64,7 @@ function StaffLogin() {
       console.error("Fetch Error:", err);
       const targetUrl = import.meta.env.PROD 
         ? 'https://student-poratal.onrender.com/api/auth/staff/login' 
-        : 'http://localhost:5000/api/auth/staff/login';
+        : 'http://127.0.0.1:5000/api/auth/staff/login';
       setError(`Network Error while reaching: ${targetUrl} — Details: ${err.message || err.toString()}`);
     } finally {
       setLoading(false);
@@ -255,4 +255,4 @@ function StaffLogin() {
   );
 }
 
-export default StaffLogin;
+export default StaffLogin;

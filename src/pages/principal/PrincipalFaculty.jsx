@@ -24,7 +24,7 @@ export default function PrincipalFaculty() {
   const fetchFaculty = async () => {
     setLoading(true);
     try {
-      let url = `${import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://localhost:5000/api'}/principal/faculty_management?`;
+      let url = `${import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://127.0.0.1:5000/api'}/principal/faculty_management?`;
       if (departmentFilter !== 'All') {
         url += `department=${departmentFilter}&`;
       }
@@ -351,7 +351,7 @@ export default function PrincipalFaculty() {
                 
                 // Save to database automatically (Backend endpoint needs to support this)
                 try {
-                  await fetch(`${import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://localhost:5000/api'}/faculty/${editingRow.id}`, {
+                  await fetch(`${import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://127.0.0.1:5000/api'}/faculty/${editingRow.id}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(editingRow)

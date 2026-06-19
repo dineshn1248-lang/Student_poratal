@@ -1,4 +1,4 @@
-const API_BASE_URL = import.meta.env.PROD ? 'https://student-poratal.onrender.com' : 'http://localhost:5000'
+const API_BASE_URL = import.meta.env.PROD ? 'https://student-poratal.onrender.com' : 'http://127.0.0.1:5000'
 
 export async function apiFetch(path, { method = 'GET', token, body } = {}) {
   const headers = { 'Content-Type': 'application/json' }

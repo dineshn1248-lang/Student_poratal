@@ -32,12 +32,12 @@ export default function PrincipalExaminations() {
             const headers = { 'Authorization': `Bearer ${token}` };
             
             const [statsRes, semOverRes, curSemRes, regRes, backRes, revalRes] = await Promise.all([
-                fetch(`${import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://localhost:5000/api'}/principal/exams/dashboard_stats`, { headers }),
-                fetch(`${import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://localhost:5000/api'}/principal/exams/semester_overview`, { headers }),
-                fetch(`${import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://localhost:5000/api'}/principal/exams/current_semester_details`, { headers }),
-                fetch(`${import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://localhost:5000/api'}/principal/exams/registration_table`, { headers }),
-                fetch(`${import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://localhost:5000/api'}/principal/exams/backlog_monitoring`, { headers }),
-                fetch(`${import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://localhost:5000/api'}/principal/exams/revaluation_requests`, { headers })
+                fetch(`${import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://127.0.0.1:5000/api'}/principal/exams/dashboard_stats`, { headers }),
+                fetch(`${import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://127.0.0.1:5000/api'}/principal/exams/semester_overview`, { headers }),
+                fetch(`${import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://127.0.0.1:5000/api'}/principal/exams/current_semester_details`, { headers }),
+                fetch(`${import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://127.0.0.1:5000/api'}/principal/exams/registration_table`, { headers }),
+                fetch(`${import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://127.0.0.1:5000/api'}/principal/exams/backlog_monitoring`, { headers }),
+                fetch(`${import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://127.0.0.1:5000/api'}/principal/exams/revaluation_requests`, { headers })
             ]);
 
             setDashboardStats(await statsRes.json());

@@ -24,7 +24,7 @@ export default function PrincipalAnnouncements() {
         setLoading(true);
         try {
             const token = localStorage.getItem('token');
-            const resp = await fetch(`${import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://localhost:5000/api'}/principal/announcements`, {
+            const resp = await fetch(`${import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://127.0.0.1:5000/api'}/principal/announcements`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const data = await resp.json();
@@ -45,7 +45,7 @@ export default function PrincipalAnnouncements() {
         setSubmitting(true);
         try {
             const token = localStorage.getItem('token');
-            const resp = await fetch(`${import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://localhost:5000/api'}/principal/announcements`, {
+            const resp = await fetch(`${import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://127.0.0.1:5000/api'}/principal/announcements`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -87,7 +87,7 @@ export default function PrincipalAnnouncements() {
 
         try {
             const token = localStorage.getItem('token');
-            const resp = await fetch(`${import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://localhost:5000/api'}/principal/announcements/${id}`, {
+            const resp = await fetch(`${import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://127.0.0.1:5000/api'}/principal/announcements/${id}`, {
                 method: 'DELETE',
                 headers: { 'Authorization': `Bearer ${token}` }
             });

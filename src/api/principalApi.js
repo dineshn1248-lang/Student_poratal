@@ -3,7 +3,7 @@
 // All fetch calls should use these base URLs and helpers.
 // ─────────────────────────────────────────────────────────────────
 
-export const API_BASE = import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://localhost:5000/api';
+export const API_BASE = import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://127.0.0.1:5000/api';
 
 // ── Reusable fetch helper ─────────────────────────────────────────
 export async function apiFetch(path, options = {}) {

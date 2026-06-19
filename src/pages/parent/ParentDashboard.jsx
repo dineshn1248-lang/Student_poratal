@@ -83,7 +83,7 @@ export default function ParentDashboard() {
   const fetchDashboardData = async () => {
     try {
       const token = localStorage.getItem('token');
-      const dashResp = await fetch(`${import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://localhost:5000/api'}/student/dashboard`, { 
+      const dashResp = await fetch(`${import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://127.0.0.1:5000/api'}/student/dashboard`, { 
         headers: { 'Authorization': `Bearer ${token}` } 
       });
       if (dashResp.ok) {

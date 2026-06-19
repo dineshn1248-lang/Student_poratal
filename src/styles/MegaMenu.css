@@ -1,0 +1,177 @@
+.mega-menu-overlay {
+  position: absolute;
+  top: 100%;
+  right: -150px; /* Shifted left so it doesn't clip off the right edge of the screen */
+  left: auto;
+  transform: none;
+  width: max-content;
+  max-width: 90vw;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+  display: block;
+  z-index: 1000;
+  margin-top: 20px;
+}
+
+/* Add a pseudo-element invisible bridge to prevent mouse leave when moving from nav link to menu */
+.nav-item-wrapper {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 20px; /* The bridge */
+  margin-bottom: -20px;
+}
+
+.mega-menu-left {
+  padding: 30px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+
+.mega-menu-card {
+  display: flex;
+  align-items: flex-start;
+  padding: 20px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.02);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.mega-menu-card:hover, .mega-menu-card.active {
+  background: rgba(59, 130, 246, 0.1);
+  border-color: rgba(59, 130, 246, 0.3);
+  transform: translateY(-2px);
+}
+
+.mega-menu-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+  margin-right: 16px;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.mega-menu-card:hover .mega-menu-card-icon, .mega-menu-card.active .mega-menu-card-icon {
+  background: #3b82f6;
+  color: #ffffff;
+  transform: scale(1.05);
+}
+
+.mega-menu-card-content {
+  flex: 1;
+}
+
+.mega-menu-card-content h4 {
+  margin: 0 0 6px 0;
+  color: #f8fafc;
+  font-size: 16px;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.mega-menu-card:hover .mega-menu-card-content h4, .mega-menu-card.active .mega-menu-card-content h4 {
+  color: #60a5fa;
+}
+
+.mega-menu-card-content p {
+  margin: 0;
+  color: #94a3b8;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.submenu-arrow {
+  color: #60a5fa;
+  transition: transform 0.3s ease;
+}
+
+.mega-menu-card.active .submenu-arrow {
+  transform: translateX(4px);
+}
+
+/* Desktop Nested Submenu */
+.mega-submenu {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  margin-left: 10px;
+  width: 280px;
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  z-index: 1010;
+  padding: 15px 0;
+}
+
+.mega-submenu ul, .mobile-submenu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.mega-submenu li, .mobile-submenu li {
+  padding: 10px 20px;
+  color: #cbd5e1;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-left: 3px solid transparent;
+}
+
+.mega-submenu li:hover, .mobile-submenu li:hover {
+  background: rgba(59, 130, 246, 0.1);
+  color: #ffffff;
+  border-left: 3px solid #3b82f6;
+  padding-left: 24px;
+}
+
+/* Mobile Nested Submenu */
+.mobile-submenu {
+  margin-top: 10px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 900px) {
+  .mega-menu-overlay {
+    position: static;
+    transform: none;
+    width: 100%;
+    max-width: none;
+    flex-direction: column;
+    border-radius: 16px;
+    margin-top: 10px;
+    background: rgba(15, 23, 42, 0.95);
+  }
+
+  .nav-item-wrapper {
+    padding-bottom: 0;
+    margin-bottom: 0;
+    width: 100%;
+  }
+
+  .mega-menu-left {
+    grid-template-columns: 1fr;
+    padding: 20px;
+    gap: 12px;
+  }
+}

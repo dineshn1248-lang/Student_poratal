@@ -34,7 +34,7 @@ export default function PrincipalDashboard() {
       try {
         const baseUrl = import.meta.env.PROD 
           ? 'https://student-poratal.onrender.com/api' 
-          : 'http://localhost:5000/api';
+          : 'http://127.0.0.1:5000/api';
           
         const statsRes = await fetch(`${baseUrl}/principal/stats`);
         if (statsRes.ok) {

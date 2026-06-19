@@ -157,7 +157,7 @@ export default function StudentAIChat() {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`${import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://localhost:5000/api'}/student/ai-chat`, {
+      const res = await fetch(`${import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://127.0.0.1:5000/api'}/student/ai-chat`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
