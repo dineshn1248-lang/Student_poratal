@@ -18,7 +18,7 @@ function ProjectionBackground() {
         <Image 
           url={bgImage} 
           position={[0, camera.position.y, -50]} 
-          scale={[width, height]} 
+          scale={[width * 1.05, height * 1.05]} 
           transparent={true} 
           opacity={1}
           toneMapped={false}
@@ -55,11 +55,11 @@ export default function EntranceScene({ setAnimationState, animationState, isEnt
         fov={45} 
       />
       
-      <ambientLight intensity={1.2} color="#ffffff" />
+      <ambientLight intensity={1.5} color="#ffffff" />
       <directionalLight 
         castShadow 
-        position={[10, 15, 10]} 
-        intensity={1.5} 
+        position={[5, 15, 35]} 
+        intensity={2.0} 
         color="#ffffff"
         shadow-mapSize={[2048, 2048]}
         shadow-bias={-0.0001}

@@ -42,30 +42,31 @@ export default function StudentCharacter({ cameraRef, setAnimationState, isEnter
   useEffect(() => {
     if (!groupRef.current || !cameraRef.current) return;
 
-    // Start all the way back at the very beginning of the Nrupathunga University board
-    groupRef.current.position.set(-4.5, -1.8, 15);
-    groupRef.current.lookAt(-1.5, -1.8, 4); // Look exactly towards the end of the board
+    // Start on the right-side pathway
+    groupRef.current.position.set(3.5, -1.8, 15);
     
-    // Start camera further back to frame the entire walk along the board
-    cameraRef.current.position.set(-3, 2, 24);
+    // Look straight ahead along the right path
+    groupRef.current.lookAt(3.5, -1.8, -50);
+
+    // Start camera slightly to the side for a cinematic over-the-shoulder view
+    cameraRef.current.position.set(1.5, 2.5, 26);
 
     const tl = gsap.timeline();
 
-    // Walk and stop EXACTLY at the end point of the marble board
+    // Walk straight down the path
     tl.to(groupRef.current.position, {
-      x: -1.5, // Stop before crossing into the center pathway
-      z: 4, // Depth aligned with the end of the board
+      x: 3.5, // Keep him perfectly on the path heading to the blue portal
+      y: -1.8, // Do NOT animate Y downwards, stay on the 3D floor
+      z: 4, // Stop walking at z=4 so he doesn't float into the background perspective
       duration: 12,
       ease: "none", // Smooth linear walk
       onStart: () => setAnimationState("WALKING")
     });
 
-    // The camera slowly zooms in and pans right as the avatar walks.
-    // By the time it stops at x=0.5 and z=10, the field of view perfectly crops out the Nrupathunga board on the left, 
-    // leaving only the university building and the portal visible.
+    // The camera slowly zooms in and pans right as the avatar walks
     gsap.to(cameraRef.current.position, {
       x: 0.5, 
-      z: 10,  
+      z: 14,  // Don't zoom in too tightly at the end
       duration: 12,
       ease: "none",
     });
@@ -132,7 +133,7 @@ export default function StudentCharacter({ cameraRef, setAnimationState, isEnter
   }, [isEntering, cameraRef]);
 
   return (
-    <group ref={groupRef} scale={0.035}>
+    <group ref={groupRef} scale={0.025}>
       <primitive object={scene} position={[0, 0, 0]} />
     </group>
   );

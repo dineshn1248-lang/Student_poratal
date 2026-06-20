@@ -5,6 +5,7 @@ import { User, Lock, Mail, GraduationCap, Users, Eye, EyeOff, BookOpen, Calendar
 
 import "../../styles/StudentLogin.css";
 import nrupathungaLogo from "../../assets/nrupathunga_logo.png";
+import univPhoto from "../../assets/bg.png";
 
 function StudentLogin() {
   const navigate = useNavigate();

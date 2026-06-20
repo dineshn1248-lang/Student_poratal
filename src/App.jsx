@@ -30,7 +30,6 @@ const StudentRegister = lazy(() => import("./pages/common/StudentRegister"));
 const ForgotPassword  = lazy(() => import("./pages/common/ForgotPassword"));
 const ResetPassword   = lazy(() => import("./pages/common/ResetPassword"));
 const LoginSelection  = lazy(() => import("./pages/common/LoginSelection"));
-const ParentLogin     = lazy(() => import("./pages/parent/ParentLogin"));
 
 // ── Lazy-loaded Portal Dashboards ─────────────────────────────────────────────
 const FacultyDashboard   = lazy(() => import("./pages/faculty/FacultyDashboard"));
@@ -127,7 +126,6 @@ function App() {
           <Route path="/student-register" element={<StudentRegister />} />
           <Route path="/forgot-password"  element={<ForgotPassword />} />
           <Route path="/reset-password"   element={<ResetPassword />} />
-          <Route path="/parent-login"     element={<ParentLogin />} />
 
           <Route path="/faculty-dashboard"   element={<FacultyDashboard />} />
 

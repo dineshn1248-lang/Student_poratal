@@ -20,7 +20,7 @@
 .std-login-hero {
   flex: 1.25;
   position: relative;
-  background: url("../assets/bg.jpeg") no-repeat center center / cover;
+  background: url("../assets/gallery_1.JPG") no-repeat center center / cover;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
