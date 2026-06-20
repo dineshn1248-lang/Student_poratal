@@ -195,28 +195,7 @@ function Home() {
           </div>
         </section>
 
-        {/* Departments Section */}
-        <section id="departments" className="info-section departments-section bg-gray">
-          <div className="section-header text-center">
-            <span className="section-eyebrow">Academics</span>
-            <h2>Our Departments</h2>
-            <div className="title-underline"></div>
-            <p className="section-desc">Explore our wide range of academic disciplines and specialized programs.</p>
-          </div>
-          <div className="departments-grid">
-            {['Physics', 'Chemistry & Bio-Chemistry', 'Computer Science', 'Mathematics', 'Statistics', 'Biotechnology', 'Botany', 'Zoology', 'Microbiology', 'Languages (English, Kannada, etc.)', 'Education', 'Geology'].map((dept, index) => (
-              <div key={index} className="dept-card">
-                <div className="dept-img-placeholder">
-                  <BookOpen size={40} className="dept-icon-placeholder" />
-                </div>
-                <div className="dept-info">
-                  <h4>Department of {dept}</h4>
-                  <a href="#" className="dept-link">View Programs <ArrowRight size={14} /></a>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
+
 
         {/* Facilities Section */}
         <section id="facilities" className="info-section facilities-section">
