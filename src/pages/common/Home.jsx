@@ -205,7 +205,7 @@ function Home() {
             <div className="title-underline"></div>
           </div>
           <div className="facilities-grid">
-             <div className="facility-item">
+             <div onClick={() => navigate('/facilities/library')} className="facility-item" style={{ display: 'flex', cursor: 'pointer' }}>
                 <div className="fac-icon"><Landmark size={28} /></div>
                 <div>
                   <h4>Central Library</h4>
