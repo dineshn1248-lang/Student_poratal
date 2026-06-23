@@ -47,11 +47,11 @@ export default function HODDashboard() {
   const quickLinks = [
     { label: "Faculty List", icon: <FaUserTie />, action: () => setIsFacultyModalOpen(true), color: '#10b981' },
     { label: "Student List", icon: <FaUsers />, action: () => navigate('/hod/students') },
-    { label: "Attendance Report", icon: <FaCalendarCheck />, color: '#10b981' },
-    { label: "Internal Marks Entry", icon: <FaPenSquare />, color: '#6366f1' },
-    { label: "Exam Registration", icon: <FaRegAddressCard />, color: '#3b82f6' },
-    { label: "Backlog Report", icon: <FaExclamationCircle />, color: '#f59e0b' },
-    { label: "Department Report", icon: <FaChartPie />, color: '#14b8a6' },
+    { label: "Attendance Report", icon: <FaCalendarCheck />, color: '#10b981', action: () => navigate('/hod/attendance') },
+    { label: "Internal Marks Entry", icon: <FaPenSquare />, color: '#6366f1', action: () => navigate('/hod/internal-marks') },
+    { label: "Exam Registration", icon: <FaRegAddressCard />, color: '#3b82f6', action: () => navigate('/hod/examinations') },
+    { label: "Backlog Report", icon: <FaExclamationCircle />, color: '#f59e0b', action: () => navigate('/hod/backlogs') },
+    { label: "Department Report", icon: <FaChartPie />, color: '#14b8a6', action: () => navigate('/hod/reports') },
   ];
 
   const [stats, setStats] = useState({
@@ -86,6 +86,9 @@ export default function HODDashboard() {
     fetchStats();
   }, []);
 
+  const calculatedTotalFees = (stats.total_students || 0) * 23000;
+  const formattedFees = `₹${calculatedTotalFees.toLocaleString('en-IN')}`;
+
   return (
     <div className="hod-dashboard-content">
       <div className="section-header">
@@ -112,8 +115,8 @@ export default function HODDashboard() {
         <StatCard label="Avg Attendance" value={stats.avg_attendance} icon={<FaCalendarCheck />} color="#10b981" bg="#ecfdf5" onClick={() => navigate('/hod/attendance')} style={{ cursor: 'pointer' }} />
         <StatCard 
           label="FEES COLLECTION" 
-          value={stats.total_collected_fees || '₹0'} 
-          subtext={`Collection: ${stats.fees_collection_percentage || '0%'}`}
+          value={formattedFees} 
+          subtext={`Total based on ₹23,000 per student`}
           icon={<FaFileInvoice />} 
           color="#f59e0b" 
           bg="#fffbeb" 

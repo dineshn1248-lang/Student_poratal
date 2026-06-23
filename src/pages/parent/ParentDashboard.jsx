@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   FaUserGraduate, FaClipboardList, FaCheckCircle, 
-  FaExclamationTriangle, FaStar, FaQuoteLeft, FaStarHalfAlt, FaFileAlt
+  FaExclamationTriangle, FaStar, FaQuoteLeft, FaStarHalfAlt, FaFileAlt, FaUserTie
 } from 'react-icons/fa';
 import WelcomeBanner from '../../components/WelcomeBanner';
 import './Parent.css';
@@ -111,10 +111,26 @@ export default function ParentDashboard() {
     return 0; // Default mock fallback is now 0
   };
 
+  const studentName = localStorage.getItem("studentName") || "Student";
+  const firstName = studentName.split(" ")[0];
+
   if (loading) return <div>Loading dashboard...</div>;
 
   const attendanceNum = getOverallAttendanceNumber();
   const backlogsNum = getBacklogsNumber();
+  const isFailed = backlogsNum > 0;
+
+  // Dynamically update marksheet with failed subjects if any
+  let displayMarksheet = [...fullMarksheet];
+  if (stats?.failed_subjects && stats.failed_subjects.length > 0) {
+    displayMarksheet = fullMarksheet.map(item => {
+      const failedSub = stats.failed_subjects.find(fs => fs.subject === item.subject);
+      if (failedSub) {
+        return { ...item, obtained: failedSub.marks, result: "FAIL" };
+      }
+      return item;
+    });
+  }
 
   return (
     <>
@@ -145,13 +161,13 @@ export default function ParentDashboard() {
         </div>
 
         <div className="parent-kpi-card">
-          <div className="parent-kpi-icon" style={{ background: '#dcfce7', color: '#10b981' }}>
-            <FaCheckCircle />
+          <div className="parent-kpi-icon" style={{ background: isFailed ? '#fee2e2' : '#dcfce7', color: isFailed ? '#ef4444' : '#10b981' }}>
+            {isFailed ? <FaExclamationTriangle /> : <FaCheckCircle />}
           </div>
           <div className="parent-kpi-content">
             <h4>Semester Result</h4>
-            <h2 style={{ color: '#10b981' }}>PASS</h2>
-            <p style={{ color: '#10b981' }}>Result Declared</p>
+            <h2 style={{ color: isFailed ? '#ef4444' : '#10b981' }}>{isFailed ? 'FAIL' : 'PASS'}</h2>
+            <p style={{ color: isFailed ? '#ef4444' : '#10b981' }}>Result Declared</p>
           </div>
         </div>
 
@@ -178,16 +194,14 @@ export default function ParentDashboard() {
         </div>
       </div>
 
-      {/* 2. STUDENT PROFILE STRIP */}
-      <div className="parent-student-strip">
-        <img src="https://ui-avatars.com/api/?name=Lakshmi+Nisimappa+Chakrasali&background=1e293b&color=fff" alt="Student" className="parent-student-avatar" />
-        <div className="parent-student-details">
-          <h3>Lakshmi Nisimappa Chakrasali</h3>
-          <div className="parent-student-meta">
-            <span><FaUserGraduate /> Reg No: U24AN23S0245</span>
-            <span>BCA</span>
-            <span>6th Semester</span>
-            <span>Section A</span>
+      {/* 2. MAIN DASHBOARD AREA */}
+      <div className="parent-dashboard-main">
+        {/* Profile Snapshot */}
+        <div className="parent-snapshot-card">
+          <img src={`https://ui-avatars.com/api/?name=${encodeURIComponent(studentName)}&background=1e293b&color=fff`} alt="Student" className="parent-student-avatar" />
+          <div className="parent-student-info">
+            <h3>{studentName}</h3>
+            <p>BCA - 6th Semester (Section A)</p>
           </div>
         </div>
       </div>
@@ -263,13 +277,20 @@ export default function ParentDashboard() {
               </tr>
             </thead>
             <tbody>
-              {fullMarksheet.map((row, i) => (
+              {displayMarksheet.map((row, i) => (
                 <tr key={i} className="parent-table-row">
                   <td style={{ fontWeight: '600' }}>{row.subject}</td>
                   <td>{row.total}</td>
-                  <td style={{ fontWeight: '800' }}>{row.obtained}</td>
+                  <td style={{ fontWeight: '800', color: row.result === "FAIL" ? '#ef4444' : 'inherit' }}>{row.obtained}</td>
                   <td>
-                    <span style={{ background: '#dcfce7', color: '#166534', padding: '4px 8px', borderRadius: '4px', fontSize: '12px', fontWeight: 'bold' }}>
+                    <span style={{ 
+                      background: row.result === "FAIL" ? '#fee2e2' : '#dcfce7', 
+                      color: row.result === "FAIL" ? '#ef4444' : '#166534', 
+                      padding: '4px 8px', 
+                      borderRadius: '4px', 
+                      fontSize: '12px', 
+                      fontWeight: 'bold' 
+                    }}>
                       {row.result}
                     </span>
                   </td>
@@ -305,10 +326,11 @@ export default function ParentDashboard() {
         <div className="parent-panel">
           <div className="parent-panel-header">Teacher's Suggestion</div>
           <div className="teacher-suggestion-box">
-            <FaQuoteLeft className="quote-icon" />
-            <p className="teacher-suggestion-text">
-              Lakshmi is doing well in most subjects. She needs to improve her attendance in Computer Networks and focus more on practical sessions.
-            </p>
+            <div className="parent-panel-content">
+              <p className="parent-remark-text">
+                {firstName} is doing well in most subjects. Needs to improve attendance in Computer Networks and focus more on practical sessions.
+              </p>
+            </div>
           </div>
           <div className="teacher-profile">
             <img src="https://ui-avatars.com/api/?name=Prof+Kavya&background=e2e8f0" alt="Prof" className="teacher-avatar" />
@@ -363,8 +385,17 @@ export default function ParentDashboard() {
 
       {/* 5. FOOTER BANNER */}
       <div className="parent-footer-banner">
-        <FaStarHalfAlt size={18} />
-        Keep encouraging Lakshmi. Regular study and consistent attendance will help her achieve academic success!
+        <div className="parent-panel-content mentor-note">
+          <div className="mentor-avatar">
+            <FaUserTie size={24} color="#6366f1" />
+          </div>
+          <div className="mentor-message">
+            <h4>Note from Class Mentor</h4>
+            <p>
+              Keep encouraging {firstName}. Regular study and consistent attendance will help them achieve academic success!
+            </p>
+          </div>
+        </div>
       </div>
       
     </>

@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 load_dotenv(override=True)
-from flask import Flask, jsonify
+from flask import Flask, jsonify, send_from_directory
 from flask_cors import CORS
 from database import db
 from routes.auth_routes import auth_bp
@@ -19,7 +19,7 @@ from models import (
 ) # Import all models to ensure they are registered in the metadata
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__, static_folder='../dist', static_url_path='/')
     
     # Allow all origins for testing to prevent CORS issues
     CORS(app, resources={r"/api/*": {"origins": "*"}})
@@ -58,9 +58,17 @@ def create_app():
     app.register_blueprint(student_bp, url_prefix='/api/student')
 
     # Add health check endpoints for Render and general verification
-    @app.route('/', methods=['GET'])
-    def index():
-        return jsonify({"status": "healthy", "service": "Student Portal API", "message": "Backend is running!"}), 200
+    @app.route('/', defaults={'path': ''})
+    @app.route('/<path:path>')
+    def serve(path):
+        if path.startswith('api/'):
+            return jsonify({"error": "Not found"}), 404
+        if path != "" and os.path.exists(os.path.join(app.static_folder, path)):
+            return send_from_directory(app.static_folder, path)
+        else:
+            if os.path.exists(os.path.join(app.static_folder, 'index.html')):
+                return send_from_directory(app.static_folder, 'index.html')
+            return jsonify({"status": "healthy", "service": "Student Portal API", "message": "Backend is running! Frontend build not found."}), 200
 
     @app.route('/health', methods=['GET'])
     def health_check():

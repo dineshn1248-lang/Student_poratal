@@ -12,8 +12,8 @@ function StudentLogin() {
 
   const [role, setRole] = useState("student");
   const [uan, setUan] = useState("");
-  const [studentPassword, setStudentPassword] = useState("Nrup@123456!");
-  const [parentId, setParentId] = useState("");
+  const [studentPassword, setStudentPassword] = useState("");
+  const [mobileNumber, setMobileNumber] = useState("");
   const [parentPassword, setParentPassword] = useState("");
 
   const [showPassword, setShowPassword] = useState(false);
@@ -64,8 +64,8 @@ function StudentLogin() {
 
   const handleParentLogin = async (e) => {
     e?.preventDefault();
-    if (!parentId) {
-      setError("Please enter Parent ID");
+    if (!mobileNumber) {
+      setError("Please enter your Registered Mobile Number");
       return;
     }
 
@@ -78,7 +78,7 @@ function StudentLogin() {
       const res = await fetch(`${baseUrl}/auth/parent/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ parent_id: parentId }),
+        body: JSON.stringify({ parent_id: mobileNumber, password: parentPassword }),
       });
 
       const data = await res.json();
@@ -86,6 +86,7 @@ function StudentLogin() {
         localStorage.setItem("token", data.token);
         localStorage.setItem("userRole", "parent");
         localStorage.setItem("userName", data.user.name);
+        localStorage.setItem("studentName", data.user.student_name);
         navigate("/parent/dashboard");
       } else {
         setError(data?.error || "Invalid parent credentials");
@@ -206,12 +207,12 @@ function StudentLogin() {
                 className="login-form"
               >
                 <div className="login-field-group">
-                  <label className="field-title-label">UAN Number</label>
+                  <label className="field-title-label">Register Number</label>
                   <div className="input-with-icon">
                     <User className="field-icon" size={18} />
                     <input 
                       type="text" 
-                      placeholder="Enter your UAN number"
+                      placeholder="Enter Register Number"
                       value={uan}
                       onChange={(e) => setUan(e.target.value)}
                       autoComplete="username"
@@ -225,11 +226,12 @@ function StudentLogin() {
                   <div className="input-with-icon">
                     <Lock className="field-icon" size={18} />
                     <input 
-                      type={showPassword ? "text" : "password"} 
+                      type="text"
+                      style={{ WebkitTextSecurity: showPassword ? 'none' : 'disc' }}
                       placeholder="Enter your password"
                       value={studentPassword}
                       onChange={(e) => setStudentPassword(e.target.value)}
-                      autoComplete="new-password"
+                      autoComplete="off"
                       required
                     />
                     <button 
@@ -267,15 +269,17 @@ function StudentLogin() {
                 className="login-form"
               >
                 <div className="login-field-group">
-                  <label className="field-title-label">Parent Registered ID</label>
+                  <label className="field-title-label">Personal Number</label>
                   <div className="input-with-icon">
                     <User className="field-icon" size={18} />
                     <input 
-                      type="text" 
-                      placeholder="Enter parent ID (e.g. PAR2026001)"
-                      value={parentId}
-                      onChange={(e) => setParentId(e.target.value)}
-                      autoComplete="username"
+                      type="tel" 
+                      placeholder="Enter Personal Number"
+                      value={mobileNumber}
+                      onChange={(e) => setMobileNumber(e.target.value)}
+                      autoComplete="tel"
+                      pattern="[0-9+]{10,13}"
+                      maxLength="13"
                       required
                     />
                   </div>

@@ -118,7 +118,6 @@ export default function ParentProfile() {
         <div className="parent-panel">
           <div className="prof-panel-header">
             <h4>Parent / Guardian Information</h4>
-            <button className="prof-edit-btn"><FaPen size={10} /> Edit</button>
           </div>
           <div className="prof-details-list">
             <div className="prof-detail-item">
@@ -185,7 +184,6 @@ export default function ParentProfile() {
         <div className="parent-panel" style={{ background: '#fffbeb', borderColor: '#fef08a' }}>
           <div className="prof-panel-header">
             <h4>Emergency Contact</h4>
-            <button className="prof-edit-btn"><FaPen size={10} /> Edit</button>
           </div>
           <div className="prof-details-list">
             <div className="prof-detail-item">
@@ -211,7 +209,6 @@ export default function ParentProfile() {
         <div className="parent-panel" style={{ background: '#faf5ff', borderColor: '#f3e8ff' }}>
           <div className="prof-panel-header">
             <h4>Account Information</h4>
-            <button className="prof-edit-btn"><FaPen size={10} /> Edit</button>
           </div>
           <div className="prof-details-list">
             <div className="prof-detail-item">

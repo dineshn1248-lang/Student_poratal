@@ -216,14 +216,7 @@ export default function HODParentCommunication() {
                         <span className="summary-trend"><FaArrowRight className="trend-icon"/> This Month</span>
                     </div>
                 </div>
-                <div className="summary-card">
-                    <div className="summary-icon icon-email"><FaEnvelope /></div>
-                    <div className="summary-details">
-                        <span className="summary-label">Emails Delivered</span>
-                        <span className="summary-value">{stats.email.delivered}</span>
-                        <span className="summary-trend"><FaArrowRight className="trend-icon"/> This Month</span>
-                    </div>
-                </div>
+
                 <div className="summary-card">
                     <div className="summary-icon icon-sms"><FaSms /></div>
                     <div className="summary-details">
@@ -284,33 +277,7 @@ export default function HODParentCommunication() {
                             </div>
                         </div>
 
-                        {/* Email Channel */}
-                        <div className="channel-card border-email">
-                            <div className="channel-header">
-                                <div className="channel-icon-large icon-email"><FaEnvelope /></div>
-                                <div>
-                                    <h3 className="channel-title">Email</h3>
-                                    <p className="channel-desc">Send emails via Gmail SMTP</p>
-                                </div>
-                            </div>
-                            <div className="channel-actions">
-                                <button className="btn-outline outline-email" onClick={() => handleSendWaterfall('Email')}>Send Email</button>
-                                <button className="btn-outline outline-email" onClick={() => handleSendBulk('all')}>Bulk Email</button>
-                            </div>
-                            <div className="channel-stats">
-                                <div className="c-stat">
-                                    <span className="c-stat-label">Delivered</span>
-                                    <span className="c-stat-val val-blue">{stats.email.delivered}</span>
-                                </div>
-                                <div className="c-stat">
-                                    <span className="c-stat-label">Failed</span>
-                                    <span className="c-stat-val val-red">{stats.email.failed}</span>
-                                </div>
-                            </div>
-                            <div className="channel-footer text-email">
-                                Success Rate: {stats.email.success_rate}%
-                            </div>
-                        </div>
+
 
                         {/* SMS Channel */}
                         <div className="channel-card border-sms">
@@ -483,7 +450,7 @@ export default function HODParentCommunication() {
                         
                         <div className="preview-actions">
                             <button className="btn-solid bg-whatsapp" onClick={() => handleSendWaterfall('Meta WhatsApp')} disabled={!selectedStudentId || sending}><FaWhatsapp/> Send WhatsApp</button>
-                            <button className="btn-solid bg-email" onClick={() => handleSendWaterfall('Email')} disabled={!selectedStudentId || sending}><FaEnvelope/> Send Email</button>
+
                             <button className="btn-solid bg-sms" onClick={() => handleSendWaterfall('SMS')} disabled={!selectedStudentId || sending}><FaSms/> Send SMS</button>
                         </div>
                     </div>

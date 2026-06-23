@@ -38,7 +38,7 @@ export default function History() {
 
   const facilities = [
     { title: "Central Library", icon: <Library size={40} />, color: "rgba(59, 130, 246, 0.2)", image: "/library.jpg", link: "/facilities/library" },
-    { title: "Computer Labs", icon: <Laptop size={40} />, color: "rgba(16, 185, 129, 0.2)", image: "/computer-lab.jpg", link: "/facilities/computer-labs" },
+    { title: "Labs", icon: <TestTube size={40} />, color: "rgba(16, 185, 129, 0.2)", image: "/chemistry-lab.jpg", link: "/facilities/labs" },
     { title: "Classrooms", icon: <Presentation size={40} />, color: "rgba(245, 158, 11, 0.2)", image: "/classroom-1.jpg", link: "/facilities/classrooms" },
     { title: "Sports & Activities", icon: <Trophy size={40} />, color: "rgba(239, 68, 68, 0.2)", image: "/activity-1.jpg", link: "/facilities/sports-activities" }
   ];
@@ -214,8 +214,8 @@ export default function History() {
       {/* 6. Experience Nrupathunga (QR Codes & Map) */}
       <section style={{ padding: '100px 20px', background: 'linear-gradient(to top, #1e293b, #0f172a)' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-          <h2 style={{ textAlign: 'center', fontSize: '42px', marginBottom: '20px', fontWeight: '800' }}>Visit Us Today</h2>
-          <p style={{ textAlign: 'center', color: '#94a3b8', fontSize: '18px', marginBottom: '60px' }}>Scan the codes below to explore digitally or navigate to our physical campus.</p>
+          <h2 style={{ textAlign: 'center', fontSize: '42px', marginBottom: '20px', fontWeight: '800', color: '#ffffff' }}>Visit Us Today</h2>
+          <p style={{ textAlign: 'center', color: '#e2e8f0', fontSize: '18px', marginBottom: '60px' }}>Scan the codes below to explore digitally or navigate to our physical campus.</p>
           
           <div className="qr-section">
             <motion.div 

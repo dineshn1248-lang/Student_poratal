@@ -24,8 +24,8 @@ export default function Sidebar({ open, toggle }) {
   ];
 
   const handleLogout = () => {
-    localStorage.clear();
-    navigate("/");
+    localStorage.removeItem("userName");
+    navigate("/login-portal");
   };
 
   return (

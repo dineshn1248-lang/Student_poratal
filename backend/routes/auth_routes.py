@@ -236,7 +236,10 @@ def parent_login():
         return jsonify({"error": "Missing required fields"}), 400
 
     parent = Parent.query.filter(
-        (Parent.parent_id == parent_id) | (Parent.token == parent_id)
+        (Parent.parent_id == parent_id) | 
+        (Parent.token == parent_id) |
+        (Parent.phone_number == parent_id) |
+        (Parent.phone_number == f"+91{parent_id}")
     ).first()
 
     if parent:

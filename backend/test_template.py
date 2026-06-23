@@ -6,7 +6,7 @@ load_dotenv()
 meta_token = os.environ.get('META_ACCESS_TOKEN', '')
 meta_phone_id = os.environ.get('META_PHONE_NUMBER_ID', '')
 
-url = f"https://graph.facebook.com/v17.0/{meta_phone_id}/messages"
+url = f"https://graph.facebook.com/v19.0/{meta_phone_id}/messages"
 headers = {
     "Authorization": f"Bearer {meta_token}",
     "Content-Type": "application/json"

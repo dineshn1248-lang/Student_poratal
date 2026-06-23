@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { Shield, Users, ArrowRight, BarChart2, GraduationCap, Headphones, Info, Phone, LogIn, Landmark, ExternalLink, Building2, BookOpen, Trophy, Lightbulb, Award } from "lucide-react";
+import { Shield, Users, ArrowRight, BarChart2, GraduationCap, Headphones, Info, Phone, LogIn, Landmark, ExternalLink, Building2, BookOpen, Trophy, Lightbulb, Award, Mail, MessageCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import AboutMegaMenu from "../../components/common/AboutMegaMenu";
 import "../../styles/Home.css";
@@ -14,6 +14,7 @@ import viceChancellorImg from "../../assets/vice_chancellor.png";
 function Home() {
   const navigate = useNavigate();
   const [showMegaMenu, setShowMegaMenu] = useState(false);
+  const [showContactMenu, setShowContactMenu] = useState(false);
 
   return (
     <motion.div 
@@ -60,8 +61,50 @@ function Home() {
                  </AnimatePresence>
                </div>
 
-               <a href="#departments"><span className="nav-icon"><BookOpen size={14} /></span> Departments</a>
-               <a href="#contact"><span className="nav-icon"><Phone size={14} /></span> Contact</a>
+               <a href="#heads-of-department"><span className="nav-icon"><BookOpen size={14} /></span> Department</a>
+               
+               <div 
+                 className="nav-item-wrapper"
+                 onMouseEnter={() => setShowContactMenu(true)}
+                 onMouseLeave={() => setShowContactMenu(false)}
+                 style={{ position: 'relative' }}
+               >
+                 <a href="#contact" onClick={(e) => e.preventDefault()}>
+                   <span className="nav-icon"><Phone size={14} /></span> Contact
+                 </a>
+                 <AnimatePresence>
+                   {showContactMenu && (
+                     <motion.div
+                       initial={{ opacity: 0, y: 10 }}
+                       animate={{ opacity: 1, y: 0 }}
+                       exit={{ opacity: 0, y: 10 }}
+                       transition={{ duration: 0.2 }}
+                       style={{
+                         position: 'absolute', top: '100%', right: '0', marginTop: '10px',
+                         background: '#ffffff', borderRadius: '12px', padding: '20px',
+                         boxShadow: '0 10px 25px rgba(0,0,0,0.1)', minWidth: '280px', zIndex: 1000,
+                         border: '1px solid #e2e8f0', textAlign: 'left', color: '#1e293b'
+                       }}
+                     >
+                       <h4 style={{ margin: '0 0 15px 0', fontSize: '16px', fontWeight: 'bold', borderBottom: '1px solid #f1f5f9', paddingBottom: '10px', color: '#0f172a' }}>Contact Us</h4>
+                       <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '14px' }}>
+                         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                           <Phone size={16} color="#3b82f6" /> <span>+91 80-22254102</span>
+                         </div>
+                         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                           <MessageCircle size={16} color="#10b981" /> <span>+91 9876543210 (WhatsApp)</span>
+                         </div>
+                         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                           <Mail size={16} color="#f43f5e" /> <span>info@nrupathunga.edu.in</span>
+                         </div>
+                         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                           <Building2 size={16} color="#8b5cf6" /> <span>Nrupathunga University, Bengaluru</span>
+                         </div>
+                       </div>
+                     </motion.div>
+                   )}
+                 </AnimatePresence>
+               </div>
                <button onClick={() => navigate('/login-portal')} className="nav-login-btn">
                  <LogIn size={14} /> Login Portal
                </button>
@@ -107,9 +150,12 @@ function Home() {
              </motion.div>
            </div>
 
-           {/* Bottom Badges Grid */}
            <div className="hero-features-footer" style={{ marginTop: 'auto' }}>
-             <div className="feature-item">
+             <div 
+               className="feature-item" 
+               onClick={() => navigate('/facilities/classrooms')}
+               style={{ cursor: 'pointer' }}
+             >
                <div className="feature-icon blue-feat"><Building2 size={20} /></div>
                <div className="feature-text">
                  <h4>State-of-art Campus</h4>
@@ -119,7 +165,11 @@ function Home() {
              
              <div className="feature-divider" />
 
-             <div className="feature-item">
+             <div 
+               className="feature-item"
+               onClick={() => navigate('/facilities/labs')}
+               style={{ cursor: 'pointer' }}
+             >
                <div className="feature-icon purple-feat"><Lightbulb size={20} /></div>
                <div className="feature-text">
                  <h4>Innovation Hub</h4>
@@ -129,21 +179,15 @@ function Home() {
 
              <div className="feature-divider" />
 
-             <div className="feature-item">
+             <div 
+               className="feature-item"
+               onClick={() => navigate('/about/academics')}
+               style={{ cursor: 'pointer' }}
+             >
                <div className="feature-icon gold-feat"><GraduationCap size={20} /></div>
                <div className="feature-text">
                  <h4>Academic Excellence</h4>
                  <p>Expert faculty and comprehensive curriculum</p>
-               </div>
-             </div>
-
-             <div className="feature-divider" />
-
-             <div className="feature-item">
-               <div className="feature-icon green-feat"><Trophy size={20} /></div>
-               <div className="feature-text">
-                 <h4>Global Recognition</h4>
-                 <p>Accredited programs and global ties</p>
                </div>
              </div>
            </div>
@@ -165,31 +209,55 @@ function Home() {
             </p>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '30px', maxWidth: '1000px', margin: '0 auto' }}>
-            <div style={{ background: '#fff', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 20px rgba(0,0,0,0.05)', textAlign: 'center', border: '1px solid #e2e8f0' }}>
+            <div style={{ background: 'rgba(255, 255, 255, 0.03)', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 20px rgba(0,0,0,0.2)', textAlign: 'center', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
               <img src={chancellorImg} alt="Sri. Thaawarchand Gehlot" style={{ width: '100%', height: '320px', objectFit: 'cover', filter: 'contrast(1.05) brightness(0.95)' }} />
               <div style={{ padding: '24px 20px' }}>
-                <h3 style={{ margin: '0 0 8px 0', color: '#0f172a', fontSize: '20px', fontWeight: '800' }}>Sri. Thaawarchand Gehlot</h3>
-                <div style={{ display: 'inline-block', padding: '4px 12px', background: 'rgba(59, 130, 246, 0.1)', color: '#2563eb', borderRadius: '8px', fontWeight: '600', fontSize: '13px' }}>
+                <h3 style={{ margin: '0 0 8px 0', color: '#ffffff', fontSize: '20px', fontWeight: '800' }}>Sri. Thaawarchand Gehlot</h3>
+                <div style={{ display: 'inline-block', padding: '4px 12px', background: 'rgba(59, 130, 246, 0.1)', color: '#2563eb', borderRadius: '8px', fontWeight: '600', fontSize: '13px', marginBottom: '15px' }}>
                   Chancellor
                 </div>
+                <button 
+                  onClick={() => navigate('/about/chancellor')}
+                  style={{ display: 'block', width: '100%', padding: '10px', background: 'rgba(59, 130, 246, 0.1)', border: '1px solid rgba(59, 130, 246, 0.3)', borderRadius: '8px', color: '#60a5fa', fontWeight: 'bold', cursor: 'pointer', transition: 'background 0.2s' }}
+                  onMouseOver={(e) => e.currentTarget.style.background = 'rgba(59, 130, 246, 0.2)'}
+                  onMouseOut={(e) => e.currentTarget.style.background = 'rgba(59, 130, 246, 0.1)'}
+                >
+                  Read More
+                </button>
               </div>
             </div>
-            <div style={{ background: '#fff', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 20px rgba(0,0,0,0.05)', textAlign: 'center', border: '1px solid #e2e8f0' }}>
+            <div style={{ background: 'rgba(255, 255, 255, 0.03)', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 20px rgba(0,0,0,0.2)', textAlign: 'center', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
               <img src={proChancellorImg} alt="Dr. M C Sudhakar" style={{ width: '100%', height: '320px', objectFit: 'cover', filter: 'contrast(1.05) brightness(0.95)' }} />
               <div style={{ padding: '24px 20px' }}>
-                <h3 style={{ margin: '0 0 8px 0', color: '#0f172a', fontSize: '20px', fontWeight: '800' }}>Dr. M C Sudhakar</h3>
-                <div style={{ display: 'inline-block', padding: '4px 12px', background: 'rgba(59, 130, 246, 0.1)', color: '#2563eb', borderRadius: '8px', fontWeight: '600', fontSize: '13px' }}>
+                <h3 style={{ margin: '0 0 8px 0', color: '#ffffff', fontSize: '20px', fontWeight: '800' }}>Dr. M C Sudhakar</h3>
+                <div style={{ display: 'inline-block', padding: '4px 12px', background: 'rgba(59, 130, 246, 0.1)', color: '#2563eb', borderRadius: '8px', fontWeight: '600', fontSize: '13px', marginBottom: '15px' }}>
                   Pro Chancellor
                 </div>
+                <button 
+                  onClick={() => navigate('/about/pro-chancellor')}
+                  style={{ display: 'block', width: '100%', padding: '10px', background: 'rgba(59, 130, 246, 0.1)', border: '1px solid rgba(59, 130, 246, 0.3)', borderRadius: '8px', color: '#60a5fa', fontWeight: 'bold', cursor: 'pointer', transition: 'background 0.2s' }}
+                  onMouseOver={(e) => e.currentTarget.style.background = 'rgba(59, 130, 246, 0.2)'}
+                  onMouseOut={(e) => e.currentTarget.style.background = 'rgba(59, 130, 246, 0.1)'}
+                >
+                  Read More
+                </button>
               </div>
             </div>
-            <div style={{ background: '#fff', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 20px rgba(0,0,0,0.05)', textAlign: 'center', border: '1px solid #e2e8f0' }}>
+            <div style={{ background: 'rgba(255, 255, 255, 0.03)', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 20px rgba(0,0,0,0.2)', textAlign: 'center', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
               <img src={viceChancellorImg} alt="Dr Mohan Kumar B K" style={{ width: '100%', height: '320px', objectFit: 'cover', filter: 'contrast(1.05) brightness(0.95)' }} />
               <div style={{ padding: '24px 20px' }}>
-                <h3 style={{ margin: '0 0 8px 0', color: '#0f172a', fontSize: '20px', fontWeight: '800' }}>Dr Mohan Kumar B K</h3>
-                <div style={{ display: 'inline-block', padding: '4px 12px', background: 'rgba(59, 130, 246, 0.1)', color: '#2563eb', borderRadius: '8px', fontWeight: '600', fontSize: '13px' }}>
+                <h3 style={{ margin: '0 0 8px 0', color: '#ffffff', fontSize: '20px', fontWeight: '800' }}>Dr Mohan Kumar B K</h3>
+                <div style={{ display: 'inline-block', padding: '4px 12px', background: 'rgba(59, 130, 246, 0.1)', color: '#2563eb', borderRadius: '8px', fontWeight: '600', fontSize: '13px', marginBottom: '15px' }}>
                   Vice Chancellor
                 </div>
+                <button 
+                  onClick={() => navigate('/about/vice-chancellor')}
+                  style={{ display: 'block', width: '100%', padding: '10px', background: 'rgba(59, 130, 246, 0.1)', border: '1px solid rgba(59, 130, 246, 0.3)', borderRadius: '8px', color: '#60a5fa', fontWeight: 'bold', cursor: 'pointer', transition: 'background 0.2s' }}
+                  onMouseOver={(e) => e.currentTarget.style.background = 'rgba(59, 130, 246, 0.2)'}
+                  onMouseOut={(e) => e.currentTarget.style.background = 'rgba(59, 130, 246, 0.1)'}
+                >
+                  Read More
+                </button>
               </div>
             </div>
           </div>
@@ -212,25 +280,25 @@ function Home() {
                   <p>Over 100,000 volumes, digital journals, and serene reading spaces.</p>
                 </div>
              </div>
-             <div className="facility-item">
+             <div onClick={() => navigate('/facilities/computer-labs')} className="facility-item" style={{ display: 'flex', cursor: 'pointer' }}>
                 <div className="fac-icon"><BarChart2 size={28} /></div>
                 <div>
-                  <h4>Advanced Laboratories</h4>
+                  <h4>Computer Labs</h4>
                   <p>State-of-the-art equipment for science and computer disciplines.</p>
                 </div>
              </div>
-             <div className="facility-item">
+             <div onClick={() => navigate('/facilities/sports-activities')} className="facility-item" style={{ display: 'flex', cursor: 'pointer' }}>
                 <div className="fac-icon"><Users size={28} /></div>
                 <div>
                   <h4>Sports Complex</h4>
                   <p>Indoor and outdoor athletic facilities for holistic student development.</p>
                 </div>
              </div>
-             <div className="facility-item">
+             <div onClick={() => navigate('/facilities/hostels')} className="facility-item" style={{ display: 'flex', cursor: 'pointer' }}>
                 <div className="fac-icon"><Building2 size={28} /></div>
                 <div>
                   <h4>Student Hostels</h4>
-                  <p>Safe, secure, and comfortable accommodation for outstation students.</p>
+                  <p>Comfortable accommodation with modern amenities and 24/7 security.</p>
                 </div>
              </div>
           </div>

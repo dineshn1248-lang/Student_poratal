@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { HelpCircle, BookOpen, MessageSquare, X } from 'lucide-react';
+import { HelpCircle, BookOpen, MessageSquare, X, ArrowLeft } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import '../../styles/QuickActions.css';
 

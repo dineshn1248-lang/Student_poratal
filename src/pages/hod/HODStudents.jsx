@@ -12,6 +12,8 @@ export default function HODStudents() {
     const [expandedStudent, setExpandedStudent] = useState(null);
     const [activeSemTab, setActiveSemTab] = useState(1);
     const [searchQuery, setSearchQuery] = useState('');
+    const [showProfileModal, setShowProfileModal] = useState(false);
+    const [profileData, setProfileData] = useState(null);
 
     const [stats, setStats] = useState({
         total: 0,
@@ -43,8 +45,8 @@ export default function HODStudents() {
                             register_no: m.register_no,
                             full_name: m.full_name,
                             semester: m.current_semester || m.semester,
-                            cgpa: m.cgpa,
-                            sgpa: m.cgpa, // Can use cgpa as sgpa for now
+                            cgpa: m.cgpa ? Number(m.cgpa).toFixed(2) : 'N/A',
+                            sgpa: m.cgpa ? Number(m.cgpa).toFixed(2) : 'N/A', // Can use cgpa as sgpa for now
                             has_failed: false,
                             subjects: []
                         };
@@ -124,7 +126,21 @@ export default function HODStudents() {
             setExpandedStudent(null);
         } else {
             setExpandedStudent(studentId);
-            setActiveSemTab(currentSem || 1);
+            
+            // Find first failed semester to default to
+            const student = students.find(s => s.id === studentId);
+            let targetSem = currentSem || 1;
+            if (student && student.subjects) {
+                const failedSub = student.subjects.find(sub => sub.result === 'FAIL');
+                if (failedSub) {
+                    targetSem = failedSub.semester;
+                } else {
+                    targetSem = 1; // Default to 1st sem so they start from the beginning
+                }
+            } else {
+                targetSem = 1;
+            }
+            setActiveSemTab(targetSem);
         }
     };
 
@@ -147,7 +163,7 @@ export default function HODStudents() {
             </div>
 
             {/* Top Cards */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', marginBottom: '24px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', marginBottom: '24px' }}>
                 <div style={{ background: '#fff', padding: '20px', borderRadius: '12px', border: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', gap: '16px' }}>
                     <div style={{ width: 48, height: 48, background: '#eff6ff', color: '#3b82f6', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>
                         <FaUsers />
@@ -175,21 +191,12 @@ export default function HODStudents() {
                         <div style={{ fontSize: '20px', fontWeight: '900', color: '#0f172a' }}>{stats.failed}</div>
                     </div>
                 </div>
-                <div style={{ background: '#fff', padding: '20px', borderRadius: '12px', border: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', gap: '16px' }}>
-                    <div style={{ width: 48, height: 48, background: '#f5f3ff', color: '#8b5cf6', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>
-                        <FaUserTimes />
-                    </div>
-                    <div>
-                        <div style={{ fontSize: '14px', color: '#8b5cf6', fontWeight: '800', textTransform: 'uppercase' }}>Backlog Students</div>
-                        <div style={{ fontSize: '20px', fontWeight: '900', color: '#0f172a' }}>{stats.backlog}</div>
-                    </div>
-                </div>
             </div>
 
             {/* Tabs and Actions */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
                 <div style={{ display: 'flex', gap: '8px' }}>
-                    {['All Students', 'Passed Students', 'Failed Students', 'Backlog Students'].map(tab => (
+                    {['All Students', 'Passed Students', 'Failed Students'].map(tab => (
                         <button 
                             key={tab}
                             onClick={() => setActiveTab(tab)}
@@ -274,7 +281,19 @@ export default function HODStudents() {
                                                     style={{ background: '#3b82f6', border: 'none', color: '#fff', fontWeight: '700', padding: '6px 12px', borderRadius: '4px', fontSize: '12px', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
                                                     <FaEye /> View Marks
                                                 </button>
-                                                <button style={{ background: '#fff', border: '1px solid #cbd5e1', color: '#475569', fontWeight: '700', padding: '6px 12px', borderRadius: '4px', fontSize: '12px', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                                                <button onClick={async () => {
+                                                    const token = localStorage.getItem('token');
+                                                    const resp = await fetch(`${import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://127.0.0.1:5000/api'}/hod/students/${s.id}`, {
+                                                        headers: { 'Authorization': `Bearer ${token}` }
+                                                    });
+                                                    if (resp.ok) {
+                                                        const fullData = await resp.json();
+                                                        setProfileData(fullData);
+                                                    } else {
+                                                        setProfileData(s);
+                                                    }
+                                                    setShowProfileModal(true);
+                                                }} style={{ background: '#fff', border: '1px solid #cbd5e1', color: '#475569', fontWeight: '700', padding: '6px 12px', borderRadius: '4px', fontSize: '12px', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
                                                     <FaUserCircle /> Profile
                                                 </button>
                                             </div>
@@ -393,6 +412,71 @@ export default function HODStudents() {
                     </div>
                 </div>
             </div>
+
+            {/* Profile Modal */}
+            {showProfileModal && profileData && (
+                <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(15, 23, 42, 0.75)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px', backdropFilter: 'blur(4px)' }}>
+                    <div style={{ background: '#fff', width: '100%', maxWidth: '800px', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)', display: 'flex', flexDirection: 'column', maxHeight: '90vh' }}>
+                        
+                        <div style={{ padding: '24px', background: '#1e293b', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <div style={{ color: '#fff', fontSize: '20px', fontWeight: '800', display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                <FaUserCircle style={{ fontSize: '24px' }} /> Student Profile
+                            </div>
+                            <button onClick={() => setShowProfileModal(false)} style={{ background: 'transparent', border: 'none', color: '#fff', cursor: 'pointer', fontSize: '18px' }}>
+                                <FaTimes />
+                            </button>
+                        </div>
+
+                        <div style={{ padding: '32px', overflowY: 'auto' }}>
+                            <div style={{ display: 'flex', gap: '32px', alignItems: 'flex-start' }}>
+                                <div style={{ width: '120px', height: '120px', background: '#f1f5f9', borderRadius: '50%', border: '4px solid #fff', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '48px', color: '#cbd5e1', flexShrink: 0 }}>
+                                    <FaUserCircle />
+                                </div>
+                                <div style={{ flex: 1 }}>
+                                    <div style={{ fontSize: '24px', fontWeight: '900', color: '#0f172a', marginBottom: '8px' }}>{profileData.full_name || profileData.name}</div>
+                                    <div style={{ fontSize: '16px', color: '#64748b', fontWeight: '600', marginBottom: '24px' }}>Register No: <span style={{ color: '#3b82f6' }}>{profileData.register_no || profileData.usn}</span></div>
+                                    
+                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
+                                        <div>
+                                            <div style={{ fontSize: '12px', textTransform: 'uppercase', color: '#94a3b8', fontWeight: '800', marginBottom: '4px' }}>Contact Number</div>
+                                            <div style={{ fontSize: '15px', color: '#334155', fontWeight: '600' }}>{profileData.phone || profileData.contact_number || 'N/A'}</div>
+                                        </div>
+                                        <div>
+                                            <div style={{ fontSize: '12px', textTransform: 'uppercase', color: '#94a3b8', fontWeight: '800', marginBottom: '4px' }}>Email Address</div>
+                                            <div style={{ fontSize: '15px', color: '#334155', fontWeight: '600' }}>{profileData.email || 'N/A'}</div>
+                                        </div>
+                                        <div>
+                                            <div style={{ fontSize: '12px', textTransform: 'uppercase', color: '#94a3b8', fontWeight: '800', marginBottom: '4px' }}>Parent/Guardian Phone</div>
+                                            <div style={{ fontSize: '15px', color: '#334155', fontWeight: '600' }}>{profileData.parent_phone || profileData.parent_contact || 'N/A'}</div>
+                                        </div>
+                                        <div>
+                                            <div style={{ fontSize: '12px', textTransform: 'uppercase', color: '#94a3b8', fontWeight: '800', marginBottom: '4px' }}>Date of Birth</div>
+                                            <div style={{ fontSize: '15px', color: '#334155', fontWeight: '600' }}>{profileData.dob || 'N/A'}</div>
+                                        </div>
+                                        <div>
+                                            <div style={{ fontSize: '12px', textTransform: 'uppercase', color: '#94a3b8', fontWeight: '800', marginBottom: '4px' }}>Father's Name</div>
+                                            <div style={{ fontSize: '15px', color: '#334155', fontWeight: '600' }}>{profileData.father_name || 'N/A'}</div>
+                                        </div>
+                                        <div>
+                                            <div style={{ fontSize: '12px', textTransform: 'uppercase', color: '#94a3b8', fontWeight: '800', marginBottom: '4px' }}>Mother's Name</div>
+                                            <div style={{ fontSize: '15px', color: '#334155', fontWeight: '600' }}>{profileData.mother_name || 'N/A'}</div>
+                                        </div>
+                                        <div>
+                                            <div style={{ fontSize: '12px', textTransform: 'uppercase', color: '#94a3b8', fontWeight: '800', marginBottom: '4px' }}>Program / Department</div>
+                                            <div style={{ fontSize: '15px', color: '#334155', fontWeight: '600' }}>{profileData.program || 'BCA (Computer Applications)'}</div>
+                                        </div>
+                                        <div>
+                                            <div style={{ fontSize: '12px', textTransform: 'uppercase', color: '#94a3b8', fontWeight: '800', marginBottom: '4px' }}>Current Semester</div>
+                                            <div style={{ fontSize: '15px', color: '#334155', fontWeight: '600' }}>{['I', 'II', 'III', 'IV', 'V', 'VI'][(profileData.semester || profileData.current_semester) - 1] || 'VI'} Semester</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            )}
         </main>
     );
 }

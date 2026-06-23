@@ -76,11 +76,10 @@ export default function PrincipalExaminations() {
             </div>
 
             {/* Top Summary Cards */}
-            <div className="exam-top-stats" style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: '16px', marginBottom: '24px' }}>
+            <div className="exam-top-stats" style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '16px', marginBottom: '24px' }}>
                 <StatBox title="Total Students Registered" value={dashboardStats.total_registered} subText="This Session" icon={<FaUsers />} color="#8b5cf6" bg="#f5f3ff" />
                 <StatBox title="Eligible Students" value={dashboardStats.eligible} subText={`${dashboardStats.eligible_percentage}%`} icon={<FaCheckCircle />} color="#10b981" bg="#ecfdf5" />
                 <StatBox title="Hall Tickets Generated" value={dashboardStats.hall_tickets} subText={`${dashboardStats.hall_tickets_percentage}%`} icon={<FaTicketAlt />} color="#3b82f6" bg="#eff6ff" />
-                <StatBox title="Students With Backlogs" value={dashboardStats.backlogs} subText={`${dashboardStats.backlogs_percentage}%`} icon={<FaExclamationTriangle />} color="#f59e0b" bg="#fffbeb" />
                 <StatBox title="Results Published" value={dashboardStats.results_published} subText="Semesters" icon={<FaFileAlt />} color="#14b8a6" bg="#f0fdfa" />
                 <StatBox title="Revaluation Requests" value={dashboardStats.revaluation_requests} subText="Pending" icon={<FaSyncAlt />} color="#ef4444" bg="#fef2f2" />
             </div>

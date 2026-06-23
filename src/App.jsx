@@ -1,5 +1,6 @@
 import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import BackButton from "./components/common/BackButton";
 
 // ── Loading Spinner Component ─────────────────────────────────────────────────
 function PageLoader() {
@@ -86,10 +87,18 @@ const AboutAcademics  = lazy(() => import("./pages/about/Academics"));
 const AboutAdmissions = lazy(() => import("./pages/about/Admissions"));
 const AboutEvents     = lazy(() => import("./pages/about/Events"));
 const AboutPlacements = lazy(() => import("./pages/about/Placements"));
+const Leadership      = lazy(() => import("./pages/about/Leadership"));
+const ViceChancellor  = lazy(() => import("./pages/about/ViceChancellor"));
+const ProChancellor   = lazy(() => import("./pages/about/ProChancellor"));
+const Chancellor      = lazy(() => import("./pages/about/Chancellor"));
 
 const ChatWithStudents = lazy(() => import("./pages/common/ChatWithStudents"));
 const Library = lazy(() => import("./pages/facilities/Library"));
 const ComputerLabs = lazy(() => import("./pages/facilities/ComputerLabs"));
+const ChemistryLab = lazy(() => import("./pages/facilities/ChemistryLab"));
+const BotanyLab = lazy(() => import("./pages/facilities/BotanyLab"));
+const LabsHub = lazy(() => import("./pages/facilities/LabsHub"));
+const Hostels = lazy(() => import("./pages/facilities/Hostels"));
 const Classrooms = lazy(() => import("./pages/facilities/Classrooms"));
 const SportsActivities = lazy(() => import("./pages/facilities/SportsActivities"));
 
@@ -98,6 +107,7 @@ const AdmissionsIndex = lazy(() => import("./pages/admissions/AdmissionsIndex"))
 function App() {
   return (
     <BrowserRouter>
+      <BackButton />
       <Suspense fallback={<PageLoader />}>
         <Routes>
           <Route path="/"                 element={<Entrance />} />
@@ -112,11 +122,19 @@ function App() {
           <Route path="/about/admissions" element={<AboutAdmissions />} />
           <Route path="/about/events"     element={<AboutEvents />} />
           <Route path="/about/placements" element={<AboutPlacements />} />
+          <Route path="/about/leadership" element={<Leadership />} />
+          <Route path="/about/vice-chancellor" element={<ViceChancellor />} />
+          <Route path="/about/pro-chancellor" element={<ProChancellor />} />
+          <Route path="/about/chancellor" element={<Chancellor />} />
 
           <Route path="/facilities/library" element={<Library />} />
+          <Route path="/facilities/labs" element={<LabsHub />} />
           <Route path="/facilities/computer-labs" element={<ComputerLabs />} />
+          <Route path="/facilities/chemistry-lab" element={<ChemistryLab />} />
+          <Route path="/facilities/botany-lab" element={<BotanyLab />} />
           <Route path="/facilities/classrooms" element={<Classrooms />} />
           <Route path="/facilities/sports-activities" element={<SportsActivities />} />
+          <Route path="/facilities/hostels" element={<Hostels />} />
 
           <Route path="/admissions" element={<AdmissionsIndex />} />
 

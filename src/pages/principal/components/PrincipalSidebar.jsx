@@ -19,13 +19,12 @@ export default function PrincipalSidebar({ collapsed }) {
         { label: "Examinations", path: "/principal/exams", icon: <FaGraduationCap /> },
 
         { label: "Reports", path: "/principal/reports", icon: <FaChartBar /> },
-        { label: "Backlog Monitoring", path: "/principal/backlogs", icon: <FaExclamationTriangle /> },
         { label: "Announcements", path: "/principal/announcements", icon: <FaBell /> },
     ];
 
     const handleLogout = () => {
-        localStorage.clear();
-        navigate('/');
+        localStorage.removeItem('userName');
+        navigate('/login-portal');
     };
 
     return (

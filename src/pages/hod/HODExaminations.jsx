@@ -115,7 +115,7 @@ export default function HODExaminations() {
             </div>
 
             {/* ── TOP SUMMARY CARDS ── */}
-            <div className="stats-grid" style={{ gridTemplateColumns: 'repeat(4, 1fr)', marginBottom: '24px' }}>
+            <div className="stats-grid" style={{ gridTemplateColumns: 'repeat(3, 1fr)', marginBottom: '24px' }}>
                 <div style={{ background: 'white', padding: '24px', borderRadius: '16px', display: 'flex', alignItems: 'center', gap: '20px', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
                     <div style={{ width: '56px', height: '56px', borderRadius: '12px', background: '#f3e8ff', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#a855f7', fontSize: '24px' }}>
                         <FaUsers />
@@ -146,17 +146,6 @@ export default function HODExaminations() {
                         <div style={{ fontSize: '13px', fontWeight: '600', color: '#64748b', marginBottom: '4px' }}>Hall Tickets Generated</div>
                         <div style={{ fontSize: '28px', fontWeight: '800', color: '#0f172a' }}>{stats ? stats.hall_tickets : '...'}</div>
                         <div style={{ fontSize: '12px', color: '#64748b', marginTop: '4px' }}>{stats ? stats.hall_tickets_percentage : '...'}%</div>
-                    </div>
-                </div>
-
-                <div style={{ background: 'white', padding: '24px', borderRadius: '16px', display: 'flex', alignItems: 'center', gap: '20px', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
-                    <div style={{ width: '56px', height: '56px', borderRadius: '12px', background: '#fef3c7', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#f59e0b', fontSize: '24px' }}>
-                        <FaExclamationTriangle />
-                    </div>
-                    <div>
-                        <div style={{ fontSize: '13px', fontWeight: '600', color: '#64748b', marginBottom: '4px' }}>Backlog Students</div>
-                        <div style={{ fontSize: '28px', fontWeight: '800', color: '#0f172a' }}>{stats ? stats.backlogs : '...'}</div>
-                        <div style={{ fontSize: '12px', color: '#64748b', marginTop: '4px' }}>{stats ? stats.backlogs_percentage : '...'}%</div>
                     </div>
                 </div>
             </div>

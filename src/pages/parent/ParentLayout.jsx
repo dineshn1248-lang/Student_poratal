@@ -16,11 +16,12 @@ export default function ParentLayout({ title, subtitle }) {
   useEffect(() => {
     const token = localStorage.getItem("token");
     const storedName = localStorage.getItem("userName");
+    const storedStudentName = localStorage.getItem("studentName") || "Student";
     if (!token) {
         navigate("/parent-login");
         return;
     }
-    setUserName(storedName || "Mrs. Lakshmi");
+    setUserName(storedName || `Parent of ${storedStudentName}`);
 
     if (window.innerWidth <= 1024) {
       setSidebarOpen(false);
@@ -29,7 +30,7 @@ export default function ParentLayout({ title, subtitle }) {
 
   const handleLogout = () => {
     localStorage.clear();
-    navigate("/student-login");
+    navigate("/login-portal");
   };
 
   const handleNavItemClick = () => {

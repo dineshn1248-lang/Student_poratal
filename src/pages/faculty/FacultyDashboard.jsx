@@ -107,8 +107,8 @@ export default function FacultyDashboard() {
 
   const handleLogout = () => {
     localStorage.clear();
-    sessionStorage.clear();
-    navigate("/");
+    localStorage.removeItem("userName");
+    navigate("/login-portal");
   };
 
   const handleSaveProfile = (e) => {
@@ -850,7 +850,7 @@ export default function FacultyDashboard() {
                     <span style={{ fontWeight: '800', color: '#2563eb', fontSize: '14px' }}>{student.register_no}</span>
                     <span style={{ fontWeight: '800', color: '#0f172a', fontSize: '14px' }}>{student.name}</span>
                     <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
-                      {["Present", "Absent", "Leave"].map((status) => (
+                      {["Present", "Absent"].map((status) => (
                         <button
                           key={status}
                           type="button"
@@ -884,11 +884,11 @@ export default function FacultyDashboard() {
             <div className="uucms-card" style={{ background: 'white', borderRadius: '16px', padding: '24px', border: '1px solid #edf2f7' }}>
               <div style={{ background: '#fef3c7', border: '1.5px solid #fde68a', borderRadius: '12px', padding: '16px 20px', marginBottom: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div>
-                  <h4 style={{ margin: 0, fontSize: '14px', fontWeight: '900', color: '#78350f' }}>Continuous Internal Evaluation (CIE) Test 1 Sheet</h4>
+                  <h4 style={{ margin: 0, fontSize: '14px', fontWeight: '900', color: '#78350f' }}>Internal Marks Test 1 Sheet</h4>
                   <p style={{ margin: '4px 0 0', fontSize: '14px', color: '#d97706', fontWeight: '600' }}>Subject: Mobile Application Development (BCA601) • Maximum Marks Limit: 20 Marks</p>
                 </div>
                 <div style={{ background: 'white', padding: '6px 12px', borderRadius: '8px', border: '1px solid #fcd34d', fontSize: '14px', fontWeight: '800', color: '#d97706' }}>
-                  MCA VI Semester
+                  BCA VI Semester
                 </div>
               </div>
 

@@ -27,8 +27,8 @@ export default function HODSidebar({ collapsed }) {
     ];
 
     const handleLogout = () => {
-        localStorage.clear();
-        navigate('/');
+        localStorage.removeItem('userName');
+        navigate('/login-portal');
     };
 
     return (

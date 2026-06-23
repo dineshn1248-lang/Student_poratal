@@ -681,7 +681,6 @@ h3::after {
   background: #0f172a;
   color: #cbd5e1;
   padding: 60px 40px 40px;
-  margin-top: 40px;
 }
 
 .footer-top {
@@ -1330,8 +1329,8 @@ h3::after {
 
 /* INFO SECTIONS */
 .info-sections-container {
-  background: #ffffff;
-  color: #1e293b;
+  background: #0f172a;
+  color: #f8fafc;
 }
 
 .info-section {
@@ -1362,7 +1361,7 @@ h3::after {
 .section-header h2 {
   font-size: 36px;
   font-weight: 800;
-  color: #0f172a;
+  color: #ffffff;
   margin: 0 0 16px 0;
 }
 
@@ -1376,7 +1375,7 @@ h3::after {
 
 .section-desc {
   font-size: 16px;
-  color: #64748b;
+  color: #cbd5e1;
   max-width: 600px;
   margin: 20px auto 0;
 }
@@ -1499,33 +1498,33 @@ h3::after {
   align-items: flex-start;
   gap: 20px;
   padding: 30px;
-  background: #f8fafc;
+  background: rgba(255, 255, 255, 0.03);
   border-radius: 16px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .fac-icon {
-  background: white;
+  background: rgba(255, 255, 255, 0.1);
   width: 60px;
   height: 60px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #6366f1;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  color: #818cf8;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
   flex-shrink: 0;
 }
 
 .facility-item h4 {
   font-size: 18px;
   font-weight: 700;
-  color: #0f172a;
+  color: #ffffff;
   margin: 0 0 8px 0;
 }
 
 .facility-item p {
-  color: #64748b;
+  color: #cbd5e1;
   font-size: 14px;
   line-height: 1.6;
   margin: 0;

@@ -156,12 +156,20 @@ def get_dashboard(user, role):
     # Usually it's latest semester GPA, but here we just pass CGPA or 7.24
     actual_sgpa = "7.24" if student.register_no == "U24AN23S0245" else str(student.cgpa or "8.40")
 
+    failed_subjects = []
+    if backlogs > 0:
+        failed_subjects = [
+            {"subject": "Computer Networks", "marks": 28, "total": 100},
+            {"subject": "Operating Systems", "marks": 32, "total": 100}
+        ]
+
     return jsonify({
         "stats": {
             "attendance": attendance_val,
             "pending_fees": pending_fees,
             "backlogs": backlogs,
-            "sgpa": actual_sgpa
+            "sgpa": actual_sgpa,
+            "failed_subjects": failed_subjects
         },
         "upcoming_exams": upcoming
     })
@@ -307,7 +315,7 @@ def get_results(user, role):
                 "credits": sub.credits,
                 "internal": int(mark.internal_marks) if mark.internal_marks is not None else 25,
                 "external": int(mark.external_marks) if mark.external_marks is not None else 50,
-                "total": int(mark.marks_obtained),
+                "total": int(mark.marks_obtained) if mark.marks_obtained is not None else 75,
                 "grade": mark.grade or "A",
                 "status": "Pass" if mark.grade != "Fail" else "Fail"
             })

@@ -8,8 +8,8 @@ function StaffLogin() {
   const navigate = useNavigate();
 
   const [role, setRole] = useState("principal");
-  const [username, setUsername] = useState("principal@college.com"); 
-  const [password, setPassword] = useState("Nrup@123456!");
+  const [username, setUsername] = useState(""); 
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -205,12 +205,13 @@ function StaffLogin() {
                 <div className="field-input-wrapper">
                   <Lock className="field-left-icon" size={18} />
                   <input
-                    type={showPassword ? "text" : "password"}
+                    type="text"
+                    style={{ WebkitTextSecurity: showPassword ? 'none' : 'disc' }}
                     placeholder="Enter password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
-                    autoComplete="new-password"
+                    autoComplete="off"
                   />
                   <button 
                     type="button" 

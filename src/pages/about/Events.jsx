@@ -146,9 +146,9 @@ export default function Events() {
             <h2 style={{ fontSize: '36px', color: '#ffffff', margin: 0 }}>Video Highlights</h2>
             <div style={{ width: '60px', height: '4px', background: '#3b82f6', margin: '15px auto', borderRadius: '2px' }}></div>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(500px, 1fr))', gap: '40px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '30px', maxWidth: '900px', margin: '0 auto' }}>
             <div style={{ background: 'rgba(30, 41, 59, 0.5)', padding: '20px', borderRadius: '24px', border: '1px solid rgba(255,255,255,0.05)' }}>
-              <div style={{ width: '100%', height: '350px', borderRadius: '16px', overflow: 'hidden', marginBottom: '20px' }}>
+              <div style={{ width: '100%', height: '250px', borderRadius: '16px', overflow: 'hidden', marginBottom: '20px' }}>
                 <video width="100%" height="100%" controls style={{ objectFit: 'cover', background: '#000' }}>
                   <source src={festVideo} type="video/mp4" />
                   Your browser does not support the video tag.
@@ -157,7 +157,7 @@ export default function Events() {
               <h3 style={{ color: 'white', fontSize: '24px', margin: 0 }}>College Fest</h3>
             </div>
             <div style={{ background: 'rgba(30, 41, 59, 0.5)', padding: '20px', borderRadius: '24px', border: '1px solid rgba(255,255,255,0.05)' }}>
-              <div style={{ width: '100%', height: '350px', borderRadius: '16px', overflow: 'hidden', marginBottom: '20px' }}>
+              <div style={{ width: '100%', height: '250px', borderRadius: '16px', overflow: 'hidden', marginBottom: '20px' }}>
                 <iframe width="100%" height="100%" src="https://www.youtube.com/embed/lb77QKbZZHo" title="Placement Drive" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
               </div>
               <h3 style={{ color: 'white', fontSize: '24px', margin: 0 }}>Placement Drive</h3>
@@ -206,10 +206,9 @@ export default function Events() {
         <section style={{ marginBottom: '100px', background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(168, 85, 247, 0.1))', padding: '60px 20px', borderRadius: '30px', border: '1px solid rgba(255,255,255,0.05)' }}>
           <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around', gap: '40px' }}>
             {[
-              { count: "50+", label: "Events Per Year" },
-              { count: "10,000+", label: "Participants" },
-              { count: "100+", label: "Industry Speakers" },
-              { count: "25+", label: "Student Clubs" }
+              { count: "20+", label: "Events Per Year" },
+              { count: "5000+", label: "Participants" },
+              { count: "30+", label: "Industry Speakers" }
             ].map((stat, i) => (
               <div key={i} style={{ textAlign: 'center' }}>
                 <div style={{ fontSize: '48px', fontWeight: '900', color: 'white', marginBottom: '10px' }}>{stat.count}</div>
@@ -219,21 +218,7 @@ export default function Events() {
           </div>
         </section>
 
-        {/* 8. Final CTA Section */}
-        <section style={{ textAlign: 'center', padding: '60px 0' }}>
-          <h2 style={{ fontSize: '40px', color: 'white', marginBottom: '20px' }}>Be Part of the Next Big Event</h2>
-          <p style={{ color: '#cbd5e1', fontSize: '18px', marginBottom: '40px', maxWidth: '600px', margin: '0 auto 40px' }}>
-            Whether you want to participate, volunteer, or sponsor, there's always a place for you at Nrupathunga University.
-          </p>
-          <div style={{ display: 'flex', gap: '20px', justifyContent: 'center' }}>
-            <button style={{ padding: '15px 30px', background: '#3b82f6', color: 'white', border: 'none', borderRadius: '30px', fontSize: '16px', fontWeight: '600', cursor: 'pointer', transition: 'all 0.2s', boxShadow: '0 4px 15px rgba(59, 130, 246, 0.4)' }} onMouseEnter={(e) => e.currentTarget.style.background = '#2563eb'} onMouseLeave={(e) => e.currentTarget.style.background = '#3b82f6'}>
-              Explore Events
-            </button>
-            <button style={{ padding: '15px 30px', background: 'transparent', color: 'white', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '30px', fontSize: '16px', fontWeight: '600', cursor: 'pointer', transition: 'all 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.1)'} onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}>
-              Contact Event Cell
-            </button>
-          </div>
-        </section>
+
 
       </div>
 

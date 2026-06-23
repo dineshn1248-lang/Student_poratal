@@ -1,19 +1,23 @@
-from app import create_app
-from models import db, Student, Parent
+import sqlite3
+c = sqlite3.connect('instance/student_portal.db')
 
-app = create_app()
-
-with app.app_context():
-    lakshmi = Student.query.filter_by(full_name='Lakshmi', department='BCA').first()
-    if lakshmi:
-        lakshmi.full_name = "Lakshmi Nasimappa Chakarasli"
-        
-        # update parent too
-        parent = Parent.query.filter_by(student_id=lakshmi.id).first()
-        if parent:
-            parent.name = "Lakshmi Nasimappa Chakarasli's Parent"
-            
-        db.session.commit()
-        print("Updated Lakshmi's full name.")
-    else:
-        print("Lakshmi not found.")
+# 1. Find Lakshmi
+student = c.execute("SELECT id, full_name, parent_id FROM students WHERE full_name LIKE '%Lakshmi%'").fetchone()
+if student:
+    student_id = student[0]
+    print(f"Found Student: {student}")
+    
+    # Update students table
+    c.execute("UPDATE students SET parent_phone='+919380179909' WHERE id=?", (student_id,))
+    
+    # Update parents table
+    c.execute("UPDATE parents SET phone_number='+919380179909' WHERE student_id=?", (student_id,))
+    
+    c.commit()
+    print("Update successful.")
+    
+    # Check parent info
+    parent = c.execute("SELECT parent_id, token, phone_number FROM parents WHERE student_id=?", (student_id,)).fetchone()
+    print(f"Parent Info: {parent}")
+else:
+    print("Lakshmi not found in database.")

@@ -103,7 +103,7 @@ export default function StudentLayout({ children }) {
       window.speechSynthesis.cancel();
     }
     localStorage.clear();
-    navigate("/student-login");
+    navigate("/login-portal");
   };
 
   const handleNavItemClick = () => {

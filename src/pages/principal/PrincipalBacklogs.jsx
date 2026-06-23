@@ -87,7 +87,7 @@ export default function PrincipalBacklogs() {
 
   const openNotifyModal = (student) => {
     setNotifyStudent(student);
-    setNotifyMetprincipal('Email');
+    setNotifyMethod('SMS');
     setNotifyMsg('');
     setSendResult(null);
     setNotifyModal(true);
@@ -104,12 +104,16 @@ export default function PrincipalBacklogs() {
     setSending(true);
     setSendResult(null);
     try {
-      const res = await fetch(`${import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://127.0.0.1:5000/api'}/hod/parent-communication/send`, {
+        const token = localStorage.getItem('token');
+        const res = await fetch(`${import.meta.env.PROD ? 'https://student-poratal.onrender.com/api' : 'http://127.0.0.1:5000/api'}/hod/parent-communication/send`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
         body: JSON.stringify({
           student_id: notifyStudent.id,
-          method: notifyMetprincipal,
+          method: notifyMethod,
           message: notifyMsg || ''
         })
       });
@@ -453,22 +457,20 @@ export default function PrincipalBacklogs() {
             {/* Parent contact preview */}
             <div style={{ background:'#f8fafc', borderRadius:12, padding:'12px 16px', marginBottom:20, fontSize: 14, color:'#475569', display:'flex', flexDirection:'column', gap:6, border:'1px solid #e2e8f0' }}>
               <div style={{ display:'flex', alignItems:'center', gap:8 }}><FaPhoneAlt style={{ color:'#6366f1', fontSize: 12 }} /><span><strong>Phone:</strong> {notifyStudent.parent_phone || '—'}</span></div>
-              <div style={{ display:'flex', alignItems:'center', gap:8 }}><FaEnvelope style={{ color:'#6366f1', fontSize: 12 }} /><span><strong>Email:</strong> {notifyStudent.parent_email || '—'}</span></div>
             </div>
 
-            {/* Metprincipal selector */}
+            {/* Method selector */}
             <div style={{ marginBottom:20 }}>
               <label style={{ display:'block', fontSize: 14, fontWeight:800, color:'#374151', marginBottom:10, textTransform:'uppercase', letterSpacing:0.5 }}>Send via</label>
-              <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:10 }}>
+              <div style={{ display:'grid', gridTemplateColumns:'repeat(2,1fr)', gap:10 }}>
                 {[
-                  { id:'Email', icon:<FaEnvelope />, color:'#4f46e5', bg:'#eef2ff' },
                   { id:'SMS',   icon:<FaMobileAlt />, color:'#f97316', bg:'#fff7ed' },
                   { id:'WhatsApp', icon:<FaBell />, color:'#10b981', bg:'#ecfdf5' },
                 ].map(m => (
-                  <button key={m.id} onClick={() => setNotifyMetprincipal(m.id)}
-                    style={{ padding:'12px 8px', border: notifyMetprincipal===m.id ? `2px solid ${m.color}` : '1.5px solid #e2e8f0',
-                      borderRadius:12, background: notifyMetprincipal===m.id ? m.bg : '#f8fafc',
-                      color: notifyMetprincipal===m.id ? m.color : '#94a3b8', fontWeight:800, fontSize: 14,
+                  <button key={m.id} onClick={() => setNotifyMethod(m.id)}
+                    style={{ padding:'12px 8px', border: notifyMethod===m.id ? `2px solid ${m.color}` : '1.5px solid #e2e8f0',
+                      borderRadius:12, background: notifyMethod===m.id ? m.bg : '#f8fafc',
+                      color: notifyMethod===m.id ? m.color : '#94a3b8', fontWeight:800, fontSize: 14,
                       cursor:'pointer', display:'flex', flexDirection:'column', alignItems:'center', gap:6, transition:'all 0.2s' }}>
                     <span style={{ fontSize: 18 }}>{m.icon}</span>{m.id}
                   </button>
@@ -480,7 +482,7 @@ export default function PrincipalBacklogs() {
             <div style={{ marginBottom:24 }}>
               <label style={{ display:'block', fontSize: 14, fontWeight:800, color:'#374151', marginBottom:8, textTransform:'uppercase', letterSpacing:0.5 }}>Custom Message <span style={{ color:'#94a3b8', fontWeight:400, textTransform:'none', fontSize: 12 }}>(optional — leave blank for auto-generated)</span></label>
               <textarea value={notifyMsg} onChange={e => setNotifyMsg(e.target.value)}
-                placeholder={`Auto message: Dear Parent of ${notifyStudent.full_name}, this is an academic update from Nrupathunga University...`}
+                placeholder={`Auto message: Dear Parent of ${notifyStudent.full_name}, your child currently has ${notifyStudent.backlog_count} uncleared backlogs. This is an academic update from Nrupathunga University...`}
                 rows={4}
                 style={{ width:'100%', padding:'12px 16px', border:'1.5px solid #e2e8f0', borderRadius:12, fontSize: 14, outline:'none', color:'#1e293b', background:'#f8fafc', resize:'none', boxSizing:'border-box', fontFamily:'inherit' }}
                 onFocus={e => e.target.style.borderColor='#6366f1'}

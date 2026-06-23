@@ -221,7 +221,7 @@ export default function HODInternalMarks() {
                                                 onMouseEnter={(e) => { e.currentTarget.style.background = '#e2e8f0'; }}
                                                 onMouseLeave={(e) => { e.currentTarget.style.background = '#f1f5f9'; }}
                                             >
-                                                <FaEdit size={11} /> Edit CIE Marks
+                                                <FaEdit size={11} /> Edit Internal Marks
                                             </button>
                                             
                                             {item.status === 'Pending HOD Approval' && (
@@ -265,7 +265,7 @@ export default function HODInternalMarks() {
                                 {selectedSubject?.code}
                             </span>
                             <h2 style={{ fontSize: '18px', fontWeight: '900', color: '#0f172a', margin: 0 }}>
-                                Edit Continuous Internal Evaluation (CIE)
+                                Edit Internal Marks
                             </h2>
                             <p style={{ margin: '4px 0 0', color: '#64748b', fontSize: '14px', fontWeight: '600' }}>
                                 {selectedSubject?.subject} • Faculty: {selectedSubject?.faculty}

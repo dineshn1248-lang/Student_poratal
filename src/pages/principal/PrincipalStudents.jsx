@@ -150,7 +150,21 @@ export default function PrincipalStudents() {
             setExpandedStudent(null);
         } else {
             setExpandedStudent(studentId);
-            setActiveSemTab(currentSem || 1);
+            
+            // Find first failed semester to default to
+            const student = students.find(s => s.id === studentId);
+            let targetSem = currentSem || 1;
+            if (student && student.subjects) {
+                const failedSub = student.subjects.find(sub => sub.result === 'FAIL');
+                if (failedSub) {
+                    targetSem = failedSub.semester;
+                } else {
+                    targetSem = 1; // Default to 1st sem so they start from the beginning
+                }
+            } else {
+                targetSem = 1;
+            }
+            setActiveSemTab(targetSem);
         }
     };
 
@@ -238,7 +252,7 @@ export default function PrincipalStudents() {
             </div>
 
             {/* Top Cards */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', marginBottom: '24px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', marginBottom: '24px' }}>
                 <div style={{ background: '#fff', padding: '20px', borderRadius: '12px', border: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', gap: '16px' }}>
                     <div style={{ width: 48, height: 48, background: '#eff6ff', color: '#3b82f6', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>
                         <FaUsers />
@@ -266,21 +280,12 @@ export default function PrincipalStudents() {
                         <div style={{ fontSize: '20px', fontWeight: '900', color: '#0f172a' }}>{stats.failed}</div>
                     </div>
                 </div>
-                <div style={{ background: '#fff', padding: '20px', borderRadius: '12px', border: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', gap: '16px' }}>
-                    <div style={{ width: 48, height: 48, background: '#f5f3ff', color: '#8b5cf6', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>
-                        <FaUserTimes />
-                    </div>
-                    <div>
-                        <div style={{ fontSize: '14px', color: '#8b5cf6', fontWeight: '800', textTransform: 'uppercase' }}>Backlog Students</div>
-                        <div style={{ fontSize: '20px', fontWeight: '900', color: '#0f172a' }}>{stats.backlog}</div>
-                    </div>
-                </div>
             </div>
 
             {/* Tabs and Actions */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
                 <div style={{ display: 'flex', gap: '8px' }}>
-                    {['All Students', 'Passed Students', 'Failed Students', 'Backlog Students'].map(tab => (
+                    {['All Students', 'Passed Students', 'Failed Students'].map(tab => (
                         <button 
                             key={tab}
                             onClick={() => setActiveTab(tab)}
@@ -482,19 +487,26 @@ export default function PrincipalStudents() {
                                                     </table>
 
                                                     <div style={{ padding: '16px 20px', background: '#f8fafc', display: 'flex', gap: '24px', borderTop: '1px solid #e2e8f0', fontSize: '14px' }}>
-                                                        {activeSemTab !== 6 && s.subjects.filter(sub => sub.semester === activeSemTab).length > 0 ? (
-                                                            <>
-                                                                <span style={{ fontWeight: '800', color: '#0f172a' }}>SGPA: {s.sgpa}</span>
-                                                                <span style={{ fontWeight: '800', color: '#0f172a' }}>CGPA: {s.cgpa}</span>
-                                                                <span style={{ fontWeight: '800', color: '#0f172a' }}>Result: <span style={{ color: '#10b981' }}>PASS</span></span>
-                                                            </>
-                                                        ) : (
-                                                            <>
-                                                                <span style={{ fontWeight: '800', color: '#0f172a' }}>SGPA: <span style={{ color: '#f59e0b' }}>Waiting</span></span>
-                                                                <span style={{ fontWeight: '800', color: '#0f172a' }}>CGPA: {s.cgpa}</span>
-                                                                <span style={{ fontWeight: '800', color: '#0f172a' }}>Result: <span style={{ color: '#f59e0b' }}>Waiting</span></span>
-                                                            </>
-                                                        )}
+                                                        {(() => {
+                                                            const activeSemMarks = s.subjects.filter(sub => sub.semester === activeSemTab);
+                                                            if (activeSemTab === 6 || activeSemMarks.length === 0) {
+                                                                return (
+                                                                    <>
+                                                                        <span style={{ fontWeight: '800', color: '#0f172a' }}>SGPA: <span style={{ color: '#f59e0b' }}>Waiting</span></span>
+                                                                        <span style={{ fontWeight: '800', color: '#0f172a' }}>CGPA: {s.cgpa}</span>
+                                                                        <span style={{ fontWeight: '800', color: '#0f172a' }}>Result: <span style={{ color: '#f59e0b' }}>Waiting</span></span>
+                                                                    </>
+                                                                );
+                                                            }
+                                                            const hasSemFails = activeSemMarks.some(m => m.result === 'FAIL');
+                                                            return (
+                                                                <>
+                                                                    <span style={{ fontWeight: '800', color: '#0f172a' }}>SGPA: {s.sgpa}</span>
+                                                                    <span style={{ fontWeight: '800', color: '#0f172a' }}>CGPA: {s.cgpa}</span>
+                                                                    <span style={{ fontWeight: '800', color: '#0f172a' }}>Result: <span style={{ color: hasSemFails ? '#ef4444' : '#10b981' }}>{hasSemFails ? 'FAIL' : 'PASS'}</span></span>
+                                                                </>
+                                                            );
+                                                        })()}
                                                     </div>
                                                 </div>
                                             </td>
